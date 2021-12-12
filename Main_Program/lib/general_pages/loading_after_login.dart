@@ -9,9 +9,18 @@ class loading_after_login extends StatefulWidget {
 }
 
 class _loading_after_loginState extends State<loading_after_login> {
+  Future<void> getData() async {
+    await Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pop(context);
+      print('returned');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getData();
+    print('hi');
   }
 
   @override

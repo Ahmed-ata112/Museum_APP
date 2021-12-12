@@ -28,16 +28,16 @@ class _login_pageState extends State<login_page> {
                 padding: EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 20.0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
                       style: TextStyle(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "username", icon: Icon(Icons.person)),
                       onChanged: (val) {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
@@ -47,16 +47,18 @@ class _login_pageState extends State<login_page> {
                           hintText: "Password", icon: Icon(Icons.password)),
                       onChanged: (val) {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     ElevatedButton(
-                        child: Text(
+                        child: const Text(
                           "LogIn",
                           style: TextStyle(color: Colors.white, fontSize: 20.0),
                         ),
-                        onPressed: () {}),
-                    SizedBox(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/loading_after_login');
+                        }),
+                    const SizedBox(
                       height: 20.0,
                     ),
                   ],

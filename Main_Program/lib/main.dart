@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 
 void main() {
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => login_page(),
+        '/login_page': (context) => const login_page(),
+        '/loading_after_login': (context) => const loading_after_login(),
       },
     );
   }
