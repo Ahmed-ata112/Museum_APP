@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/member_home',
+      initialRoute: '/login_page',
       routes: {
         '/login_page': (context) => const login_page(),
         '/loading_after_login': (context) => const loading_after_login(),
