@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:getwidget/getwidget.dart';
 
-class Add_Feedback extends StatefulWidget {
-  const Add_Feedback({Key? key}) : super(key: key);
+class attend_Events extends StatefulWidget {
+  const attend_Events({Key? key}) : super(key: key);
 
   @override
-  _Add_FeedbackState createState() => _Add_FeedbackState();
+  _attend_EventsState createState() => _attend_EventsState();
 }
 
-class _Add_FeedbackState extends State<Add_Feedback> {
+class _attend_EventsState extends State<attend_Events> {
+  String dropdownValue = 'A';
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -22,40 +24,10 @@ class _Add_FeedbackState extends State<Add_Feedback> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Add a Feedback!",
+                    "sign for an event!",
                     style: TextStyle(
                       color: Colors.blue,
                       fontSize: 35.0,
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  //Name
-                  Text(
-                    "your Rating!",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-
-                  Center(
-                    child: RatingBar.builder(
-                      itemSize: 40,
-                      wrapAlignment: WrapAlignment.spaceEvenly,
-                      initialRating: 3,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      //itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
                     ),
                   ),
                   SizedBox(height: 20.0),
@@ -70,17 +42,33 @@ class _Add_FeedbackState extends State<Add_Feedback> {
                   //Email
 
                   const SizedBox(height: 20.0),
-                  //Phone Number
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    maxLines: null, // makes it long if needed
-                    decoration: InputDecoration(
-                      hintText: "your opinion",
-                      icon: Icon(Icons.drive_file_rename_outline),
-                      // to make it multi line
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {},
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('Class'),
+                      DropdownButton(
+                        value: dropdownValue,
+                        //icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['A', 'B', 'C', 'D']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20.0),
                   Row(
@@ -89,7 +77,7 @@ class _Add_FeedbackState extends State<Add_Feedback> {
                       Expanded(
                         child: ElevatedButton(
                             child: Text(
-                              "Add",
+                              "Confirm",
                               style: TextStyle(
                                   color: Colors.white, fontSize: 15.0),
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
 import 'ArticlesHome.dart';
+import 'Events_home.dart';
 
 class member_home extends StatefulWidget {
   const member_home({Key? key}) : super(key: key);
@@ -88,6 +89,8 @@ class _member_homeState extends State<member_home> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EventsHome()));
                 },
               ),
               ListTile(
