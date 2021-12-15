@@ -41,7 +41,7 @@ class _member_homeState extends State<member_home> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment.centerRight + Alignment(0, .2),
+                      alignment: Alignment.centerRight,
                       child: Text(
                         'USER JOB',
                         style: TextStyle(

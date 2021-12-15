@@ -22,7 +22,18 @@ class _Events_infoState extends State<Events_info> {
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
             padding: const EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
             child: Image.network(
               'http://placekitten.com/g/400/400',
@@ -30,22 +41,22 @@ class _Events_infoState extends State<Events_info> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(6.0, 6, 6, 6),
+            padding: const EdgeInsets.fromLTRB(6.0, 16, 6, 6),
             child: Text(
               "Some Heading Text",
               style: TextStyle(
                   fontSize: 28.0,
-                  color: Colors.black87,
+                  color: Colors.red,
                   fontWeight: FontWeight.w600),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(6.0, 6, 6, 6),
+            padding: const EdgeInsets.fromLTRB(6.0, 6, 6, 15),
             child: Text(
               "Some sub Heading Text",
               style: TextStyle(
                   fontSize: 20.0,
-                  color: Colors.black87,
+                  color: Colors.pink,
                   fontWeight: FontWeight.w600),
             ),
           ),
