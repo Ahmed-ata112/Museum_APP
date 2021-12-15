@@ -107,7 +107,7 @@ class _member_homeState extends State<member_home> {
             ],
           ),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -123,21 +123,21 @@ class _member_homeState extends State<member_home> {
                         child: Divider())),
               ]),
             ),
-            Expanded(
-              child: GridView.count(
-                // Create a grid with 2 columns. If you change the scrollDirection to
-                // horizontal, this produces 2 rows.
-                crossAxisCount: 2,
-
-                // Generate 100 widgets that display their index in the List.
-                children: List.generate(5, (index) {
-                  return Center(
-                    child: Text(
-                      'Item $index',
-                    ),
-                  );
-                }),
-              ),
+            GridView.count(
+              // Create a grid with 2 columns. If you change the scrollDirection to
+              // horizontal, this produces 2 rows.
+              crossAxisCount: 2,
+              physics:
+                  NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+              shrinkWrap: true, // You won't see infinite size erro
+              // Generate 100 widgets that display their index in the List.
+              children: List.generate(7, (index) {
+                return Center(
+                  child: Text(
+                    'Item $index',
+                  ),
+                );
+              }),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -153,21 +153,21 @@ class _member_homeState extends State<member_home> {
                         child: Divider())),
               ]),
             ),
-            Expanded(
-              child: GridView.count(
-                // Create a grid with 2 columns. If you change the scrollDirection to
-                // horizontal, this produces 2 rows.
-                crossAxisCount: 2,
-
-                // Generate 100 widgets that display their index in the List.
-                children: List.generate(5, (index) {
-                  return Center(
-                    child: Text(
-                      'Item $index',
-                    ),
-                  );
-                }),
-              ),
+            GridView.count(
+              // Create a grid with 2 columns. If you change the scrollDirection to
+              // horizontal, this produces 2 rows.
+              crossAxisCount: 2,
+              physics:
+                  NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+              shrinkWrap: true, // You won't see infinite size erro
+              // Generate 100 widgets that display their index in the List.
+              children: List.generate(3, (index) {
+                return Center(
+                  child: Text(
+                    'Item $index',
+                  ),
+                );
+              }),
             ),
           ],
         ));
