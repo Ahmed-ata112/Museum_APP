@@ -73,7 +73,7 @@ class _Add_FeedbackState extends State<Add_Feedback> {
                   //Phone Number
                   const SizedBox(height: 20.0),
                   TextFormField(
-                    maxLines: null,
+                    maxLines: null, // makes it long if needed
                     decoration: InputDecoration(
                       hintText: "your opinion",
                       icon: Icon(Icons.drive_file_rename_outline),
