@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/general_pages/Accountant/AccountantHome.dart';
+import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
 import 'general_pages/login_page.dart';
 
 void main() {
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => login_page(),
+        '/login_page': (context) => AccountantHome(),
       },
     );
   }
