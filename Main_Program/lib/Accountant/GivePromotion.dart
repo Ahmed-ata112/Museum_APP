@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
+import 'package:main_program/Accountant/InsertNewEmployee.dart';
 class GivePromotion extends StatelessWidget {
   final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
   static String id = 'GivePromotion';
