@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:main_program/member_view/store_home.dart';
 import 'package:main_program/member_view/tours_home.dart';
 
 import 'ArticlesHome.dart';
@@ -108,6 +108,8 @@ class _member_homeState extends State<member_home> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => StoreHome()));
                 },
               ),
             ],
