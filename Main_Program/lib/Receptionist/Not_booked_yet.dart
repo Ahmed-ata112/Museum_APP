@@ -9,7 +9,7 @@ class new_booking extends StatefulWidget {
 class _new_bookingState extends State<new_booking> {
   String id = "";
   String arr_time="";
-  //DateTime arr_time= DateTime.now();  // TODO --> after listening to last videos
+  //DateTime arr_time= DateTime.now();  // TODO
   @override
   Widget build(BuildContext context) {
     return Scaffold(
