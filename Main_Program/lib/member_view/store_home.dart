@@ -53,6 +53,7 @@ class _StoreHomeState extends State<StoreHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: !is_searching,
         title: !is_searching
             ? Text("Available Souvenirs")
             : TextField(
