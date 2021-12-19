@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/Accountant/SouventirSale.dart';
 import 'package:main_program/CustomWidgets/customTextfield.dart';
+<<<<<<< Updated upstream:Main_Program/lib/general_pages/Accountant/InsertNewEmployee.dart
 import 'package:main_program/general_pages/Accountant/GivePromotion.dart';
 class InsertNewEmployee extends StatelessWidget {
   final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
   static String id = 'InsertNewEmployee';
+=======
+import 'package:main_program/Accountant/GivePromotion.dart';
+import 'package:main_program/Accountant/SouventirSale.dart';
+class InsertNewEmployee extends StatelessWidget {
+  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
+  static String id = 'InsertNewEmployee';
+  String Fname='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
+  int salary=0,ID=0,Dno=0,sup_ID=0;
+>>>>>>> Stashed changes:Main_Program/lib/Accountant/InsertNewEmployee.dart
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       drawer:Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -35,6 +47,14 @@ class InsertNewEmployee extends StatelessWidget {
               title: const Text('Give Promotion'),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>GivePromotion()));
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('view Sourvenir sale'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SouvenirSale()));
                 // Update the state of the app.
                 // ...
               },
@@ -73,43 +93,47 @@ class InsertNewEmployee extends StatelessWidget {
               SizedBox(
                   height: MediaQuery.of(context).size.height*.01
               ),
-              customTextfield(hint:'Enter his/her first name',icon:Icons.person),
+              customTextfield(hint:'Enter his/her first name',icon:Icons.person,val : Fname),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter his/her Middle name',icon:Icons.person),
+              customTextfield(hint:'Enter his/her Middle name',icon:Icons.person,val:Mname),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter his/her Last name',icon:Icons.person),
+              customTextfield(hint:'Enter his/her Last name',icon:Icons.person,val:Lname),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter ID',icon:Icons.vpn_key),
+              customTextfield(hint:'Enter ID',icon:Icons.vpn_key,val:ID),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter job_title',icon:Icons.person),
+              customTextfield(hint:'Enter job_title',icon:Icons.person,val:job_title),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter gender',icon:Icons.transgender),
+              customTextfield(hint:'Enter gender',icon:Icons.transgender,val: gender),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter salary',icon:Icons.money),
+              customTextfield(hint:'Enter salary',icon:Icons.money,val:salary),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter start date',icon:Icons.calendar_today),
+              customTextfield(hint:'Enter start date',icon:Icons.calendar_today,val:start_date),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter department number',icon:Icons.house),
+              customTextfield(hint:'Enter birth date',icon:Icons.person,val:B_date),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter superviser name',icon:Icons.person),
+              customTextfield(hint:'Enter department number',icon:Icons.house,val:Dno),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+              customTextfield(hint:'Enter superviser ID',icon:Icons.person,val:sup_ID),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.05
               ),
@@ -128,7 +152,7 @@ class InsertNewEmployee extends StatelessWidget {
                     if(_globalKey.currentState != null)
                       if(_globalKey.currentState!.validate())
                         {
-                          //insert into database
+                        // _globalKey.currentState.save(); //insert into database
                         }
                   },
                   child: Text(

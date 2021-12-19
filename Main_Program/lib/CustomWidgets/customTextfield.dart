@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 class customTextfield extends StatelessWidget {
   final String hint;
   final IconData icon;
+  Object val;
   String errorMessage(String s)
   {
       switch (hint) {
@@ -21,19 +22,20 @@ class customTextfield extends StatelessWidget {
 
       return 'value is empty';
     }
-  customTextfield({required this.icon,required this.hint});
+  customTextfield({required this.icon,required this.hint,required this.val});
   @override
   Widget build(BuildContext context) {
     return Padding ( //put TextField in padding Widget
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child :TextFormField(
+          onChanged: (value){val=value;},
           validator: (value)
           {
             if(value != null && value.isEmpty)
               {
                 return errorMessage(hint);
               }
-             return '';
+             return '';///
           } ,
           cursorColor: Colors.cyan,
           decoration: InputDecoration(

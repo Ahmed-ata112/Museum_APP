@@ -20,6 +20,7 @@ class _loading_after_loginState extends State<loading_after_login> {
         child: SpinKitDoubleBounce(
       color: Colors.white,
       size: 80.0,
-    ));
+    )
+    );
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
-class GivePromotion extends StatelessWidget {
+import 'package:main_program/PR/Add event.dart';
+class AddTour extends StatelessWidget {
   final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'GivePromotion';
-  int ID=0,p=0;
+  static String id = 'AddTour';
+  String Fname='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
+  int salary=0,ID=0,Dno=0,sup_ID=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +24,9 @@ class GivePromotion extends StatelessWidget {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Insert a new employee'),
+              title: const Text('Add event'),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>InsertNewEmployee())
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddTour())
 
                 );
                 // Update the state of the app.
@@ -33,9 +34,9 @@ class GivePromotion extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Give Promotion'),
+              title: const Text('Add tour'),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>GivePromotion()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>this));
                 // Update the state of the app.
                 // ...
               },
@@ -56,12 +57,12 @@ class GivePromotion extends StatelessWidget {
                     alignment: Alignment.center,
                     children: <Widget>[
                       Image(
-                        image:AssetImage('images/icons/pro.png'),
+                        image:AssetImage('images/icons/em.png'),
                       ),
                       Positioned(
                         bottom: 0,
                         child: Text(
-                          'Give Promotion',style: TextStyle(
+                          'Add Tour',style: TextStyle(
                           fontSize: 25,
 
                         ),
@@ -74,16 +75,11 @@ class GivePromotion extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.01
             ),
-<<<<<<< Updated upstream:Main_Program/lib/general_pages/Accountant/GivePromotion.dart
-            customTextfield(hint:'Enter ID',icon:Icons.vpn_key),
-=======
-            customTextfield(
-            hint:'Enter ID',icon:Icons.vpn_key,val: ID),
->>>>>>> Stashed changes:Main_Program/lib/Accountant/GivePromotion.dart
+            customTextfield(hint:'Enter topic',icon:Icons.person,val:Mname),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter promotion',icon:Icons.money,val:p),
+            customTextfield(hint:'Enter place',icon:Icons.person,val:Lname),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
@@ -102,11 +98,11 @@ class GivePromotion extends StatelessWidget {
                       if(_globalKey.currentState != null)
                         if(_globalKey.currentState!.validate())
                         {
-                          //insert into database
+                          //_globalKey.currentState.save(); //insert into database
                         }
                     },
                     child: Text(
-                      'change salary',
+                      'Add tour',
                       style: TextStyle(
                         color:Colors.white,
                         fontSize: 16,
