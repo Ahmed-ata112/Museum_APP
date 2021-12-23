@@ -83,6 +83,22 @@ class AddTour extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
+            customTextfield(hint:'Enter description',icon:Icons.person,val:Lname),
+            SizedBox(
+                height: MediaQuery.of(context).size.height*.05
+            ),
+            customTextfield(hint:'Enter ID',icon:Icons.person,val:Lname),
+            SizedBox(
+                height: MediaQuery.of(context).size.height*.05
+            ),
+            customTextfield(hint:'Enter start date',icon:Icons.person,val:Lname),
+            SizedBox(
+                height: MediaQuery.of(context).size.height*.05
+            ),
+            customTextfield(hint:'Enter end date',icon:Icons.person,val:Lname),
+            SizedBox(
+                height: MediaQuery.of(context).size.height*.05
+            ),
             Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 120

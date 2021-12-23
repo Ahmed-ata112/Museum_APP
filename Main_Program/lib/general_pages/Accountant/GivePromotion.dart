@@ -74,12 +74,8 @@ class GivePromotion extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.01
             ),
-<<<<<<< Updated upstream:Main_Program/lib/general_pages/Accountant/GivePromotion.dart
-            customTextfield(hint:'Enter ID',icon:Icons.vpn_key),
-=======
             customTextfield(
             hint:'Enter ID',icon:Icons.vpn_key,val: ID),
->>>>>>> Stashed changes:Main_Program/lib/Accountant/GivePromotion.dart
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),

@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:main_program/Accountant/SouventirSale.dart';
 import 'package:main_program/CustomWidgets/customTextfield.dart';
-<<<<<<< Updated upstream:Main_Program/lib/general_pages/Accountant/InsertNewEmployee.dart
-import 'package:main_program/general_pages/Accountant/GivePromotion.dart';
-class InsertNewEmployee extends StatelessWidget {
-  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'InsertNewEmployee';
-=======
-import 'package:main_program/Accountant/GivePromotion.dart';
 import 'package:main_program/Accountant/SouventirSale.dart';
+import 'package:main_program/general_pages/Accountant/GivePromotion.dart';
 class InsertNewEmployee extends StatelessWidget {
   final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
   static String id = 'InsertNewEmployee';
   String Fname='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
   int salary=0,ID=0,Dno=0,sup_ID=0;
->>>>>>> Stashed changes:Main_Program/lib/Accountant/InsertNewEmployee.dart
   @override
   Widget build(BuildContext context) {
     return Scaffold(
