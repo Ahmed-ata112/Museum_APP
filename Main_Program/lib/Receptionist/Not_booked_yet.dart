@@ -9,7 +9,7 @@ class new_booking extends StatefulWidget {
 class _new_bookingState extends State<new_booking> {
   String id = "";
   String arr_time="";
-  //DateTime arr_time= DateTime.now();  // TODO
+  //DateTime arr_time= DateTime.now();  // TODO --> after listening to last videos
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,23 +20,29 @@ class _new_bookingState extends State<new_booking> {
         body: Form(
             child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Enter The ID',
-                      hintText: 'Enter ID',),
-                    onChanged:(text){setState(() {
-                      id = text;
-                    });} ,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Enter The ID',
+                        hintText: 'Enter ID',),
+                      onChanged:(text){setState(() {
+                        id = text;
+                      });} ,
+                    ),
                   ),
                   SizedBox(height: 30,),
-                  TextFormField(
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Enter The Arrival Time',
                         hintText: 'Enter Arrival Time',),
-                    onChanged: (text){setState(() {
-                      arr_time = text;
-                    });},
+                      onChanged: (text){setState(() {
+                        arr_time = text;
+                      });},
 
+                    ),
                   ),
                   RaisedButton(
                     onPressed: (){
