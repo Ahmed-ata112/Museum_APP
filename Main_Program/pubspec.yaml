@@ -37,7 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.0
   flutter_lorem: ^2.0.0
-
+  mysql1: ^0.19.2
+  http: ^0.13.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
