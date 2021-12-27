@@ -28,7 +28,7 @@ class DBManager {
     var response = await http.post(Uri.parse('${BASE_URL}/ExecuteReader'),
         body: queryParameters);
 
-    dynamic ret = json.decode(response.body);
+    dynamic ret = json.decode(response.body); // list<list<dynamic>>
     return ret; // list of lists
   }
 }

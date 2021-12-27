@@ -15,10 +15,6 @@ mysql = MySQL(app)
 parser = reqparse.RequestParser()
 
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
-
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -64,6 +60,7 @@ def execute_scaler():
         cursor.execute(Q)
         mysql.connection.commit()
         my_scaler_response = cursor.fetchall()
+        # [[4]]
         ret = {'result': my_scaler_response[0][0]}
         cursor.close()
         return ret
