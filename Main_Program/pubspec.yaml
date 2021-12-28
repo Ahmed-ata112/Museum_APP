@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.0
   flutter_lorem: ^2.0.0
+  date_time_picker: ^2.1.0
+  #dropdownfield: ^1.0.3
 
 dev_dependencies:
   flutter_test:
