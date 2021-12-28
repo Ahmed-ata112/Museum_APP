@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.0
   flutter_lorem: ^2.0.0
+  date_time_picker: ^2.1.0
+  #dropdownfield: ^1.0.3
+
   mysql1: ^0.19.2
   http: ^0.13.4
 dev_dependencies:

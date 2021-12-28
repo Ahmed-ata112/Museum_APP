@@ -3,6 +3,7 @@ import 'Accountant/AccountantHome.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
+import 'Researcher/researcher_home.dart';
 import 'api.dart';
 
 void try_login() async {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/accountant_home': (context) => AccountantHome(),
+        '/ResearcherHome': (context) => const ResearcherHome(),
       },
     );
   }
