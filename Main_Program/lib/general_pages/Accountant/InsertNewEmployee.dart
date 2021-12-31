@@ -5,12 +5,15 @@ import 'package:main_program/general_pages/Accountant/GivePromotion.dart';
 class InsertNewEmployee extends StatelessWidget {
   final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
   static String id = 'InsertNewEmployee';
-  String Fname='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
+  String fName='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
   int salary=0,ID=0,Dno=0,sup_ID=0;
+   String GenderChosen="";
+  List<String> Gender=["Female","Male"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+
       drawer:Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -55,78 +58,125 @@ class InsertNewEmployee extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
-       body: Form(
-         key: _globalKey,
-           child: ListView(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top:40),
-                child:   Container(
-                height: MediaQuery.of(context).size.height*.2,
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Image(
-                    image:AssetImage('images/icons/em.png'),
-                  ),
-                 Positioned(
-                 bottom: 0,
-                 child: Text(
-                    'Insert Employee',style: TextStyle(
-                    fontSize: 25,
-
-                  ),
-                  ),
-                 ),
-                ],
-              ),
-              )
-              ),
+       body: Center(
+    child:SingleChildScrollView(
+    reverse: true,
+           child:Column(
+             crossAxisAlignment: CrossAxisAlignment.center,
+             children: [
               SizedBox(
                   height: MediaQuery.of(context).size.height*.01
               ),
-              customTextfield(hint:'Enter his/her first name',icon:Icons.person,val : Fname),
+               TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Enter his/her first name"
+                ),
+              ),
+               SizedBox(
+                   height: MediaQuery.of(context).size.height*.01
+               ),
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter his/her middle name"
+                 ),
+               ),
+               SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter his/her last name"
+                 ),
+               ),
+               SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter ID"
+                 ),
+               ),
+               SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter job title"
+                 ),
+               ),
+               SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+              DropdownButtonFormField(onChanged: (dynamic value){print(value);},
+                hint: Text('select gender'),
+                items:<String>['Female','Male'].map<DropdownMenuItem<String>>((String value)
+                {
+                  return DropdownMenuItem(
+                    value:value,
+                    child:Text(value),
+                  );
+                }).toList(),
+              ),
+            SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter salary"
+                 ),
+               ),              SizedBox(
+                  height: MediaQuery.of(context).size.height*.02
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size.fromHeight(40),
+                    primary:Colors.white,
+                  ),
+                  child: FittedBox(
+                    child:Text(
+                      'Select start date',
+                      style: TextStyle(fontSize: 20,color: Colors.black),
+                    ),
+                  ),
+                      onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+                      ),),
               SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter his/her Middle name',icon:Icons.person,val:Mname),
-              SizedBox(
+               ElevatedButton(
+                 style: ElevatedButton.styleFrom(
+                   minimumSize: Size.fromHeight(40),
+                   primary:Colors.white,
+                 ),
+                 child: FittedBox(
+                   child:Text(
+                     'Select birth date',
+                     style: TextStyle(fontSize: 20,color: Colors.black),
+                   ),
+                 ),
+                 onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+                 ),),              SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter his/her Last name',icon:Icons.person,val:Lname),
-              SizedBox(
+               TextFormField(
+                 decoration: InputDecoration(
+                     labelText: "Enter department number"
+                 ),
+               ),              SizedBox(
+                   height: MediaQuery.of(context).size.height*.02
+               ),              SizedBox(
                   height: MediaQuery.of(context).size.height*.02
               ),
-              customTextfield(hint:'Enter ID',icon:Icons.vpn_key,val:ID),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter job_title',icon:Icons.person,val:job_title),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter gender',icon:Icons.transgender,val: gender),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter salary',icon:Icons.money,val:salary),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter start date',icon:Icons.calendar_today,val:start_date),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter birth date',icon:Icons.person,val:B_date),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter department number',icon:Icons.house,val:Dno),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter superviser ID',icon:Icons.person,val:sup_ID),
-              SizedBox(
+               DropdownButtonFormField(onChanged: (dynamic value){print(value);},
+                 hint: Text('select supervise ID'),
+                 items:<String>['retrieved employees id'].map<DropdownMenuItem<String>>((String value)
+                 {
+                   return DropdownMenuItem(
+                     value:value,
+                     child:Text(value),
+                   );
+                 }).toList(),
+               ),              SizedBox(
                   height: MediaQuery.of(context).size.height*.05
               ),
               Padding(
@@ -141,11 +191,11 @@ class InsertNewEmployee extends StatelessWidget {
                 ),
                   onPressed: ()
                   {
-                    if(_globalKey.currentState != null)
-                      if(_globalKey.currentState!.validate())
-                        {
+                    //if(_globalKey.currentState != null)
+                      //if(_globalKey.currentState!.validate())
+                        //{
                         // _globalKey.currentState.save(); //insert into database
-                        }
+                      //  }
                   },
                   child: Text(
                     'Insert',
@@ -153,11 +203,12 @@ class InsertNewEmployee extends StatelessWidget {
                       color:Colors.white,
                       fontSize: 16,
                     ),
-                  ))
+                  )
+              )
               ),
             ],
        ),//listenview because when keyboard appears it will make problem with textfield if it was a container
        ),
-    );
+    ));
   }
 }

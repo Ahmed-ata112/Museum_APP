@@ -74,13 +74,24 @@ class GivePromotion extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.01
             ),
-            customTextfield(
-            hint:'Enter ID',icon:Icons.vpn_key,val: ID),
+            DropdownButtonFormField(onChanged: (dynamic value){print(value);},
+              hint: Text('select ID'),
+              items:<String>['retrieve employees ids'].map<DropdownMenuItem<String>>((String value)
+              {
+                return DropdownMenuItem(
+                  value:value,
+                  child:Text(value),
+                );
+              }).toList(),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter promotion',icon:Icons.money,val:p),
-            SizedBox(
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter salary"
+              ),
+            ),SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
             Padding(

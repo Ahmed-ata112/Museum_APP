@@ -75,29 +75,67 @@ class AddTour extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.01
             ),
-            customTextfield(hint:'Enter topic',icon:Icons.person,val:Mname),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter topic"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter place',icon:Icons.person,val:Lname),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter place"
+              ),
+            ),            SizedBox(
+                height: MediaQuery.of(context).size.height*.05
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter description"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
-            customTextfield(hint:'Enter description',icon:Icons.person,val:Lname),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter ID"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
-            customTextfield(hint:'Enter ID',icon:Icons.person,val:Lname),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.05
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(40),
+                primary:Colors.white,
+              ),
+              child: FittedBox(
+                child:Text(
+                  'Select start date',
+                  style: TextStyle(fontSize: 20,color: Colors.black),
+                ),
+              ),
+              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+              ),),              SizedBox(
+                height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter start date',icon:Icons.person,val:Lname),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(40),
+                primary:Colors.white,
+              ),
+              child: FittedBox(
+                child:Text(
+                  'Select end date',
+                  style: TextStyle(fontSize: 20,color: Colors.black),
+                ),
+              ),
+              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+              ),),
             SizedBox(
-                height: MediaQuery.of(context).size.height*.05
-            ),
-            customTextfield(hint:'Enter end date',icon:Icons.person,val:Lname),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.05
+                height: MediaQuery.of(context).size.height*.02
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(

@@ -75,28 +75,69 @@ class AddEvent extends StatelessWidget {
             SizedBox(
                 height: MediaQuery.of(context).size.height*.01
             ),
-            customTextfield(hint:'Enter event title',icon:Icons.person,val:Mname),
+
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter title"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter theme',icon:Icons.person,val:Lname),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter theme"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter ID',icon:Icons.vpn_key,val:ID),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter ID"
+              ),
+            ),
             SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter description',icon:Icons.person,val:job_title),
-            SizedBox(
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Enter description"
+              ),
+            ),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(40),
+                primary:Colors.white,
+              ),
+              child: FittedBox(
+                child:Text(
+                  'Select start date',
+                  style: TextStyle(fontSize: 20,color: Colors.black),
+                ),
+              ),
+              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+              ),),              SizedBox(
+                height: MediaQuery.of(context).size.height*.02
+            ),            SizedBox(
                 height: MediaQuery.of(context).size.height*.02
             ),
-            customTextfield(hint:'Enter start date',icon:Icons.calendar_today,val:start_date),
-            SizedBox(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(40),
+                primary:Colors.white,
+              ),
+              child: FittedBox(
+                child:Text(
+                  'Select end date',
+                  style: TextStyle(fontSize: 20,color: Colors.black),
+                ),
+              ),
+              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
+              ),),              SizedBox(
                 height: MediaQuery.of(context).size.height*.02
-            ),
-            customTextfield(hint:'Enter end date',icon:Icons.person,val:B_date),
-            SizedBox(
+            ),            SizedBox(
                 height: MediaQuery.of(context).size.height*.05
             ),
             Padding(
