@@ -15,11 +15,26 @@ class DBManager {
     return ret; // 1 if process is done //0 otherwse
   }
 
+  static Future<int> executeNonQueryProc(String ProcName, int params) async {
+    var queryParameters = {'procName': ProcName, 'Parameters': params};
+    var response = await http.post(Uri.parse('${BASE_URL}/ExecuteNonQueryproc'),
+        body: queryParameters);
+    int ret = json.decode(response.body)["result"];
+    return ret; // 1 if process is done //0 otherwse
+  }
+
   static Future<dynamic> executeScaler(String query) async {
-    var queryParameters = {'query': query};
+    var queryParameters = {"query": query};
     var response = await http.post(Uri.parse('${BASE_URL}/ExecuteScaler'),
         body: queryParameters);
-    dynamic ret = json.decode(response.body)["result"];
+    dynamic ret;
+    if (response.statusCode == 200) {
+      ret = json.decode(response.body)["result"];
+    } else {
+      print(response.statusCode);
+      return null;
+    }
+
     return ret; // return output as a dynamic
   }
 

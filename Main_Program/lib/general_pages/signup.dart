@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
-import '../controller.dart';
-
 class login_page extends StatefulWidget {
   const login_page({Key? key}) : super(key: key);
 
@@ -12,11 +10,6 @@ class login_page extends StatefulWidget {
 
 class _login_pageState extends State<login_page> {
   final _formKey = GlobalKey<FormState>();
-  String error = '';
-  Map<String, dynamic> FormData = {
-    'username': null,
-    'Password': null,
-  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +35,7 @@ class _login_pageState extends State<login_page> {
                       style: TextStyle(),
                       decoration: const InputDecoration(
                           hintText: "username", icon: Icon(Icons.person)),
-                      onChanged: (val) {
-                        setState(() => FormData['username'] = val);
-                      },
-                      validator: (val) =>
-                          val!.isEmpty ? "Please fill in your username" : null,
+                      onChanged: (val) {},
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -56,18 +45,7 @@ class _login_pageState extends State<login_page> {
                       style: TextStyle(),
                       decoration: InputDecoration(
                           hintText: "Password", icon: Icon(Icons.password)),
-                      onChanged: (val) {
-                        setState(() => FormData['password'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in your password";
-                        }
-                        if (val.length < 6) {
-                          return "Incorrect Password";
-                        }
-                        return null;
-                      },
+                      onChanged: (val) {},
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -77,40 +55,17 @@ class _login_pageState extends State<login_page> {
                         "Log in",
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
-                      onPressed: () async {
-                        // Navigator.pushReplacementNamed(
-                        //     context, '/loading_after_login');
-
-                        if (_formKey.currentState!.validate()) {
-                          //if the form from the client side is valid
-                          print("All Valid at the client side :)");
-                          //go and check if this credentials is valid from the server (DB) side
-                          //i.e check if this account exists and if the email and password matches (are correct)
-                          //Server Validation Side
-                          dynamic userType =
-                              await Controller.getUserType(FormData);
-                          //print(userType);
-                          if (userType == -1) {
-                            setState(() {
-                              error = 'username or password are not valid!';
-                            });
-                          } else {
-                            setState(() => error = "");
-                            //navigate to the employee home page based on his position
-                            // according to the type
-                            print(userType);
-                            Navigator.pushReplacementNamed(
-                                context, '/loading_after_login');
-                          }
-                        }
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, '/loading_after_login');
                       },
+                      // style: ElevatedButton.styleFrom(
+                      //   primary: Colors.blue,
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(30)),
+                      //   minimumSize: Size.fromHeight(45),
+                      // ),
                       blockButton: true,
-                    ),
-                    Text(
-                      error,
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: error.isEmpty ? 0.0 : 14.0),
                     ),
                     const SizedBox(
                       height: 40.0,
@@ -135,7 +90,7 @@ class _login_pageState extends State<login_page> {
                             ),
                             size: GFSize.SMALL,
                             type: GFButtonType.outline,
-                            onPressed: () async {
+                            onPressed: () {
                               Navigator.pushNamed(
                                   context, '/loading_after_login');
                             }),

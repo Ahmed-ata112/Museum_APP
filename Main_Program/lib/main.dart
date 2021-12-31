@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'Accountant/AccountantHome.dart';
+import 'Researcher/researcher_home.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
-import 'Researcher/researcher_home.dart';
 import 'api.dart';
+import 'package:intl/intl.dart';
 
 void try_login() async {
   //String query = 'insert into myusers values("sdsd","hiii");';
@@ -12,21 +13,32 @@ void try_login() async {
   //print(a); //works
   //String query = "SELECT firstname FROM mydb.myusers where lastname='22';";
   //String query = "SELECT id FROM mydb.bag where id = 2;";
-  String query = "SELECT ID FROM mydb.bag;";
+  String query = "SELECT * FROM mydb.bag;";
   dynamic r = await DBManager.executeReader(query);
-
+  //print(r);
   // for (var vv in r) {
   //   for (var v in vv) {
   //     print(v);
   //   }
   // }
+  /*String proc = 'asdasd';
+  List<dynamic> LL = [8, 'aaa'];
+  DBManager.executeNonQueryProc(proc, 4);*/
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  print(formatted);
+  String Q =
+      "INSERT INTO museum.user VALUES ('lolotheone', '123456789', 1, '$formatted');";
+  int a = await DBManager.executeNonQuery(Q);
+  print(a); //works
 
   // print(a);
 }
 
 void main() {
-  // runApp(MyApp());
-  try_login();
+  runApp(MyApp());
+  //try_login();
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +46,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/member_home',
+      initialRoute: '/login_page',
       routes: {
         '/login_page': (context) => const login_page(),
         '/loading_after_login': (context) => const loading_after_login(),
