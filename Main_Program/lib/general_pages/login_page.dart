@@ -28,16 +28,16 @@ class _login_pageState extends State<login_page> {
                 padding: EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 20.0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
                       style: TextStyle(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "username", icon: Icon(Icons.person)),
                       onChanged: (val) {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
@@ -47,16 +47,55 @@ class _login_pageState extends State<login_page> {
                           hintText: "Password", icon: Icon(Icons.password)),
                       onChanged: (val) {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
-                    ElevatedButton(
-                        child: Text(
-                          "LogIn",
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    GFButton(
+                      child: const Text(
+                        "Log in",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/loading_after_login');
+                      },
+                      // style: ElevatedButton.styleFrom(
+                      //   primary: Colors.blue,
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(30)),
+                      //   minimumSize: Size.fromHeight(45),
+                      // ),
+                      blockButton: true,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'not a member?',
+                          style: TextStyle(
+                              color: Colors.blue[400], fontSize: 12.0),
                         ),
-                        onPressed: () {}),
-                    SizedBox(
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        GFButton(
+                            child: Text(
+                              "Create Acount",
+                              style: TextStyle(
+                                  color: Colors.blue[400], fontSize: 10.0),
+                            ),
+                            size: GFSize.SMALL,
+                            type: GFButtonType.outline,
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/loading_after_login');
+                            }),
+                      ],
+                    ),
+                    const SizedBox(
                       height: 20.0,
                     ),
                   ],
