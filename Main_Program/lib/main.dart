@@ -3,6 +3,7 @@ import 'Accountant/AccountantHome.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
+import 'Researcher/researcher_home.dart';
 import 'api.dart';
 
 void try_login() async {
@@ -11,9 +12,9 @@ void try_login() async {
   //print(a); //works
   //String query = "SELECT firstname FROM mydb.myusers where lastname='22';";
   //String query = "SELECT id FROM mydb.bag where id = 2;";
-  String query = "SELECT * FROM mydb.bag;";
+  String query = "SELECT ID FROM mydb.bag;";
   dynamic r = await DBManager.executeReader(query);
-  //print(r);
+
   // for (var vv in r) {
   //   for (var v in vv) {
   //     print(v);
@@ -24,8 +25,8 @@ void try_login() async {
 }
 
 void main() {
-  runApp(MyApp());
-  //try_login();
+  // runApp(MyApp());
+  try_login();
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/accountant_home': (context) => AccountantHome(),
-        '/PR_home': (context) => AccountantHome(),
+        '/ResearcherHome': (context) => const ResearcherHome(),
       },
     );
   }
