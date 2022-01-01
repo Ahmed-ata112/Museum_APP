@@ -19,7 +19,14 @@ class DBManager {
     var queryParameters = {'procName': ProcName, 'Parameters': params};
     var response = await http.post(Uri.parse('${BASE_URL}/ExecuteNonQueryproc'),
         body: queryParameters);
-    int ret = json.decode(response.body)["result"];
+    int ret;
+    if (response.statusCode == 200) {
+      ret = json.decode(response.body)["result"];
+    } else {
+      print(response.statusCode);
+      return 0;
+    }
+
     return ret; // 1 if process is done //0 otherwse
   }
 
@@ -42,8 +49,12 @@ class DBManager {
     var queryParameters = {'query': query};
     var response = await http.post(Uri.parse('${BASE_URL}/ExecuteReader'),
         body: queryParameters);
-
-    dynamic ret = json.decode(response.body); // list<list<dynamic>>
-    return ret; // list of lists
+    if (response.statusCode == 200) {
+      dynamic ret = json.decode(response.body); // list<list<dynamic>>
+      return ret; // list of lists
+    } else {
+      print(response.statusCode);
+      return null;
+    }
   }
 }
