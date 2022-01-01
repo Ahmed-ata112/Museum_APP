@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:main_program/general_pages/signup.dart';
 
 import '../controller.dart';
 
@@ -136,8 +137,10 @@ class _login_pageState extends State<login_page> {
                             size: GFSize.SMALL,
                             type: GFButtonType.outline,
                             onPressed: () async {
-                              Navigator.pushNamed(
-                                  context, '/loading_after_login');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserSignUp()));
                             }),
                       ],
                     ),
