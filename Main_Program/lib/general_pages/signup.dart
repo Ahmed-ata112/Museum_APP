@@ -1,5 +1,8 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../controller.dart';
 
 class UserSignUp extends StatefulWidget {
   @override
@@ -10,50 +13,16 @@ class _UserSignUpState extends State<UserSignUp> {
   Map<String, dynamic> FormData = {
     'FirstName': null,
     'SecondName': null,
+    'LastName': null,
     'PhoneNumber': null,
-    'Email': null,
     'Password': null,
-    'Position': null,
-    'Governorate': null,
-    'City': null,
-    'StreetName': null,
-    'BuildingNumber': null,
-    'AppartmentNumber': null,
+    'Gender': null,
+    'birthday': null,
   };
-  List<String> Position = ["HR", "SalesMan", "DeliveryMan"];
-  List<String> Governorates = [
-    "Cairo",
-    "Giza",
-    "Alexandria",
-  ];
-  Map<String, List<String>> Cities = {
-    "Cairo": ["Maadi", "Nasr City", "New Cairo"],
-    "Giza": [
-      "Giza",
-      "6th of October City",
-      "Agouza",
-      "Dokii",
-      "Sheikh Zayed City"
-    ],
-    "Alexandria": [
-      "Abou Kir",
-      "Agami",
-      "Borg El Arab",
-      "Cleopatra",
-      "El Montaza",
-      "Gleem",
-      "Ibrahimya",
-      "Maamoura",
-      "Mandara",
-      "Miami",
-      "Raml Station",
-      "San Estefano"
-    ]
-  };
+  List<String> Genders = ["Male", "Female"];
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
-  bool _isCityDisabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +35,18 @@ class _UserSignUpState extends State<UserSignUp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    RotatedBox(quarterTurns: -1, child: Text("Apply Now!")),
-                    Text(
-                      "It seems ... \nwe've the job \nof your dreams",
-                      style: TextStyle(fontSize: 30.0),
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
+                const Text(
+                  "Welcome to The Museum Party!!",
+                  style:
+                      TextStyle(fontSize: 30.0, color: Colors.lightBlueAccent),
+                  textAlign: TextAlign.start,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 //FirstName
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "First Name",
                     icon: Icon(Icons.perm_identity_rounded),
                   ),
@@ -98,12 +63,12 @@ class _UserSignUpState extends State<UserSignUp> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 //SecondName
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Second Name",
                     icon: Icon(Icons.perm_identity_rounded),
                   ),
@@ -114,7 +79,7 @@ class _UserSignUpState extends State<UserSignUp> {
                     if (val!.isEmpty) {
                       return "Please fill in your Second Name";
                     }
-                    if (val!.length > 20) {
+                    if (val.length > 20) {
                       return "Second Name length can't exceed 20 characters";
                     }
                     return null;
@@ -123,9 +88,30 @@ class _UserSignUpState extends State<UserSignUp> {
                 SizedBox(
                   height: 20.0,
                 ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: "Last Name",
+                    icon: Icon(Icons.perm_identity_rounded),
+                  ),
+                  onChanged: (val) {
+                    setState(() => FormData['LastName'] = val);
+                  },
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return "Please fill in your Last Name";
+                    }
+                    if (val.length > 20) {
+                      return "Last Name length can't exceed 20 characters";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
                 //PhoneNumber
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Phone Number (11 digits)",
                     icon: Icon(Icons.phone),
                   ),
@@ -140,50 +126,69 @@ class _UserSignUpState extends State<UserSignUp> {
                 SizedBox(
                   height: 20.0,
                 ),
-                //Position
+                DateTimePicker(
+                    cursorColor: Colors.black,
+                    type: DateTimePickerType.date,
+                    //dateLabelText: 'Birthday Date',
+                    dateHintText: 'Birthday date',
+                    icon: Icon(Icons.date_range),
+                    firstDate: DateTime(DateTime.now().year - 100),
+                    lastDate: DateTime(DateTime.now().year + 5),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'this field is required';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      FormData['birthday'] = value;
+                    }),
+                SizedBox(
+                  height: 20.0,
+                ), //Position
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    hintText: "The Job you want to apply on",
-                    icon: Icon(Icons.work),
+                  decoration: const InputDecoration(
+                    hintText: "Your Gender",
+                    icon: Icon(Icons.transgender),
                   ),
-                  items: Position.map((position) {
+                  items: Genders.map((gg) {
                     return DropdownMenuItem(
-                      value: position,
-                      child: Text("$position"),
+                      value: gg[0],
+                      child: Text(gg),
                     );
                   }).toList(),
                   onChanged: (val) {
                     setState(() {
-                      FormData["Position"] = val;
+                      FormData["Gender"] = val;
                     });
                   },
                   validator: (val) => (val == null)
                       ? "Please Choose the job you want to apply to"
                       : null,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                //Email
                 TextFormField(
                   obscureText: false,
                   style: TextStyle(),
-                  decoration: InputDecoration(
-                      hintText: "Email", icon: Icon(Icons.email)),
+                  decoration: const InputDecoration(
+                      hintText: "username",
+                      icon: Icon(Icons.help_center_outlined)),
                   onChanged: (val) {
-                    setState(() => FormData['Email'] = val);
+                    setState(() => FormData['username'] = val);
                   },
                   validator: (val) =>
-                      val!.isEmpty ? "Please fill in your email" : null,
+                      val!.isEmpty ? "Please fill in your username" : null,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 //Password
                 TextFormField(
-                  obscureText: true,
+                  obscureText: false,
                   style: TextStyle(),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Password", icon: Icon(Icons.lock)),
                   onChanged: (val) {
                     setState(() => FormData['Password'] = val);
@@ -192,122 +197,22 @@ class _UserSignUpState extends State<UserSignUp> {
                     if (val!.isEmpty) {
                       return "Please fill in your password";
                     }
-                    if (val!.length < 6) {
+                    if (val.length < 6) {
                       return "Password length must be greater than 6 characters";
                     }
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                //Governorate
-                DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    hintText: "Governorate",
-                    icon: Icon(Icons.location_on_outlined),
-                  ),
-                  items: Governorates.map((Governorate) {
-                    return DropdownMenuItem(
-                        value: Governorate, child: Text("$Governorate"));
-                  }).toList(),
-                  onChanged: (val) {
-                    setState(() {
-                      FormData["Governorate"] = val;
-                      FormData["City"] = null;
-                      _isCityDisabled = false;
-                    });
-                  },
-                  validator: (val) =>
-                      (val == null) ? "Please Choose your Governorate" : null,
-                ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                //City
-                /*DropdownButtonFormField(
-                  value: FormData["City"],
-                  decoration: InputDecoration(
-                    hintText: "City",
-                    icon: Icon(Icons.location_on_outlined),
-                  ),
-                  items: _isCityDisabled
-                      ? []
-                      : (Cities["${FormData["Governorate"]}"]!.map((City) {
-                          return DropdownMenuItem(
-                              value: City, child: Text("$City"));
-                        })).toList(),
-                  onChanged: _isCityDisabled
-                      ? null
-                      : (val) {
-                          setState(() {
-                            FormData["City"] = val;
-                          });
-                        },
-                  validator: (val) =>
-                      (val == null) ? "Please Choose your City" : null,
-                ),*/
-                SizedBox(
-                  height: 20.0,
-                ),
-
-                //textformfield (StreetName)
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Street Name/No.",
-                    icon: Icon(Icons.streetview),
-                  ),
-                  onChanged: (val) {
-                    setState(() => FormData['StreetName'] = val);
-                  },
-                  validator: (val) => (val!.isEmpty)
-                      ? "Please fill in your street name/no."
-                      : null,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                //textformfield (BuildingNumber)
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Building Number",
-                    icon: Icon(Icons.build),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (val) {
-                    setState(() => FormData['BuildingNumber'] = val);
-                  },
-                  validator: (val) => (val!.isEmpty)
-                      ? "Please fill in your Building Number"
-                      : null,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                //textformfield (AppartmentNumber)
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Appartment Number",
-                    icon: Icon(Icons.build),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (val) {
-                    setState(() => FormData['AppartmentNumber'] = val);
-                  },
-                  validator: (val) => (val!.isEmpty)
-                      ? "Please fill in your Appartment Number"
-                      : null,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-
                 //Sign up (submit) button
-                RaisedButton(
-                    shape: StadiumBorder(),
-                    color: Colors.teal,
-                    child: Text(
-                      "Apply now!",
+                ElevatedButton(
+                    child: const Text(
+                      "Register now!",
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                     onPressed: () async {
@@ -319,6 +224,18 @@ class _UserSignUpState extends State<UserSignUp> {
                         //i.e check if this account exists and if the email and password matches (are correct)
 
                         //Server Validation Side
+                        dynamic retV = await Controller.addNewMember(FormData);
+                        //print(userType);
+                        if (retV == -1) {
+                          setState(() {
+                            error = 'User Already Exists';
+                          });
+                        } else {
+                          setState(() => error = "");
+                          // navigate to member home
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/member_home', (Route<dynamic> route) => false);
+                        }
                         /*dynamic employeeData =
                             await ApiService.addEmployee(FormData);
                         if (employeeData == null) {
@@ -353,6 +270,7 @@ class _UserSignUpState extends State<UserSignUp> {
                         // }
                       }
                     }),
+
                 Text(
                   error,
                   style: TextStyle(

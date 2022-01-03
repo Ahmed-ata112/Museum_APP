@@ -13,27 +13,32 @@ void try_login() async {
   //print(a); //works
   //String query = "SELECT firstname FROM mydb.myusers where lastname='22';";
   //String query = "SELECT id FROM mydb.bag where id = 2;";
-  String query = "SELECT * FROM mydb.bag;";
-  dynamic r = await DBManager.executeReader(query);
+  // String query = "SELECT * FROM mydb.bag;";
+  //dynamic r = await DBManager.executeReader(query);
   //print(r);
   // for (var vv in r) {
   //   for (var v in vv) {
   //     print(v);
   //   }
   // }
-  /*String proc = 'asdasd';
-  List<dynamic> LL = [8, 'aaa'];
-  DBManager.executeNonQueryProc(proc, 4);*/
-  final DateTime now = DateTime.now();
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-  final String formatted = formatter.format(now);
-  print(formatted);
-  String Q =
-      "INSERT INTO museum.user VALUES ('lolotheone', '123456789', 1, '$formatted');";
-  int a = await DBManager.executeNonQuery(Q);
-  print(a); //works
+
+//  final DateTime now = DateTime.now();
+  // final DateFormat formatter = DateFormat('yyyy-MM-dd');
+//  final String formatted = formatter.format(now);
+  // print(formatted);
+  // String Q =
+  //     "INSERT INTO museum.user VALUES ('lolotheone', '123456789', 1, '$formatted');";
+  //int a = await DBManager.executeNonQuery(Q);
+  // print(a); //works
 
   // print(a);
+
+  // String proc = 'insert_new_user';
+  // List<dynamic> LL = ['ALI', 'KOLKOLKOL', 2, '01-8-01'];
+  //DBManager.executeNonQueryProc(proc, LL);
+  List<dynamic> to_send = ['ahmedaa', '123456789'];
+  dynamic userType =
+      await DBManager.executeScalerProc('get_user_type', to_send);
 }
 
 void main() {

@@ -5,7 +5,7 @@ import json
 app = Flask(__name__)
 
 
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '<Ahmedata>'
@@ -62,18 +62,21 @@ def execute_nonquery_proc():
         cursor = mysql.connection.cursor()
         PROC_NAME = args["procName"]
         parameters = args["Parameters"]  # needs to be a list of the parameters
+        
         print(parameters)
         print(PROC_NAME)
-        # cursor.callproc(PROC_NAME,parameters)
-
-        # mysql.connection.commit()
-        # cursor.close()
+        t_list = tuple(json.loads(parameters)) # loads jsom -> list
+        cursor.callproc(PROC_NAME, t_list)
+        mysql.connection.commit()
+        cursor.close()
         ret = {'result': 1}
         return ret
-    except:
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)
         cursor.close()
         print("In excpet")
-        ret = {'result': 0}
         return None
 
 
@@ -90,6 +93,34 @@ def execute_scaler():
         # [[4]]
         ret = {'result': my_scaler_response[0][0]}
         cursor.close()
+        return ret
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)          # __str__ allows args to be printed directly,
+        cursor.close()
+        print("In exception")
+        return None
+    
+@app.route('/ExecuteScalerProc', methods=['POST'])
+def execute_scaler_proc():
+    try:
+        parser.add_argument("procName")
+        parser.add_argument("Parameters")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        PROC_NAME = args["procName"]
+        parameters = args["Parameters"]  # needs to be a list of the parameters
+        print(parameters)
+        print(PROC_NAME)
+        t_list = tuple(json.loads(parameters)) # loads jsom -> list
+        cursor.callproc(PROC_NAME, t_list)
+        mysql.connection.commit()
+        my_scaler_response = cursor.fetchall()
+        cursor.close()
+        #cursor.nextset()
+        # [[4]]
+        ret = {'result': my_scaler_response[0][0]}
         return ret
     except Exception as inst:
         print(type(inst))    # the exception instance
