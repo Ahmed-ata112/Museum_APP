@@ -8,16 +8,11 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '<Ahmedata>'
-app.config['MYSQL_DB'] = 'MyDB'
+app.config['MYSQL_PASSWORD'] = '<dodo23597240>'
+app.config['MYSQL_DB'] = 'museum'
 
 mysql = MySQL(app)
 parser = reqparse.RequestParser()
-
-
-@app.route('/form')
-def form():
-    return render_template('form.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -47,11 +42,39 @@ def execute_nonquery():
         cursor.close()
         ret = {'result': 1}
         return ret
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)          # __str__ allows args to be printed directly,
+        cursor.close()
+        print("In excpet")
+        ret = {'result': 0}
+        return None  # indicates error
+
+
+@app.route('/ExecuteNonQueryproc', methods=['POST'])
+def execute_nonquery_proc():
+    try:
+        parser.add_argument("procName")
+        parser.add_argument("Parameters")
+
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        PROC_NAME = args["procName"]
+        parameters = args["Parameters"]  # needs to be a list of the parameters
+        print(parameters)
+        print(PROC_NAME)
+        # cursor.callproc(PROC_NAME,parameters)
+
+        # mysql.connection.commit()
+        # cursor.close()
+        ret = {'result': 1}
+        return ret
     except:
         cursor.close()
         print("In excpet")
         ret = {'result': 0}
-        return ret
+        return None
 
 
 @app.route('/ExecuteScaler', methods=['POST'])
@@ -64,10 +87,14 @@ def execute_scaler():
         cursor.execute(Q)
         mysql.connection.commit()
         my_scaler_response = cursor.fetchall()
+        # [[4]]
         ret = {'result': my_scaler_response[0][0]}
         cursor.close()
         return ret
-    except:
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)          # __str__ allows args to be printed directly,
         cursor.close()
         print("In exception")
         return None
@@ -90,9 +117,11 @@ def execute_reader():
         # print(my_reader_response) # ((1, 'ahmed'), (2, 'ali'), (3, 'ibrahim'))
         cursor.close()
         return json.dumps(my_reader_response)
-    except:
+    except Exception as inst:
+        print(type(inst))    # the exception instance
+        print(inst.args)     # arguments stored in .args
+        print(inst)          # __str__ allows args to be printed directly,
         cursor.close()
-        print("In exception")
         return ''
 
 
