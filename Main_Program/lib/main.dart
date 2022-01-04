@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Accountant/AccountantHome.dart';
 import 'Researcher/researcher_home.dart';
+import 'controller.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
@@ -36,9 +37,13 @@ void try_login() async {
   // String proc = 'insert_new_user';
   // List<dynamic> LL = ['ALI', 'KOLKOLKOL', 2, '01-8-01'];
   //DBManager.executeNonQueryProc(proc, LL);
-  List<dynamic> to_send = ['ahmedaa', '123456789'];
-  dynamic userType =
-      await DBManager.executeScalerProc('get_user_type', to_send);
+
+  // List<dynamic> to_send = ['ahmedaa', '123456789'];
+  // dynamic userType =
+  //     await DBManager.executeScalerProc('get_user_type', to_send);
+
+  // dynamic aa = await Controller.getMembersData('aaaaaaaad');
+  // if (aa == null) print(aa);
 }
 
 void main() {

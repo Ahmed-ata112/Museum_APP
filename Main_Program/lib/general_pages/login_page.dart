@@ -100,8 +100,14 @@ class _login_pageState extends State<login_page> {
                             //navigate to the employee home page based on his position
                             // according to the type
                             print(userType);
+                            // Navigator.pushReplacementNamed(
+                            //     context, '/loading_after_login');
+                            //user is a member
                             Navigator.pushReplacementNamed(
-                                context, '/loading_after_login');
+                                context, '/loading_after_login', arguments: {
+                              'username': FormData['username'],
+                              'type': userType
+                            });
                           }
                         }
                       },

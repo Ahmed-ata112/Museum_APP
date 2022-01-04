@@ -1,5 +1,6 @@
 import 'api.dart';
 import 'package:intl/intl.dart';
+import 'data_holders.dart';
 
 class Controller {
   Controller() {}
@@ -78,5 +79,29 @@ class Controller {
       return -1;
     }
     return 1; // returned successfully
+  }
+
+  static Future<dynamic> getMembersData(String username) async {
+    String query =
+        "SELECT * FROM museum.member where mem_username = '$username';";
+
+    List<dynamic> data = await DBManager.executeReader(query); // list of rows
+    //print(data);
+    if (data.isEmpty) {
+      //don't exist
+      return null;
+    }
+    List<dynamic> mem_data = data[0];
+    Member mem = Member(
+        mem_data[0],
+        mem_data[1],
+        mem_data[2],
+        mem_data[3],
+        mem_data[4],
+        mem_data[5],
+        mem_data[6],
+        mem_data[7]); //just need the first row as its the only one exists
+    print(mem.Fname);
+    return mem; //
   }
 }

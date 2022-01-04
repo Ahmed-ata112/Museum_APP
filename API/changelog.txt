@@ -1,6 +1,6 @@
 Ahmed:
-1- changed table user_ name to user     
-2- type attribute in user table to int
+    1- type attribute in user table to int
+
 
 
 
