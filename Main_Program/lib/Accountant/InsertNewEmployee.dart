@@ -1,148 +1,368 @@
 import 'package:flutter/material.dart';
-import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/Accountant/GivePromotion.dart';
-class InsertNewEmployee extends StatelessWidget {
-  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'InsertNewEmployee';
-  String Fname='',Lname='',job_title='',gender='';
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
+
+class NewEmployee extends StatefulWidget {
+  const NewEmployee({Key? key}) : super(key: key);
+
+  @override
+  NewEmployeeState createState() => NewEmployeeState();
+}
+
+class NewEmployeeState extends State<NewEmployee> {
+  late String _fname;
+  late String _mname;
+  late String _lname;
+  late String _ID;
+  late String _job_title;
+  late String _B_date;
+  late String _salary;
+  late String _start_date;
+  late String _gender;
+  late String _super_ID;
+  late String _department_num;
+  late String _staff_username;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Widget buildfnameField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+          decoration: const InputDecoration(
+              labelText: 'First name',
+              hintText: 'Employee first name'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _fname = value;
+            }
+          }
+      ),);
+  }
+  Widget buildmnameField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+          decoration: const InputDecoration(
+              labelText: 'Middle name',
+              hintText: 'Employee middle name'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _mname = value;
+            }
+          }
+      ),);
+  }
+  Widget buildlnameField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+          decoration: const InputDecoration(
+              labelText: 'Last name',
+              hintText: 'Employee last name'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _lname = value;
+            }
+          }
+      ),);
+  }
+  Widget buildIDField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          cursorColor: Colors.black,
+          decoration: const InputDecoration(
+              focusColor: Colors.black,
+              labelText: 'ID',
+              hintText: 'Employee ID'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'This field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _ID = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildJobTitleField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+        cursorColor: Colors.black,
+        decoration: const InputDecoration(
+            focusColor: Colors.black,
+            labelText: 'Job Title',
+            hintText: 'Employee job title'
+        ),
+        validator: (value)
+        {
+          if(value == null || value.isEmpty)
+          {return 'This field is required';}
+          return null;
+        },
+        onSaved: (value) {
+          if(value != null)
+          {_job_title = value;}
+        },
+      ),
+    );
+  }
+  Widget buildBDateField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      DateTimePicker(
+          cursorColor: Colors.black,
+          type: DateTimePickerType.date,
+          dateLabelText: 'Birth Date',
+          dateHintText: 'Desired date',
+          firstDate: DateTime(DateTime.now().year-90),
+          lastDate:DateTime.now(),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _B_date = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildSalaryField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          cursorColor: Colors.black,
+          decoration: const InputDecoration(
+              focusColor: Colors.black,
+              labelText: 'salary',
+              hintText: 'Employee salary'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'This field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _salary = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildStartDateField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      DateTimePicker(
+          cursorColor: Colors.black,
+          type: DateTimePickerType.date,
+          dateLabelText: 'Start Date',
+          dateHintText: 'Desired date',
+          firstDate: DateTime(DateTime.now().year-100),
+          lastDate: DateTime(DateTime.now().year+5),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _start_date = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildGenderField()
+  {
+    List<String> Gender=["Female","Male"];
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(onChanged: (dynamic value) {},
+          hint: const Text('Gender'),
+          items:<String>['Female','Male'].map<DropdownMenuItem<String>>((String value)
+          {
+            return DropdownMenuItem(value: value,
+                child: Text(value),);
+          }).toList(),
+          validator: (value)
+          {
+            if(value == null)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (dynamic value) {
+            if (value != null) {
+              _gender=value;
+            }
+          }),
+    );
+  }
+  Widget buildsuper_IDField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(onChanged: (dynamic value) {},
+          hint: const Text('superviser ID'),
+          items:
+          List<DropdownMenuItem>.generate(5, (index)
+          {
+            return DropdownMenuItem(value: index,
+                child: Text('item $index'));
+          })
+          ,
+          onSaved: (dynamic value) {
+            if (value != null) {_super_ID=value;}
+          }),
+    );
+  }
+  Widget builddepartment_numField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(onChanged: (dynamic value) {},
+          hint: const Text('Department number'),
+          items:
+          List<DropdownMenuItem>.generate(5, (index)
+          {
+            return DropdownMenuItem(value: index,
+                child: Text('item $index'));
+          })
+          ,
+          onSaved: (dynamic value) {
+            if (value != null) {_department_num=value;}
+          }),
+    );
+  }
+  Widget buildstaff_usernameField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(onChanged: (dynamic value) {},
+          hint: const Text('username'),
+          items:
+          List<DropdownMenuItem>.generate(5, (index)
+          {
+            return DropdownMenuItem(value: index,
+                child: Text('item $index'));
+          })
+          ,
+          onSaved: (dynamic value) {
+            if (value != null) {_staff_username=value;}
+          }),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Insert a new employee'),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>InsertNewEmployee())
-
-                );
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Give Promotion'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>GivePromotion()));
-                // Update the state of the app.
-                // ...
-              },
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan,
+        title: const Text('New Employee',
+          style: TextStyle(
+              color: Colors.black
+          ),),
+      ),
+      body: Form(
+        key: formKey,
+        child:
+        ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            buildIDField(),
+            buildfnameField(),
+            buildmnameField(),
+            buildlnameField(),
+            buildGenderField(),
+            buildJobTitleField(),
+            buildBDateField(),
+            buildSalaryField(),
+            buildStartDateField(),
+            buildsuper_IDField(),
+            builddepartment_numField(),
+            buildstaff_usernameField(),
+            const SizedBox(height: 50),
+            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+              child: ElevatedButton.icon(
+                  icon: const Icon(Icons.person),
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                  ),
+                  onPressed: ()=> {
+                    if(formKey.currentState!.validate())
+                      {
+                        formKey.currentState!.save(),
+                        //
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Employee added successfully')),)
+                       }
+                  },
+                  label: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.black, fontSize: 18)
+                  )),),
           ],
         ),
       ),
-      backgroundColor: Colors.white,
-       body: Form(
-         key: _globalKey,
-           child: ListView(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top:40),
-                child:   Container(
-                height: MediaQuery.of(context).size.height*.2,
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Image(
-                    image:AssetImage('images/icons/em.png'),
-                  ),
-                 Positioned(
-                 bottom: 0,
-                 child: Text(
-                    'Insert Employee',style: TextStyle(
-                    fontSize: 25,
-
-                  ),
-                  ),
-                 ),
-                ],
-              ),
-              )
-              ),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.01
-              ),
-              customTextfield(hint:'Enter his/her first name',icon:Icons.person),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter his/her Middle name',icon:Icons.person),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter his/her Last name',icon:Icons.person),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter ID',icon:Icons.vpn_key),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter job_title',icon:Icons.person),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter gender',icon:Icons.transgender),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter salary',icon:Icons.money),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter start date',icon:Icons.calendar_today),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter department number',icon:Icons.house),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.02
-              ),
-              customTextfield(hint:'Enter superviser name',icon:Icons.person),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height*.05
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                       horizontal: 120
-                )
-              ,
-              child: FlatButton(
-                color: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                  onPressed: ()
-                  {
-                    if(_globalKey.currentState != null)
-                      if(_globalKey.currentState!.validate())
-                        {
-                          //insert into database
-                        }
-                  },
-                  child: Text(
-                    'Insert',
-                    style: TextStyle(
-                      color:Colors.white,
-                      fontSize: 16,
-                    ),
-                  ))
-              ),
-            ],
-       ),//listenview because when keyboard appears it will make problem with textfield if it was a container
-       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

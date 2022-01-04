@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:main_program/Researcher/researcher_home.dart';
 import 'package:main_program/member_view/member_home.dart';
-import 'package:main_program/Accountant/AccountantHome.dart';
 
 class loading_after_login extends StatefulWidget {
   const loading_after_login({Key? key}) : super(key: key);

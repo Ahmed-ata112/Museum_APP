@@ -1,125 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/Accountant/InsertNewEmployee.dart';
-class GivePromotion extends StatelessWidget {
-  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'GivePromotion';
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
+
+class GivePromo extends StatefulWidget {
+  const GivePromo({Key? key}) : super(key: key);
+
+  @override
+  GivePromoState createState() => GivePromoState();
+}
+
+class GivePromoState extends State<GivePromo> {
+  late String _ID;
+  late String _salary;
+  late String promotion;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Widget buildSalaryField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          cursorColor: Colors.black,
+          decoration: const InputDecoration(
+              focusColor: Colors.black,
+              labelText: 'Promotion',
+              hintText: 'Employee Promotion'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'This field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _salary = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildIDField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(onChanged: (dynamic value) {},
+          hint: const Text('Employee ID'),
+          items:
+          List<DropdownMenuItem>.generate(5, (index)
+          {
+            return DropdownMenuItem(value: index,
+                child: Text('item $index'));
+          })
+          ,
+          onSaved: (dynamic value) {
+            if (value != null) {_ID=value;}
+          }),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Insert a new employee'),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>InsertNewEmployee())
-
-                );
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Give Promotion'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>GivePromotion()));
-                // Update the state of the app.
-                // ...
-              },
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: const Text('New Employee',
+          style: TextStyle(
+              color: Colors.black
+          ),),
+      ),
+      body: Form(
+        key: formKey,
+        child:
+        ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            buildIDField(),
+            buildSalaryField(),
+            const SizedBox(height: 50),
+            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+              child: ElevatedButton.icon(
+                  icon: const Icon(Icons.person),
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+                  ),
+                  onPressed: ()=> {
+                    if(formKey.currentState!.validate())
+                      {
+                        formKey.currentState!.save(),
+                        //TODO::insert into database
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Employee added successfully')),)
+                      }
+                  },
+                  label: const Text(
+                      'change salary',
+                      style: TextStyle(color: Colors.black, fontSize: 18)
+                  )),),
           ],
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: Form(
-        key: _globalKey,
-        child: ListView(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(top:40),
-                child:   Container(
-                  height: MediaQuery.of(context).size.height*.2,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image(
-                        image:AssetImage('images/icons/pro.png'),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Text(
-                          'Give Promotion',style: TextStyle(
-                          fontSize: 25,
-
-                        ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.01
-            ),
-            customTextfield(
-              /*onClick: (value)
-              {
-              int id = value;
-              },*/
-            hint:'Enter ID',icon:Icons.vpn_key,
-            //onClick: (value)
-                //{
-                  //int id=value;
-                //}
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            customTextfield(hint:'Enter promotion',icon:Icons.money),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.05
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 120
-                )
-                ,
-                child: FlatButton(
-                    color: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: ()
-                    {
-                      if(_globalKey.currentState != null)
-                        if(_globalKey.currentState!.validate())
-                        {
-                          //insert into database
-                        }
-                    },
-                    child: Text(
-                      'change salary',
-                      style: TextStyle(
-                        color:Colors.white,
-                        fontSize: 16,
-                      ),
-                    ))
-            ),
-          ],
-        ),//listenview because when keyboard appears it will make problem with textfield if it was a container
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

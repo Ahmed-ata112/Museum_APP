@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'Accountant/AccountantHome.dart';
+import 'package:main_program/Accountant/SouventirSale.dart';
+import 'package:main_program/Accountant/SouventirSale.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
 import 'Researcher/researcher_home.dart';
 import 'api.dart';
+import 'package:main_program/PR/available_articles.dart';
 
 void try_login() async {
   //String query = 'insert into myusers values("sdsd","hiii");';
@@ -25,8 +27,8 @@ void try_login() async {
 }
 
 void main() {
-  // runApp(MyApp());
-  try_login();
+  runApp(MyApp());
+  //try_login();
 }
 
 class MyApp extends StatelessWidget {
@@ -34,13 +36,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/member_home',
+      initialRoute: '/accountant_home',
       routes: {
         '/login_page': (context) => const login_page(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
-        '/accountant_home': (context) => AccountantHome(),
+        '/accountant_home': (context) => SouvenirSale(),
         '/ResearcherHome': (context) => const ResearcherHome(),
+        '/PR': (context) => const available_articles(),
       },
     );
   }

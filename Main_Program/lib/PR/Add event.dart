@@ -1,174 +1,235 @@
 import 'package:flutter/material.dart';
-import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/PR/Add tour.dart';
-class AddEvent extends StatelessWidget {
-  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'AddEvent';
-  String Fname='',Lname='',job_title='',gender='',Mname='',B_date='',start_date='';
-  int salary=0,ID=0,Dno=0,sup_ID=0;
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
+
+class NewEvent extends StatefulWidget {
+  const NewEvent({Key? key}) : super(key: key);
+
+  @override
+  NewEventState createState() => NewEventState();
+}
+
+class NewEventState extends State<NewEvent> {
+  late String _title;
+  late String _theme;
+  late String _ID;
+  late String _description;
+  late String _start_date;
+  late String _end_date;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Widget buildTitleField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+          decoration: const InputDecoration(
+              labelText: 'Title',
+              hintText: 'Event title'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _title = value;
+            }
+          }
+      ),);
+  }
+  Widget buildThemeField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+        cursorColor: Colors.black,
+        decoration: const InputDecoration(
+            focusColor: Colors.black,
+            labelText: 'Theme',
+            hintText: 'Event theme'
+        ),
+        validator: (value)
+        {
+          if(value == null || value.isEmpty)
+          {return 'This field is required';}
+          return null;
+        },
+        onSaved: (value) {
+          if(value != null)
+          {_theme = value;}
+        },
+      ),
+    );
+  }
+  Widget buildIDField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          cursorColor: Colors.black,
+          decoration: const InputDecoration(
+              focusColor: Colors.black,
+              labelText: 'ID',
+              hintText: 'Event ID'
+          ),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'This field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _ID = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildDescField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+        cursorColor: Colors.black,
+        decoration: const InputDecoration(
+            focusColor: Colors.black,
+            labelText: 'Description',
+            hintText: 'Event description'
+        ),
+        validator: (value)
+        {
+          if(value == null || value.isEmpty)
+          {return 'This field is required';}
+          return null;
+        },
+        onSaved: (value) {
+          if(value != null)
+          {_description = value;}
+        },
+      ),
+    );
+  }
+  Widget buildStartDateField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      DateTimePicker(
+          cursorColor: Colors.black,
+          type: DateTimePickerType.date,
+          dateLabelText: 'Start Date',
+          dateHintText: 'Desired date',
+          firstDate: DateTime.now(),
+          lastDate: DateTime(DateTime.now().year+5),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _start_date = value;
+            }
+          }
+      ),
+    );
+  }
+  Widget buildEndDateField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      DateTimePicker(
+          cursorColor: Colors.black,
+          type: DateTimePickerType.date,
+          dateLabelText: 'End Date',
+          dateHintText: 'Desired date',
+          firstDate: DateTime.now(),
+          lastDate: DateTime(DateTime.now().year+5),
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'this field is required';}
+            return null;
+          },
+          onSaved: (value) {
+            if (value != null) {
+              _end_date = value;
+            }
+          }
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Add event'),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>this)
-
-                );
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Add tour'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddTour()));
-                // Update the state of the app.
-                // ...
-              },
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: const Text('New Event',
+          style: TextStyle(
+              color: Colors.black
+          ),),
+      ),
+      body: Form(
+        key: formKey,
+        child:
+        ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            buildTitleField(),
+            buildThemeField(),
+            buildIDField(),
+            buildDescField(),
+            buildStartDateField(),
+            buildEndDateField(),
+            const SizedBox(height: 50),
+            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+              child: ElevatedButton.icon(
+                  icon: const Icon(Icons.event),
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+                  ),
+                  onPressed: ()=> {
+                    if(formKey.currentState!.validate())
+                      {
+                        formKey.currentState!.save(),
+                        //TODO::insert into database
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Event added successfully')),)
+                      }
+                  },
+                  label: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.black, fontSize: 18)
+                  )),),
           ],
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: Form(
-        key: _globalKey,
-        child: ListView(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(top:40),
-                child:   Container(
-                  height: MediaQuery.of(context).size.height*.2,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image(
-                        image:AssetImage('images/icons/em.png'),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Text(
-                          'Add event',style: TextStyle(
-                          fontSize: 25,
-
-                        ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.01
-            ),
-
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Enter title"
-              ),
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Enter theme"
-              ),
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Enter ID"
-              ),
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Enter description"
-              ),
-            ),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(40),
-                primary:Colors.white,
-              ),
-              child: FittedBox(
-                child:Text(
-                  'Select start date',
-                  style: TextStyle(fontSize: 20,color: Colors.black),
-                ),
-              ),
-              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
-              ),),              SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(40),
-                primary:Colors.white,
-              ),
-              child: FittedBox(
-                child:Text(
-                  'Select end date',
-                  style: TextStyle(fontSize: 20,color: Colors.black),
-                ),
-              ),
-              onPressed: ()=>showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-100), lastDate: DateTime(DateTime.now().year+5),
-              ),),              SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),            SizedBox(
-                height: MediaQuery.of(context).size.height*.05
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 120
-                )
-                ,
-                child: FlatButton(
-                    color: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: ()
-                    {
-                      if(_globalKey.currentState != null)
-                        if(_globalKey.currentState!.validate())
-                        {
-                          //_globalKey.currentState.save(); //insert into database
-                        }
-                    },
-                    child: Text(
-                      'Add',
-                      style: TextStyle(
-                        color:Colors.white,
-                        fontSize: 16,
-                      ),
-                    ))
-            ),
-          ],
-        ),//listenview because when keyboard appears it will make problem with textfield if it was a container
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
