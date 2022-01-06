@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Accountant/AccountantHome.dart';
+import 'package:main_program/Accountant/SouventirSale.dart';
+import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
+//import 'Accountant/AccountantHome.dart';
 import 'Researcher/researcher_home.dart';
+import 'package:main_program/Accountant/InsertNewEmployee.dart';
 import 'controller.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
@@ -23,14 +26,14 @@ void try_login() async {
   //   }
   // }
 
-//  final DateTime now = DateTime.now();
-  // final DateFormat formatter = DateFormat('yyyy-MM-dd');
-//  final String formatted = formatter.format(now);
-  // print(formatted);
-  // String Q =
-  //     "INSERT INTO museum.user VALUES ('lolotheone', '123456789', 1, '$formatted');";
-  //int a = await DBManager.executeNonQuery(Q);
-  // print(a); //works
+  final DateTime now = DateTime.now();
+ final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+ print(formatted);
+  String Q =
+      "INSERT INTO museum.user_ VALUES ('lolotheone', '123456789', 1, '$formatted');";
+  int a = await DBManager.executeNonQuery(Q);
+   print(a); //works
 
   // print(a);
 
@@ -58,10 +61,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => const login_page(),
+        '/login_page': (context) => const NewEmployee(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
-        '/accountant_home': (context) => AccountantHome(),
+        //'/accountant_home': (context) => AccountantHome(),
         '/ResearcherHome': (context) => const ResearcherHome(),
       },
     );

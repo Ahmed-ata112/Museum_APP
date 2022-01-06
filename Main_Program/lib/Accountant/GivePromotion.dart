@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:main_program/controller.dart';
 
 class GivePromo extends StatefulWidget {
   const GivePromo({Key? key}) : super(key: key);
@@ -10,92 +11,115 @@ class GivePromo extends StatefulWidget {
 }
 
 class GivePromoState extends State<GivePromo> {
-  late String _ID;
-  late String _salary;
-  late String promotion;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  Widget buildSalaryField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child: TextFormField(
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-              focusColor: Colors.black,
-              labelText: 'Promotion',
-              hintText: 'Employee Promotion'
-          ),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'This field is required';}
-            return null;
-          },
-          onSaved: (value) {
-            if (value != null) {
-              _salary = value;
-            }
-          }
-      ),
-    );
-  }
+  Map<String, dynamic> FormData = {
+    'ID': null,
+    'Promotion': null,
+  };
+  List<int> IDs = [1];
+
+  final _formKey = GlobalKey<FormState>();
+  String error = "";
   Widget buildIDField()
   {
     return Padding(padding: const EdgeInsets.all(20),
-      child: DropdownButtonFormField(onChanged: (dynamic value) {},
-          hint: const Text('Employee ID'),
-          items:
-          List<DropdownMenuItem>.generate(5, (index)
-          {
-            return DropdownMenuItem(value: index,
-                child: Text('item $index'));
-          })
-          ,
-          onSaved: (dynamic value) {
-            if (value != null) {_ID=value;}
-          }),
+      child: DropdownButtonFormField(
+        decoration: const InputDecoration(
+          hintText: "Employee's ID",
+          icon: Icon(Icons.perm_identity_rounded),
+        ),
+        items: IDs.map((gg) {
+          return DropdownMenuItem(
+            value: gg,
+            child: Text(gg.toString()),
+          );
+        }).toList(),
+        onChanged: (val) {
+          setState(() {
+            FormData["ID"] = val;
+          });
+        },
+        validator: (val) => (val == null)
+            ? "Please Choose ID"
+            : null,
+      ),
+    );
+  }
+  Widget buildPromotionField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          hintText: "Promotion",
+          icon: Icon(Icons.money),
+        ),
+        keyboardType: TextInputType.number,
+        onChanged: (val) {
+          setState(() => FormData['Promotion'] = val);
+        },
+      ),
     );
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Text('New Employee',
+        backgroundColor: Colors.cyan,
+        title: const Text('Give Promotion',
           style: TextStyle(
               color: Colors.black
           ),),
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child:
         ListView(
           shrinkWrap: true,
           children: <Widget>[
             buildIDField(),
-            buildSalaryField(),
+            buildPromotionField(),
             const SizedBox(height: 50),
             Padding(padding: const EdgeInsets.only(left: 130, right: 130),
-              child: ElevatedButton.icon(
-                  icon: const Icon(Icons.person),
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
-                  ),
-                  onPressed: ()=> {
-                    if(formKey.currentState!.validate())
-                      {
-                        formKey.currentState!.save(),
-                        //TODO::insert into database
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Employee added successfully')),)
-                      }
-                  },
-                  label: const Text(
-                      'change salary',
-                      style: TextStyle(color: Colors.black, fontSize: 18)
-                  )),),
+              child: ElevatedButton(
+                  child: const Text(
+              "Give Promotion!",
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
+          onPressed: () async {
+            print(FormData);
+            if (_formKey.currentState!.validate()) {
+              //if the form from the client side is valid
+              print("All Valid at the client side:)");
+              //go and check if this credentials is valid from the server (DB) side
+              //i.e check if this account exists and if the email and password matches (are correct)
+
+              //Server Validation Side
+              dynamic retV =
+              await Controller.UpdateSalary(FormData);
+              //print(userType);
+              if (retV == -1) {
+                setState(() {
+                  error = 'failed to update salary';
+                });
+              } else {
+                setState(() => error = "");
+                // navigate to member home
+                // pushes and never go back
+                Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/accountant_home',
+                        (Route<dynamic> route) => false);
+              }
+            }
+          }), ),
+              Text(
+        error,
+        style: TextStyle(
+            color: Colors.red,
+            fontSize: error.isEmpty ? 0.0 : 14.0),
+      ),
+      SizedBox(
+        height: 20.0,
+      ),
           ],
         ),
       ),

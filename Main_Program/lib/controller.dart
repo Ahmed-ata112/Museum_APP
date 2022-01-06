@@ -33,7 +33,82 @@ class Controller {
     }
     return count;
   }
+  static Future<int> getToursCount() async {
+    String query = "SELECT count(ID) FROM museum.tour;";
 
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+  static Future<int> getEventsCount() async {
+    String query = "SELECT count(ID) FROM museum.event;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+  static Future<int> getEmployeesCount() async {
+    String query = "SELECT count(ID) FROM museum.staff;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+  //
+  static Future<int> addNewEmployee(Map<String,dynamic> formData)async{
+    String Fname = formData["Fname"];
+    String Mname = formData["Mname"];
+    String Lname = formData["Lname"];
+    String gender = formData["gender"];
+    String job_title = formData["job_title"];
+    String B_date = formData["B_date"];
+    String salary = formData["salary"];
+    String start_date = formData["start_date"];
+    String super_ID = formData["super_ID"];
+    String department_num = formData["department_num"];
+    String staff_username = formData["staff_username"];
+    String password = formData["password"];
+    String type = formData["type"];
+
+    int id = await getEmployeesCount();
+
+    // members have type int 1
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String regDate = formatter.format(now);
+
+    List<dynamic> toSend = [staff_username, password, type, regDate];
+    //first you add the user
+    dynamic res =
+    await DBManager.executeNonQueryProc('insert_new_user', toSend);
+
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
+
+    List<dynamic> EmployeeToSend=[id,Fname,Mname,Lname,gender,job_title,B_date,salary,start_date,super_ID,department_num,staff_username];
+    
+    dynamic result= await DBManager.executeNonQueryProc('insert_new_employee',EmployeeToSend);
+
+    if(result==0){
+      return-1;
+    }
+    return 1;
+    }
+  //
   static Future<int> addNewMember(Map<String, dynamic> formData) async {
     String username = formData["username"];
     String password = formData["Password"];
@@ -80,6 +155,81 @@ class Controller {
     }
     return 1; // returned successfully
   }
+  static Future<int> addNewEvent(Map<String, dynamic> formData) async {
+    String Date_Start = formData["Date_Start"];
+    String Date_End = formData["Date_End"];
+    String description = formData["description"];
+    String theme = formData["theme"];
+    String title = formData["title"];
+    String sec_number = formData["sec_number"];
+    String staff_id = formData["staff_id"];
+
+    int ID = await getEventsCount();
+
+    List<dynamic> toSend2 = [
+      ID,
+      Date_Start,
+      Date_End,
+      description,
+      theme,
+      title,
+      sec_number,
+      staff_id
+    ];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_event', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<int> addNewTour(Map<String, dynamic> formData) async {
+    String place = formData["place"];
+    String description = formData["description"];
+    String topic = formData["topic"];
+    String Date_Start = formData["Date_Start"];
+    String Date_End = formData["Date_End"];
+    String organizer_id = formData["organizer_id"];
+
+    int ID = await getToursCount();
+
+    List<dynamic> toSend2 = [
+      ID,
+      place,
+      description,
+      topic,
+      Date_Start,
+      Date_End,
+      organizer_id
+    ];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_tour', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<int> UpdateSalary(Map<String, dynamic> formData)async{
+    int ID = formData["ID"];
+    int promotion = formData["Promotion"];
+    String query=
+        "select salary from museum.staff where ID = '$ID';";
+    int salary = await DBManager.executeScaler(query);
+    if (salary==null) {
+
+      return -1;
+    }
+    List<int> toSend = [ID,promotion+salary];
+    dynamic res =
+    await DBManager.executeNonQueryProc('update_employee_salary', toSend);
+        if(res==0){
+                return -1;
+                  }
+        return 1;
+
+  }
 
   static Future<dynamic> getMembersData(String username) async {
     String query =
@@ -104,4 +254,57 @@ class Controller {
     print(mem.Fname);
     return mem; //
   }
+
+  static Future<dynamic> getAllEmployeesIDs() async
+  {
+    String query=
+        "select ID from museum.staff;";
+    List<dynamic> IDS= await DBManager.executeReader(query);
+  if (IDS.isEmpty) {
+    return null;
+  } //
+  return IDS;
+}
+  static Future<dynamic> getAllDepNumbers()async{
+    String query=
+        "select Dno from museum.department;";
+    List<dynamic> nums= await DBManager.executeReader(query);
+    if (nums.isEmpty) {
+
+      return null;
+    }
+    return nums;
+  }
+
+  static Future<dynamic> getSouvenirSale()async{
+    String query=
+        "select So_ID,buy_member_souvenir.quantity,S_ID,buys_visitor_souvenir.quantity from museum.buy_member_souvenir,museum.buys_visitor_souvenir;";
+    List<dynamic> us= await DBManager.executeReader(query);
+    if (us.isEmpty) {
+
+      return null;
+    }
+    return us;
+  }
+  static Future<dynamic> getSecNumber()async{
+    String query=
+        "select number from section;";
+    List<int> us= await DBManager.executeReader(query);
+    if (us.isEmpty) {
+
+      return null;
+    }
+    return us;
+  }
+  static Future<dynamic> getReviewedArticles()async{
+    String query=
+        "select * from article where state_=R;";
+    List<dynamic> us= await DBManager.executeReader(query);
+    if (us.isEmpty) {
+
+      return null;
+    }
+    return us;
+  }
+
 }

@@ -48,7 +48,7 @@ class _article_readState extends State<article_read_pr> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber[300],
+        backgroundColor: Colors.cyan[300],
         elevation: 5.0,
         child: Icon(Icons.publish),
         onPressed: () async {

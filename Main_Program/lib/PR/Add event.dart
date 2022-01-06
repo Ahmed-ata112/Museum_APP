@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:main_program/controller.dart';
 
 class NewEvent extends StatefulWidget {
   const NewEvent({Key? key}) : super(key: key);
@@ -10,34 +11,43 @@ class NewEvent extends StatefulWidget {
 }
 
 class NewEventState extends State<NewEvent> {
-  late String _title;
-  late String _theme;
-  late String _ID;
-  late String _description;
-  late String _start_date;
-  late String _end_date;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Map<String, dynamic> FormData = {
+    'ID': null,
+    'Date_Start': null,
+    'Date_End': null,
+    'description': null,
+    'theme': null,
+    'title': null,
+    'sec_number': null,
+    'staff_id': null,
+  };
+  List<int> sec_number = [1];
+  List<int> staff_id = [1];
+
+  final _formKey = GlobalKey<FormState>();
+  String error = "";
 
   Widget buildTitleField()
   {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-          decoration: const InputDecoration(
-              labelText: 'Title',
-              hintText: 'Event title'
-          ),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
-            return null;
-          },
-          onSaved: (value) {
-            if (value != null) {
-              _title = value;
-            }
+        decoration: const InputDecoration(
+          hintText: "Title",
+          icon: Icon(Icons.event),
+        ),
+        onChanged: (val) {
+          setState(() => FormData['title'] = val);
+        },
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Event Title";
           }
+          if (val.length > 20) {
+            return "Event Title length can't exceed 20 characters";
+          }
+          return null;
+        },
       ),);
   }
   Widget buildThemeField()
@@ -45,48 +55,22 @@ class NewEventState extends State<NewEvent> {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-        cursorColor: Colors.black,
         decoration: const InputDecoration(
-            focusColor: Colors.black,
-            labelText: 'Theme',
-            hintText: 'Event theme'
+          hintText: "Theme",
+          icon: Icon(Icons.event),
         ),
-        validator: (value)
-        {
-          if(value == null || value.isEmpty)
-          {return 'This field is required';}
+        onChanged: (val) {
+          setState(() => FormData['theme'] = val);
+        },
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Event Theme";
+          }
+          if (val.length > 45) {
+            return "Event Theme length can't exceed 45 characters";
+          }
           return null;
         },
-        onSaved: (value) {
-          if(value != null)
-          {_theme = value;}
-        },
-      ),
-    );
-  }
-  Widget buildIDField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child: TextFormField(
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-              focusColor: Colors.black,
-              labelText: 'ID',
-              hintText: 'Event ID'
-          ),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'This field is required';}
-            return null;
-          },
-          onSaved: (value) {
-            if (value != null) {
-              _ID = value;
-            }
-          }
       ),
     );
   }
@@ -95,21 +79,17 @@ class NewEventState extends State<NewEvent> {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-        cursorColor: Colors.black,
         decoration: const InputDecoration(
-            focusColor: Colors.black,
-            labelText: 'Description',
-            hintText: 'Event description'
+          hintText: "Description",
+          icon: Icon(Icons.description),
         ),
-        validator: (value)
-        {
-          if(value == null || value.isEmpty)
-          {return 'This field is required';}
-          return null;
+        onChanged: (val) {
+          setState(() => FormData['description'] = val);
         },
-        onSaved: (value) {
-          if(value != null)
-          {_description = value;}
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "this field is required";}
+          return null;
         },
       ),
     );
@@ -121,22 +101,19 @@ class NewEventState extends State<NewEvent> {
       DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
-          dateLabelText: 'Start Date',
-          dateHintText: 'Desired date',
-          firstDate: DateTime.now(),
-          lastDate: DateTime(DateTime.now().year+5),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
+          dateHintText: 'Start date',
+          icon: Icon(Icons.date_range),
+          firstDate: DateTime(DateTime.now().year - 100),
+          lastDate: DateTime(DateTime.now().year + 5),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'this field is required';
+            }
             return null;
           },
-          onSaved: (value) {
-            if (value != null) {
-              _start_date = value;
-            }
-          }
-      ),
+          onChanged: (value) {
+            FormData['Date_Start'] = value;
+          }),
     );
   }
   Widget buildEndDateField()
@@ -146,21 +123,68 @@ class NewEventState extends State<NewEvent> {
       DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
-          dateLabelText: 'End Date',
-          dateHintText: 'Desired date',
-          firstDate: DateTime.now(),
-          lastDate: DateTime(DateTime.now().year+5),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
+          dateHintText: 'End date',
+          icon: Icon(Icons.date_range),
+          firstDate: DateTime(DateTime.now().year - 100),
+          lastDate: DateTime(DateTime.now().year + 5),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'this field is required';
+            }
             return null;
           },
-          onSaved: (value) {
-            if (value != null) {
-              _end_date = value;
-            }
-          }
+          onChanged: (value) {
+            FormData['Date_End'] = value;
+          }),
+    );
+  }
+  Widget buildsec_numberField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:  DropdownButtonFormField(
+        decoration: const InputDecoration(
+          hintText: "Section Number",
+          icon: Icon(Icons.transgender),
+        ),
+        items: sec_number.map((gg) {
+          return DropdownMenuItem(
+            value: gg,
+            child: Text(gg.toString()),
+          );
+        }).toList(),
+        onChanged: (val) {
+          setState(() {
+            FormData["sec_number"] = val;
+          });
+        },
+        validator: (val) => (val == null)
+            ? "Please Choose the section number"
+            : null,
+      ),
+    );
+  }
+  Widget buildstaff_idField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:  DropdownButtonFormField(
+        decoration: const InputDecoration(
+          hintText: "Staff ID",
+          icon: Icon(Icons.person_add),
+        ),
+        items: staff_id.map((gg) {
+          return DropdownMenuItem(
+            value: gg,
+            child: Text(gg.toString()),
+          );
+        }).toList(),
+        onChanged: (val) {
+          setState(() {
+            FormData["staff_id"] = val;
+          });
+        },
+        validator: (val) => (val == null)
+            ? "this field is required"
+            : null,
       ),
     );
   }
@@ -168,51 +192,77 @@ class NewEventState extends State<NewEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.cyan,
         title: const Text('New Event',
           style: TextStyle(
               color: Colors.black
           ),),
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child:
         ListView(
           shrinkWrap: true,
           children: <Widget>[
             buildTitleField(),
             buildThemeField(),
-            buildIDField(),
             buildDescField(),
             buildStartDateField(),
             buildEndDateField(),
+            buildsec_numberField(),
+            buildstaff_idField(),
             const SizedBox(height: 50),
             Padding(padding: const EdgeInsets.only(left: 130, right: 130),
-              child: ElevatedButton.icon(
-                  icon: const Icon(Icons.event),
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+              child: ElevatedButton(
+                  child: const Text(
+                    "Add!",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                  onPressed: ()=> {
-                    if(formKey.currentState!.validate())
-                      {
-                        formKey.currentState!.save(),
-                        //TODO::insert into database
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Event added successfully')),)
+                  onPressed: () async {
+                    print(FormData);
+                    if (_formKey.currentState!.validate()) {
+                      //if the form from the client side is valid
+                      print("All Valid at the client side:)");
+                      //go and check if this credentials is valid from the server (DB) side
+                      //i.e check if this account exists and if the email and password matches (are correct)
+
+                      //Server Validation Side
+                      dynamic retV =
+                      await Controller.addNewEvent(FormData);
+                      //print(userType);
+                      if (retV == -1) {
+                        setState(() {
+                          error = 'Event Already Exists';
+                        });
+                      } else {
+                        setState(() => error = "");
+                        // navigate to member home
+                        // pushes and never go back
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/pr_home',
+                                (Route<dynamic> route) => false);
                       }
-                  },
-                  label: const Text(
-                      'Add',
-                      style: TextStyle(color: Colors.black, fontSize: 18)
-                  )),),
+                    }
+                  }),
+            ),
+
+            Text(
+              error,
+              style: TextStyle(
+                  color: Colors.red,
+                  fontSize: error.isEmpty ? 0.0 : 14.0),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
           ],
         ),
       ),
+
     );
-  }
-}
+
+  }}
 
 
 

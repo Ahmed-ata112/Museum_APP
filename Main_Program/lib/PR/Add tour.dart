@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:main_program/controller.dart';
 
 class NewTour extends StatefulWidget {
   const NewTour({Key? key}) : super(key: key);
@@ -10,34 +11,40 @@ class NewTour extends StatefulWidget {
 }
 
 class NewTourState extends State<NewTour> {
-  late String _topic;
-  late String _place;
-  late String _ID;
-  late String _description;
-  late String _start_date;
-  late String _end_date;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Map<String, dynamic> FormData = {
+    'ID': null,
+    'place': null,
+    'description': null,
+    'topic': null,
+    'Date_Start': null,
+    'Date_End': null,
+    'organizer_id': null,
+  };
+  List<int> IDs = [1];
 
+  final _formKey = GlobalKey<FormState>();
+  String error = "";
   Widget buildTopicField()
   {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-          decoration: const InputDecoration(
-              labelText: 'Topic',
-              hintText: 'Tour title'
-          ),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
-            return null;
-          },
-          onSaved: (value) {
-            if (value != null) {
-              _topic = value;
-            }
+        decoration: const InputDecoration(
+          hintText: "Topic",
+          icon: Icon(Icons.tour),
+        ),
+        onChanged: (val) {
+          setState(() => FormData['topic'] = val);
+        },
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Tour Topic";
           }
+          if (val.length > 45) {
+            return "Second Name length can't exceed 45 characters";
+          }
+          return null;
+        },
       ),);
   }
   Widget buildPlaceField()
@@ -45,21 +52,21 @@ class NewTourState extends State<NewTour> {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-        cursorColor: Colors.black,
         decoration: const InputDecoration(
-            focusColor: Colors.black,
-            labelText: 'Place',
-            hintText: 'Tour place'
+          hintText: "Place",
+          icon: Icon(Icons.place),
         ),
-        validator: (value)
-        {
-          if(value == null || value.isEmpty)
-          {return 'This field is required';}
-          return null;
+        onChanged: (val) {
+          setState(() => FormData['place'] = val);
         },
-        onSaved: (value) {
-          if(value != null)
-          {_place = value;}
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Tour Place";
+          }
+          if (val.length > 45) {
+            return "Second Name length can't exceed 45 characters";
+          }
+          return null;
         },
       ),
     );
@@ -67,26 +74,21 @@ class NewTourState extends State<NewTour> {
   Widget buildIDField()
   {
     return Padding(padding: const EdgeInsets.all(20),
-      child: TextFormField(
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-              focusColor: Colors.black,
-              labelText: 'ID',
-              hintText: 'Tour ID'
-          ),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'This field is required';}
-            return null;
-          },
-          onSaved: (value) {
-            if (value != null) {
-              _ID = value;
-            }
+      child:          TextFormField(
+        decoration: const InputDecoration(
+          hintText: "ID",
+          icon: Icon(Icons.tour_outlined),
+        ),
+        keyboardType: TextInputType.number,
+        onChanged: (val) {
+          setState(() => FormData['ID'] = val);
+        },
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Tour ID";
           }
+          return null;
+        },
       ),
     );
   }
@@ -95,21 +97,18 @@ class NewTourState extends State<NewTour> {
     return Padding(padding: const EdgeInsets.all(20),
       child:
       TextFormField(
-        cursorColor: Colors.black,
         decoration: const InputDecoration(
-            focusColor: Colors.black,
-            labelText: 'Description',
-            hintText: 'Tour description'
+          hintText: "Tour Description",
+          icon: Icon(Icons.description),
         ),
-        validator: (value)
-        {
-          if(value == null || value.isEmpty)
-          {return 'This field is required';}
-          return null;
+        onChanged: (val) {
+          setState(() => FormData['description'] = val);
         },
-        onSaved: (value) {
-          if(value != null)
-          {_description = value;}
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in tour description";
+          }
+          return null;
         },
       ),
     );
@@ -121,22 +120,19 @@ class NewTourState extends State<NewTour> {
       DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
-          dateLabelText: 'Start Date',
-          dateHintText: 'Desired date',
-          firstDate: DateTime.now(),
-          lastDate: DateTime(DateTime.now().year+5),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
+          dateHintText: 'Start date',
+          icon: Icon(Icons.date_range),
+          firstDate: DateTime(DateTime.now().year - 100),
+          lastDate: DateTime(DateTime.now().year + 5),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'this field is required';
+            }
             return null;
           },
-          onSaved: (value) {
-            if (value != null) {
-              _start_date = value;
-            }
-          }
-      ),
+          onChanged: (value) {
+            FormData['Date_Start'] = value;
+          }),
     );
   }
   Widget buildEndDateField()
@@ -146,21 +142,43 @@ class NewTourState extends State<NewTour> {
       DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
-          dateLabelText: 'End Date',
-          dateHintText: 'Desired date',
-          firstDate: DateTime.now(),
-          lastDate: DateTime(DateTime.now().year+5),
-          validator: (value)
-          {
-            if(value == null || value.isEmpty)
-            {return 'this field is required';}
+          dateHintText: 'End date',
+          icon: Icon(Icons.date_range),
+          firstDate: DateTime(DateTime.now().year - 100),
+          lastDate: DateTime(DateTime.now().year + 5),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'this field is required';
+            }
             return null;
           },
-          onSaved: (value) {
-            if (value != null) {
-              _end_date = value;
-            }
-          }
+          onChanged: (value) {
+            FormData['Date_End'] = value;
+          }),
+    );
+  }
+  Widget buildstaff_idField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:DropdownButtonFormField(
+        decoration: const InputDecoration(
+          hintText: "Your Gender",
+          icon: Icon(Icons.person_add_alt_1_sharp),
+        ),
+        items: IDs.map((gg) {
+          return DropdownMenuItem(
+            value: gg,
+            child: Text(gg.toString()),
+          );
+        }).toList(),
+        onChanged: (val) {
+          setState(() {
+            FormData["organizer_id"] = val;
+          });
+        },
+        validator: (val) => (val == null)
+            ? "this field is required"
+            : null,
       ),
     );
   }
@@ -168,14 +186,14 @@ class NewTourState extends State<NewTour> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.cyan,
         title: const Text('New Tour',
           style: TextStyle(
               color: Colors.black
           ),),
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child:
         ListView(
           shrinkWrap: true,
@@ -188,25 +206,47 @@ class NewTourState extends State<NewTour> {
             buildEndDateField(),
             const SizedBox(height: 50),
             Padding(padding: const EdgeInsets.only(left: 130, right: 130),
-              child: ElevatedButton.icon(
-                  icon: const Icon(Icons.tour),
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all<Size>(const Size.fromWidth(20)),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+              child: ElevatedButton(
+                  child: const Text(
+                    "Add",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                  onPressed: ()=> {
-                    if(formKey.currentState!.validate())
-                      {
-                        formKey.currentState!.save(),
-                        //TODO::insert into database
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tour added successfully')),)
+                  onPressed: () async {
+                    print(FormData);
+                    if (_formKey.currentState!.validate()) {
+                      //if the form from the client side is valid
+                      print("All Valid at the client side:)");
+                      //go and check if this credentials is valid from the server (DB) side
+                      //i.e check if this account exists and if the email and password matches (are correct)
+
+                      //Server Validation Side
+                      dynamic retV =
+                      await Controller.addNewTour(FormData);
+                      //print(userType);
+                      if (retV == -1) {
+                        setState(() {
+                          error = 'Tour Already Exists';
+                        });
+                      } else {
+                        setState(() => error = "");
+                        // navigate to member home
+                        // pushes and never go back
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/pr_home',
+                                (Route<dynamic> route) => false);
                       }
-                  },
-                  label: const Text(
-                      'Add',
-                      style: TextStyle(color: Colors.black, fontSize: 18)
-                  )),),
+                    }
+                  }),),
+              Text(
+                error,
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: error.isEmpty ? 0.0 : 14.0),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
           ],
         ),
       ),
