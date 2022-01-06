@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:main_program/data_holders.dart';
-
+import 'package:share_plus/share_plus.dart';
 import '../controller.dart';
+import 'package:like_button/like_button.dart';
 
-Widget Souvenirs_Card(Souvenir sou) {
+Widget Souvenirs_Card(Souvenir sou, BuildContext context) {
+  void _shareContent(String _content) {
+    Share.share(_content);
+  }
+
   return GFCard(
     boxFit: BoxFit.cover,
     titlePosition: GFPosition.end,
@@ -18,23 +23,29 @@ Widget Souvenirs_Card(Souvenir sou) {
       subTitleText: 'Price: \$${sou.price}',
     ),
     content: Text(sou.description),
-    buttonBar: const GFButtonBar(
+    buttonBar: GFButtonBar(
       padding: EdgeInsets.all(12),
       children: <Widget>[
-        GFAvatar(
-          backgroundColor: GFColors.PRIMARY,
-          child: Icon(
-            Icons.share,
-            color: Colors.white,
-          ),
-        ),
-        GFAvatar(
-          backgroundColor: GFColors.SUCCESS,
-          child: Icon(
-            Icons.add_box_outlined,
-            color: Colors.white,
-          ),
-        ),
+        ElevatedButton(
+            onPressed: () {
+              Share.share(sou.description);
+            },
+            child: Icon(Icons.share, color: Colors.white),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(20),
+              primary: Colors.blue, // <-- Button color
+              onPrimary: Colors.red, // <-- Splash color
+            )),
+        ElevatedButton(
+            onPressed: () {},
+            child: Icon(Icons.add_box_outlined, color: Colors.white),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(20),
+              primary: Colors.blue, // <-- Button color
+              onPrimary: Colors.red, // <-- Splash color
+            )),
       ],
     ),
   );
@@ -78,7 +89,7 @@ class _StoreHomeState extends State<StoreHome> {
         automaticallyImplyLeading: !is_searching,
         title: !is_searching
             ? Text("Available Souvenirs")
-            : TextField(
+            : const TextField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -117,7 +128,7 @@ class _StoreHomeState extends State<StoreHome> {
         itemCount:
             allSouvenirs.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return Souvenirs_Card(allSouvenirs[index]);
+          return Souvenirs_Card(allSouvenirs[index], context);
         },
       ),
     );

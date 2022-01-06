@@ -53,6 +53,7 @@ class _EventsHomeState extends State<EventsHome> {
   List<Event> allEvents = [];
   _EventsHomeState(this.Member_id);
 
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();

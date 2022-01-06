@@ -113,6 +113,26 @@ class Controller {
     return ret;
   }
 
+  static Future<List<dynamic>> getAllUsers() async {
+    String query = "SELECT * FROM museum.user_;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get Users from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllMembers() async {
+    String query = "SELECT * FROM museum.member;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get members from database");
+    }
+    return ret;
+  }
+
   static Future<int> addNewArticleFeedback(
       Map<String, dynamic> formData) async {
     String comment = formData["comment"];

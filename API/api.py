@@ -16,15 +16,6 @@ mysql = MySQL(app)
 parser = reqparse.RequestParser()
 
 
-
-# to incode dateTime if required
-class DateTimeEncoder(json.JSONEncoder):
-    def default(self, z):
-        if isinstance(z, datetime.date):
-            return (str(z))
-        else:
-            return super().default(z)
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'GET':
@@ -73,8 +64,8 @@ def execute_nonquery_proc():
         PROC_NAME = args["procName"]
         parameters = args["Parameters"]  # needs to be a list of the parameters
 
-        #print(parameters)
-        #print(PROC_NAME)
+        # print(parameters)
+        # print(PROC_NAME)
         t_list = tuple(json.loads(parameters))  # loads jsom -> list
         cursor.callproc(PROC_NAME, t_list)
         mysql.connection.commit()
@@ -126,12 +117,13 @@ def execute_scaler_proc():
         print(PROC_NAME)
         t_list = tuple(json.loads(parameters))  # loads jsom -> list
         cursor.callproc(PROC_NAME, t_list)
-        mysql.connection.commit()
-        my_scaler_response = cursor.fetchall()
-        cursor.close()
+        # mysql.connection.commit()
+        my_scaler_response = [x for x in cursor]
+        print(my_scaler_response)
         # cursor.nextset()
         # [[4]]
         ret = {'result': my_scaler_response[0][0]}
+        cursor.close()
         return ret
     except Exception as inst:
         print(type(inst))    # the exception instance
@@ -140,7 +132,6 @@ def execute_scaler_proc():
         cursor.close()
         print("In exception")
         return None
-
 
 
 @app.route('/ExecuteReader', methods=['POST'])
@@ -153,7 +144,7 @@ def execute_reader():
         cursor.execute(Q)
         mysql.connection.commit()
         my_reader_response = cursor.fetchall()
-        #print(my_reader_response)
+        # print(my_reader_response)
         #print(json.dumps(my_reader_response, cls=DateTimeEncoder))
         # print(my_reader_response) # ((1, 'ahmed'), (2, 'ali'), (3, 'ibrahim'))
         cursor.close()

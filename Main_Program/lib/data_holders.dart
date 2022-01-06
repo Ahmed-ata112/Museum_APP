@@ -1,3 +1,11 @@
+class User {
+  String username;
+  String password;
+  int type_;
+  String Reg_date;
+  User(this.username, this.password, this.type_, this.Reg_date);
+}
+
 class Member {
   String Fname;
   String Sname;

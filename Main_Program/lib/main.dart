@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Accountant/AccountantHome.dart';
 import 'Researcher/researcher_home.dart';
+import 'admin_view/admin_home.dart';
 import 'controller.dart';
 import 'general_pages/loading_after_login.dart';
 import 'general_pages/login_page.dart';
@@ -38,10 +39,9 @@ void try_login() async {
   // List<dynamic> LL = ['ALI', 'KOLKOLKOL', 2, '01-8-01'];
   //DBManager.executeNonQueryProc(proc, LL);
 
-  // List<dynamic> to_send = ['ahmedaa', '123456789'];
-  // dynamic userType =
-  //     await DBManager.executeScalerProc('get_user_type', to_send);
-
+  List<dynamic> to_send = ['ahmedaa', '123456789'];
+  dynamic userType = await DBManager.executeScalerProc('get_all_events', []);
+  print(userType);
   // dynamic aa = await Controller.getMembersData('aaaaaaaad');
   // if (aa == null) print(aa);
 }
@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
         '/login_page': (context) => const login_page(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
+        '/admin_home': (context) => const admin_home(),
         '/accountant_home': (context) => AccountantHome(),
         '/ResearcherHome': (context) => const ResearcherHome(),
       },

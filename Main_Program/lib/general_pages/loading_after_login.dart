@@ -32,8 +32,13 @@ class _loading_after_loginState extends State<loading_after_login> {
           Navigator.pushReplacementNamed(context, '/member_home',
               arguments: {'member': mem});
         } else {
-          print('NOT A VALID MEMBER - in users but nit members');
+          print('NOT A VALID MEMBER - in users but not members');
         }
+      } else if (type == 0) {
+        //admin
+        Navigator.pushReplacementNamed(context, '/admin_home', arguments: {
+          'data': data,
+        });
       }
     });
   }

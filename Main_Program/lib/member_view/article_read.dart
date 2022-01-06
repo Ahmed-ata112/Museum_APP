@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data_holders.dart';
 import 'add_feedback.dart';
+import 'package:flutter_lorem/flutter_lorem.dart';
 
 class article_read extends StatefulWidget {
   final Article article;
