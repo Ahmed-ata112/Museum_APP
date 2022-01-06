@@ -114,7 +114,7 @@ class _UserSignUpState extends State<UserSignUp> {
                     if (val!.isEmpty) {
                       return "Please fill in your Second Name";
                     }
-                    if (val!.length > 20) {
+                    if (val.length > 20) {
                       return "Second Name length can't exceed 20 characters";
                     }
                     return null;
@@ -192,18 +192,18 @@ class _UserSignUpState extends State<UserSignUp> {
                     if (val!.isEmpty) {
                       return "Please fill in your password";
                     }
-                    if (val!.length < 6) {
+                    if (val.length < 6) {
                       return "Password length must be greater than 6 characters";
                     }
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 //Governorate
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Governorate",
                     icon: Icon(Icons.location_on_outlined),
                   ),

@@ -8,8 +8,9 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '<Ahmedata>'
+app.config['MYSQL_PASSWORD'] = 'NewRoot26042020'
 app.config['MYSQL_DB'] = 'museum'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 parser = reqparse.RequestParser()
