@@ -14,10 +14,12 @@ class login_page extends StatefulWidget {
 class _login_pageState extends State<login_page> {
   final _formKey = GlobalKey<FormState>();
   String error = '';
+
   Map<String, dynamic> FormData = {
     'username': null,
     'Password': null,
   };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

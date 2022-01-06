@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:main_program/data_holders.dart';
+import '../controller.dart';
+import '../data_holders.dart';
 
 class attend_Events extends StatefulWidget {
-  const attend_Events({Key? key}) : super(key: key);
+  Event eve;
+  attend_Events({Key? key, required this.eve}) : super(key: key);
 
   @override
-  _attend_EventsState createState() => _attend_EventsState();
+  _attend_EventsState createState() => _attend_EventsState(eve);
 }
 
 class _attend_EventsState extends State<attend_Events> {
+  late Event eve;
+  _attend_EventsState(this.eve);
+
   String dropdownValue = 'A';
+  String error = '';
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> formData = {
+      'class': dropdownValue,
+      'article_id': eve.id,
+      'member_id': eve.Member_ID
+    };
     return AlertDialog(
       content: Container(
         //padding: EdgeInsets.all(3.0),
@@ -23,24 +34,14 @@ class _attend_EventsState extends State<attend_Events> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
+                  const Text(
                     "sign for an event!",
                     style: TextStyle(
                       color: Colors.blue,
                       fontSize: 35.0,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Your Name",
-                      // icon: Icon(Icons.drive_file_rename_outline),
-                    ),
-                    onChanged: (val) {},
-                  ),
-                  //Email
-
+                  const SizedBox(height: 20.0),
                   const SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -58,6 +59,7 @@ class _attend_EventsState extends State<attend_Events> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
+                            formData['class'] = newValue;
                           });
                         },
                         items: <String>['A', 'B', 'C', 'D']
@@ -70,25 +72,38 @@ class _attend_EventsState extends State<attend_Events> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                            child: Text(
+                            child: const Text(
                               "Confirm",
                               style: TextStyle(
                                   color: Colors.white, fontSize: 15.0),
                             ),
-                            onPressed: () async {}),
+                            onPressed: () async {
+                              Controller.addNewEventAttends(formData)
+                                  .then((value) {
+                                print(value);
+                                if (value != -1)
+                                  Navigator.pop(context);
+                                else {
+                                  setState(() {
+                                    error = 'you inserted a feedback before';
+                                  });
+                                }
+                                return null;
+                              });
+                            }),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5.0,
                       ),
                       Expanded(
                         child: ElevatedButton(
-                            child: Text(
+                            child: const Text(
                               "Cancel",
                               style: TextStyle(
                                   color: Colors.white, fontSize: 15.0),
@@ -100,9 +115,10 @@ class _attend_EventsState extends State<attend_Events> {
                     ],
                   ),
                   Text(
-                    "error",
+                    error,
                     style: TextStyle(
-                        color: Colors.red, fontSize: "".isEmpty ? 0.0 : 14.0),
+                        color: Colors.red,
+                        fontSize: error.isEmpty ? 0.0 : 14.0),
                   ),
                 ],
               ),

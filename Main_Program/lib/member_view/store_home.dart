@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:getwidget/types/gf_button_type.dart';
+import 'package:main_program/data_holders.dart';
 
-Widget Souvenirs_Card() {
+import '../controller.dart';
+
+Widget Souvenirs_Card(Souvenir sou) {
   return GFCard(
     boxFit: BoxFit.cover,
     titlePosition: GFPosition.end,
@@ -12,12 +14,11 @@ Widget Souvenirs_Card() {
     ),
     showImage: true,
     title: GFListTile(
-      titleText: 'Souvenirs Name',
-      subTitleText: 'Price: \$33',
+      titleText: sou.Name,
+      subTitleText: 'Price: \$${sou.price}',
     ),
-    content: Text(
-        "Some quick example text to build on the card ,Some quick example text to build on the card,Some quick example text to build on the card"),
-    buttonBar: GFButtonBar(
+    content: Text(sou.description),
+    buttonBar: const GFButtonBar(
       padding: EdgeInsets.all(12),
       children: <Widget>[
         GFAvatar(
@@ -40,14 +41,35 @@ Widget Souvenirs_Card() {
 }
 
 class StoreHome extends StatefulWidget {
-  const StoreHome({Key? key}) : super(key: key);
+  final int Member_id;
+
+  StoreHome({Key? key, required this.Member_id}) : super(key: key);
 
   @override
-  _StoreHomeState createState() => _StoreHomeState();
+  _StoreHomeState createState() => _StoreHomeState(Member_id);
 }
 
 class _StoreHomeState extends State<StoreHome> {
+  int Member_id;
+  List<Souvenir> allSouvenirs = [];
+  _StoreHomeState(this.Member_id);
   bool is_searching = false;
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Controller.getAllSouvenirs().then((ListOfSouvsRows) {
+      setState(() {
+        for (var row in ListOfSouvsRows) {
+          //print(row);
+          Souvenir eve =
+              Souvenir(row[0], row[1], row[2], row[3], row[4], Member_id);
+          allSouvenirs.add(eve);
+        }
+        setState(() {}); //just call it to update screen
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +114,10 @@ class _StoreHomeState extends State<StoreHome> {
         ],
       ),
       body: ListView.builder(
-        itemCount: 5, // should be dynamic -> retrieve articles
+        itemCount:
+            allSouvenirs.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return Souvenirs_Card();
+          return Souvenirs_Card(allSouvenirs[index]);
         },
       ),
     );

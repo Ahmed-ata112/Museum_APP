@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:main_program/member_view/tour_info.dart';
 import '../controller.dart';
+import 'event_info.dart';
 import '../data_holders.dart';
 
-Widget tourCard(Tour tour, context) {
+Widget eventCard(Event eve, context) {
   return GFCard(
     boxFit: BoxFit.cover,
     titlePosition: GFPosition.start,
@@ -12,14 +12,14 @@ Widget tourCard(Tour tour, context) {
     imageOverlay: NetworkImage('https://via.placeholder.com/150/FFFFFF/FFFFFF'),
     title: GFListTile(
       avatar: GFAvatar(shape: GFAvatarShape.standard),
-      titleText: tour.title,
-      subTitleText: 'Date: ' + tour.Date_start,
+      titleText: eve.title,
+      subTitleText: 'Date: ' + eve.Date_start,
     ),
     content: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          tour.description,
+          eve.description,
           maxLines: 3,
         ),
       ],
@@ -29,7 +29,7 @@ Widget tourCard(Tour tour, context) {
         GFButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Tour_info(tour: tour)));
+                MaterialPageRoute(builder: (context) => Events_info(eve: eve)));
           },
           text: "More info",
           blockButton: true,
@@ -39,30 +39,30 @@ Widget tourCard(Tour tour, context) {
   );
 }
 
-class toursHome extends StatefulWidget {
+class EventsHome extends StatefulWidget {
   final int Member_id;
 
-  const toursHome({Key? key, required this.Member_id}) : super(key: key);
+  const EventsHome({Key? key, required this.Member_id}) : super(key: key);
 
   @override
-  _ToursHomeState createState() => _ToursHomeState(Member_id);
+  _EventsHomeState createState() => _EventsHomeState(Member_id);
 }
 
-class _ToursHomeState extends State<toursHome> {
+class _EventsHomeState extends State<EventsHome> {
   final int Member_id;
-  List<Tour> allTours = [];
-  _ToursHomeState(this.Member_id);
+  List<Event> allEvents = [];
+  _EventsHomeState(this.Member_id);
 
   void initState() {
     // TODO: implement initState
     super.initState();
-    Controller.getAllTours().then((ListOfToursRows) {
+    Controller.getAllEvents().then((ListOfEventsRows) {
       setState(() {
-        for (var row in ListOfToursRows) {
-          print(row);
-          Tour tour = Tour(row[0], row[1], row[2], row[3], row[4], row[5],
+        for (var row in ListOfEventsRows) {
+          //print(row);
+          Event eve = Event(row[0], row[1], row[2], row[3], row[4], row[5],
               row[6], row[7], Member_id);
-          allTours.add(tour);
+          allEvents.add(eve);
         }
         setState(() {}); //just call it to update screen
       });
@@ -73,12 +73,12 @@ class _ToursHomeState extends State<toursHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Available Tours"),
+        title: Text("Available Events"),
       ),
       body: ListView.builder(
-        itemCount: allTours.length, // should be dynamic -> retrieve articles
+        itemCount: allEvents.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return tourCard(allTours[index], context);
+          return eventCard(allEvents[index], context);
         },
       ),
     );
