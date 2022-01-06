@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:main_program/member_view/store_home.dart';
 import 'package:main_program/member_view/tours_home.dart';
-
+import '../controller.dart';
 import 'ArticlesHome.dart';
 import 'Events_home.dart';
+import 'package:main_program/data_holders.dart';
 
 class member_home extends StatefulWidget {
   const member_home({Key? key}) : super(key: key);
@@ -13,8 +14,14 @@ class member_home extends StatefulWidget {
 }
 
 class _member_homeState extends State<member_home> {
+  Map data = {};
+  late Member mem;
+
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    mem = arguments['member'];
+    //print(mem.birthday);
     return Scaffold(
         appBar: AppBar(),
         drawer: Drawer(
@@ -37,7 +44,7 @@ class _member_homeState extends State<member_home> {
                     Align(
                       alignment: Alignment.topRight + Alignment(0, .4),
                       child: Text(
-                        'USER NAME',
+                        mem.Fname,
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     ),
