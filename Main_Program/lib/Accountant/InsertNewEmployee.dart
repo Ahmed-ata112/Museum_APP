@@ -132,15 +132,16 @@ class NewEmployeeState extends State<NewEmployee> {
           icon: Icon(Icons.date_range),
           firstDate: DateTime(DateTime.now().year - 100),
           lastDate: DateTime(DateTime.now().year + 5),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'this field is required';
-            }
-            return null;
-          },
-          onChanged: (value) {
+  validator: (value) {
+  if (value == null || value.isEmpty) {
+  return 'this field is required';
+  }
+  return null;
+  },
+  onChanged: (value) {
             FormData['B_date'] = value;
-          }), //
+          },
+          ), //
     );
   }
   Widget buildSalaryField()
@@ -155,9 +156,12 @@ class NewEmployeeState extends State<NewEmployee> {
         onChanged: (val) {
           setState(() => FormData['salary'] = val);
         },
-        validator: (val) => (val!.length != 11)
-            ? "this field is required"
-            : null,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
       ),
     );
   }

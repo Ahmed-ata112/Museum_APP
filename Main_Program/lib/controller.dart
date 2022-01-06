@@ -191,6 +191,7 @@ class Controller {
     String Date_Start = formData["Date_Start"];
     String Date_End = formData["Date_End"];
     String organizer_id = formData["organizer_id"];
+    String title = formData["title"];
 
     int ID = await getToursCount();
 
@@ -201,7 +202,8 @@ class Controller {
       topic,
       Date_Start,
       Date_End,
-      organizer_id
+      organizer_id,
+      title
     ];
     dynamic res2 =
     await DBManager.executeNonQueryProc('insert_new_tour', toSend2);
@@ -230,7 +232,18 @@ class Controller {
         return 1;
 
   }
+  static Future<int> UpdateArticleToP(Map<String, dynamic> formData)async{
+    int ID = formData["ID"];
 
+    List<int> toSend = [ID];
+    dynamic res =
+    await DBManager.executeNonQueryProc('update_article_toP', toSend);
+    if(res==0){
+      return -1;
+    }
+    return 1;
+
+  }
   static Future<dynamic> getMembersData(String username) async {
     String query =
         "SELECT * FROM museum.member where mem_username = '$username';";

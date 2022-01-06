@@ -109,13 +109,11 @@ class SouvenirSaleState extends State<SouvenirSale> {
       ),
       body: Container(
          child: ListView.builder(
-                itemCount: 2,//snapshot.data.length,
-                itemBuilder:
-                  (context, index) {
-                  return ListTile(title:Text("${data[0]['So_ID']}"),);
-                  }
-             //_souvenir.length,
-            ),
+           itemCount: 5, // should be dynamic -> retrieve articles
+           itemBuilder: (context, index) {
+             return Souvenirs_Card();
+           },
+         ),
     ),
     );
           }

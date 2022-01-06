@@ -12,18 +12,41 @@ class NewTour extends StatefulWidget {
 
 class NewTourState extends State<NewTour> {
   Map<String, dynamic> FormData = {
-    'ID': null,
     'place': null,
     'description': null,
     'topic': null,
     'Date_Start': null,
     'Date_End': null,
     'organizer_id': null,
+    'title' : null,
   };
   List<int> IDs = [1];
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
+  Widget buildTitileField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child:
+      TextFormField(
+        decoration: const InputDecoration(
+          hintText: "Topic",
+          icon: Icon(Icons.tour),
+        ),
+        onChanged: (val) {
+          setState(() => FormData['title'] = val);
+        },
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Please fill in Tour Title";
+          }
+          if (val.length > 45) {
+            return "Second Name length can't exceed 45 characters";
+          }
+          return null;
+        },
+      ),);
+  }
   Widget buildTopicField()
   {
     return Padding(padding: const EdgeInsets.all(20),
@@ -198,6 +221,7 @@ class NewTourState extends State<NewTour> {
         ListView(
           shrinkWrap: true,
           children: <Widget>[
+            buildTitileField(),
             buildTopicField(),
             buildPlaceField(),
             buildIDField(),
