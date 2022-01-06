@@ -22,7 +22,7 @@ class allUsers extends StatelessWidget {
               for (var v in labels)
                 DataColumn(
                     label: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 100),
+                        constraints: BoxConstraints(maxWidth: 250),
                         child: Text(v)))
             ], rows: [
               for (var user in users)
