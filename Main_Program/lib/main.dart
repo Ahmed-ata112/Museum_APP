@@ -39,16 +39,20 @@ void try_login() async {
   // List<dynamic> LL = ['ALI', 'KOLKOLKOL', 2, '01-8-01'];
   //DBManager.executeNonQueryProc(proc, LL);
 
-  List<dynamic> to_send = ['ahmedaa', '123456789'];
-  dynamic userType = await DBManager.executeScalerProc('get_all_events', []);
-  print(userType);
+  // List<dynamic> to_send = ['ahmedaa', '123456789'];
+  // dynamic userType = await DBManager.executeScalerProc('get_all_events', []);
+  // print(userType);
   // dynamic aa = await Controller.getMembersData('aaaaaaaad');
   // if (aa == null) print(aa);
+
+/*  var aa =
+      await Controller.getAllUsernamesWithType(); //[[dsdasd], [sdasdasdasd]]
+  print(aa);*/
 }
 
 void main() {
   runApp(MyApp());
-  //try_login();
+  // try_login();
 }
 
 class MyApp extends StatelessWidget {

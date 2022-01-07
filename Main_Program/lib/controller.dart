@@ -1,3 +1,5 @@
+import 'package:main_program/admin_view/add_new_visitor.dart';
+
 import 'api.dart';
 import 'package:intl/intl.dart';
 import 'data_holders.dart';
@@ -33,6 +35,82 @@ class Controller {
     return count;
   }
 
+  static Future<int> getStaffCount() async {
+    String query = "SELECT count(id) FROM museum.staff;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
+  static Future<int> getResearcherCount() async {
+    String query = "SELECT count(id) FROM museum.RESEARCHER;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
+  static Future<int> getVisitorCount() async {
+    String query = "SELECT count(id) FROM museum.visitor;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
+  static Future<int> addNewUser(Map<String, dynamic> formData) async {
+    String username_ = formData["username"];
+    String password_ = formData["Password"];
+    String type_ = formData['type_'];
+
+    // members have type int 1
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String registerDate = formatter.format(now);
+
+    List<dynamic> toSend = [username_, password_, 1, registerDate];
+    //first you add the user
+    dynamic res =
+        await DBManager.executeNonQueryProc('insert_new_user', toSend);
+
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+  //ID, ArrivalTime, DepartureTime
+  static Future<int> addNewVisitor(Map<String, dynamic> formData) async {
+    String ArrivalTime = formData["ArrivalTime"];
+    String DepartureTime = formData['DepartureTime'];
+    int id = await getVisitorCount();
+
+    List<dynamic> toSend = [id, ArrivalTime, DepartureTime];
+    //first you add the user
+    dynamic res =
+        await DBManager.executeNonQueryProc('insert_new_visitor', toSend);
+
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
   static Future<int> addNewMember(Map<String, dynamic> formData) async {
     String username = formData["username"];
     String password = formData["Password"];
@@ -42,7 +120,6 @@ class Controller {
     String phoneNumber = formData["PhoneNumber"];
     String gender = formData["Gender"];
     String birthday = formData["birthday"];
-    String img = formData["image"];
 
     int id = await getMembersCount();
 
@@ -70,8 +147,7 @@ class Controller {
       id,
       birthday,
       username,
-      phoneNumber,
-      img
+      phoneNumber
     ];
     dynamic res2 =
         await DBManager.executeNonQueryProc('insert_new_member', toSend2);
@@ -80,6 +156,108 @@ class Controller {
       return -1;
     }
     return 1; // returned successfully
+  }
+
+//ID, Fname, Mname, Lname, gender, job_title, B_date, salary, start_date, super_ID, department_num, staff_username
+  static Future<int> addNewStaff(Map<String, dynamic> formData) async {
+    String username = formData["staff_username"];
+    String Mname = formData["Mname"];
+    String Fname = formData["Fname"];
+    String Lname = formData["Lname"];
+    String job_title = formData["job_title"];
+    String gender = formData["gender"];
+    String B_date = formData["B_date"];
+    int ID = await getStaffCount();
+    int salary = int.parse(formData["salary"]);
+    int super_ID = int.parse(formData["super_ID"]);
+    int department_num = int.parse(formData["department_num"]);
+
+    // members have type int 1
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String regDate = formatter.format(now);
+
+    // if inserted correctly then add the member
+
+    List<dynamic> toSend2 = [
+      ID,
+      Fname,
+      Mname,
+      Lname,
+      gender,
+      job_title,
+      B_date,
+      salary,
+      regDate,
+      super_ID,
+      department_num,
+      username
+    ];
+    dynamic res2 =
+        await DBManager.executeNonQueryProc('insert_new_staff', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+  //ID, Fname, Mname, Lname, B_date, years_of_experience, R_username
+  static Future<int> addNewResearcher(Map<String, dynamic> formData) async {
+    String username = formData["R_username"];
+    String Mname = formData["Mname"];
+    String Fname = formData["Fname"];
+    String Lname = formData["Lname"];
+    String B_date = formData["B_date"];
+    int ID = await getResearcherCount();
+    int years_of_experience = int.parse(formData["years_of_experience"]);
+
+    List<dynamic> toSend2 = [
+      ID,
+      Fname,
+      Mname,
+      Lname,
+      B_date,
+      years_of_experience,
+      username
+    ];
+    dynamic res2 =
+        await DBManager.executeNonQueryProc('insert_new_researcher', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+  static Future<List<dynamic>> getAllUsernamesWithType(int type) async {
+    String query = "SELECT username_ FROM museum.user_ where type_=${type};";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get res usernames from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getDepNums() async {
+    String query = "SELECT Dno FROM museum.department;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get Deps nums from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getEmpIDs() async {
+    String query = "SELECT id FROM museum.staff;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get IDSSS nums from database");
+    }
+    return ret;
   }
 
   static Future<dynamic> getMembersData(String username) async {
