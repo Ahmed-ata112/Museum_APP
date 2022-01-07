@@ -92,7 +92,7 @@ class Controller {
     List<dynamic> toSend = [username, password, 1, regDate];
     //first you add the user
     dynamic res =
-    await DBManager.executeNonQueryProc('insert_new_user', toSend);
+        await DBManager.executeNonQueryProc('insert_new_user', toSend);
 
     if (res == 0) {
       //don't exist
@@ -112,7 +112,7 @@ class Controller {
       img
     ];
     dynamic res2 =
-    await DBManager.executeNonQueryProc('insert_new_member', toSend2);
+        await DBManager.executeNonQueryProc('insert_new_member', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
@@ -188,7 +188,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id, rating, comment];
 
     dynamic res =
-    await DBManager.executeNonQueryProc('insert_article_feedback', toSend);
+        await DBManager.executeNonQueryProc('insert_article_feedback', toSend);
 
     if (res == 0) {
       //don't exist
@@ -236,7 +236,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id, classe];
 
     dynamic res =
-    await DBManager.executeNonQueryProc('insert_into_attends', toSend);
+        await DBManager.executeNonQueryProc('insert_into_attends', toSend);
 
     if (res == 0) {
       //don't exist
@@ -253,7 +253,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id];
 
     dynamic res =
-    await DBManager.executeNonQueryProc('insert_new_go_on', toSend);
+        await DBManager.executeNonQueryProc('insert_new_go_on', toSend);
 
     if (res == 0) {
       //don't exist
@@ -369,7 +369,7 @@ class Controller {
     );
     return toReturn;*/ //
   }
-  
+
   static Future<dynamic> getSelfPubArticles(int rID) async {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
@@ -620,3 +620,154 @@ class Controller {
   }
 }
 
+
+  static Future<List<dynamic>> getAllAttends() async {
+    String query = "SELECT * FROM museum.attends;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get attends from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllDepartment() async {
+    String query = "SELECT * FROM museum.department;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get departments from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllResearcher() async {
+    String query = "SELECT * FROM museum.researcher;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get researchers from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllStaff() async {
+    String query = "SELECT * FROM museum.staff;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get staff from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllVisitor() async {
+    String query = "SELECT * FROM museum.visitor;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get visitor from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllBuy_member_souvenir() async {
+    String query = "SELECT * FROM museum.buy_member_souvenir;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get buy_member_souvenir from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllbuys_visitor_souvenir() async {
+    String query = "SELECT * FROM museum.buys_visitor_souvenir;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get buys_visitor_souvenir from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllFeedback() async {
+    String query = "SELECT * FROM museum.give_feedback;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get give_feedback from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllgive_session() async {
+    String query = "SELECT * FROM museum.give_session;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get give_session from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllpainting_artifact() async {
+    String query = "SELECT * FROM museum.painting_artifact;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get painting_artifact from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllReads() async {
+    String query = "SELECT * FROM museum.reads;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get reads from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllReviews() async {
+    String query = "SELECT * FROM museum.reviews;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get reviews from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllSection() async {
+    String query = "SELECT * FROM museum.section;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get sections from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllWrites() async {
+    String query = "SELECT * FROM museum.writes;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get writes from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllgo_on() async {
+    String query = "SELECT * FROM museum.go_on;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get go_on from database");
+    }
+    return ret;
+  }
+}

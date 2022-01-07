@@ -28,6 +28,14 @@ mysql = MySQL(app)
 parser = reqparse.RequestParser()
 
 
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, z):
+        if isinstance(z, datetime.date):
+            return (str(z))
+        else:
+            return super().default(z)
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'GET':
