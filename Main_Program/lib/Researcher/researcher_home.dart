@@ -4,6 +4,8 @@ import 'package:main_program/Researcher/review_article.dart';
 import 'package:main_program/Researcher/sessions_home.dart';
 import 'articles_home.dart';
 import 'write_article.dart';
+import 'package:main_program/data_holders.dart';
+import '../controller.dart';
 
 Widget articleCardGenerator(int id) {
   //get article info from controller.
@@ -31,8 +33,14 @@ class ResearcherHome extends StatefulWidget {
 }
 
 class _ResearcherHomeState extends State<ResearcherHome> {
+
+  late Researcher res;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
+  final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+  res = arguments['researcher'];
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.amber,
@@ -51,14 +59,14 @@ class _ResearcherHomeState extends State<ResearcherHome> {
                 title: const Text('sessions'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SessionsHome()));
+                      MaterialPageRoute(builder: (context) => SessionsHome(rId: res.id)));
                 },
               ),
               ListTile(
                 title: const Text('articles'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ArticlesHome()));
+                      MaterialPageRoute(builder: (context) => ArticlesHome(rId: res.id)));
                 },
               ),
             ],

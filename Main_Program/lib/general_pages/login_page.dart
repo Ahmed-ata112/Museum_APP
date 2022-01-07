@@ -64,9 +64,6 @@ class _login_pageState extends State<login_page> {
                         if (val!.isEmpty) {
                           return "Please fill in your password";
                         }
-                        if (val.length < 6) {
-                          return "Incorrect Password";
-                        }
                         return null;
                       },
                     ),
@@ -88,9 +85,9 @@ class _login_pageState extends State<login_page> {
                           //go and check if this credentials is valid from the server (DB) side
                           //i.e check if this account exists and if the email and password matches (are correct)
                           //Server Validation Side
-                          dynamic userType =
-                              await Controller.getUserType(FormData);
-                          //print(userType);
+                          dynamic userType = 3;
+                              //await Controller.getUserType(FormData);
+                          print(userType);
                           if (userType == -1) {
                             setState(() {
                               error = 'username or password are not valid!';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'add_session.dart';
 
 class SessionsHome extends StatefulWidget {
-  const SessionsHome({Key? key}) : super(key: key);
-
+  final rId;
+  const SessionsHome({Key? key, this.rId}) : super(key: key);
   @override
   SessionsHomeState createState() => SessionsHomeState();
 }

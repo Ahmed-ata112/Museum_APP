@@ -9,27 +9,33 @@ import 'api.dart';
 import 'package:intl/intl.dart';
 
 void try_login() async {
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  print(formatted);
   //String query = 'insert into myusers values("sdsd","hiii");';
   //int a = await executeNonQuery(query);
   //print(a); //works
   //String query = "SELECT firstname FROM mydb.myusers where lastname='22';";
   //String query = "SELECT id FROM mydb.bag where id = 2;";
-  String query = "SELECT * FROM mydb.bag;";
-  dynamic r = await DBManager.executeReader(query);
-  //print(r);
-  for (var vv in r) {
-     for (var v in vv) {
-       print(v);
-     }
-   }
-  /*String proc = 'asdasd';
-  List<dynamic> LL = [8, 'aaa'];
-  DBManager.executeNonQueryProc(proc, 4);*/
+  String query = "SELECT * FROM museum.user_;";
+  dynamic r = 'hi';
+  DBManager.executeReader(query).then((value)
+  {
 
-  String Q =
-      "INSERT INTO museum.user_ VALUES ('lolotheone', '123456789', 1, '$formatted');";
-  //int a = await DBManager.executeNonQuery(Q);
-  //print(a); //works
+    r = value;
+    for (var vv in r) {
+      for (var v in vv) {
+        print(v);
+      }
+    }
+  }
+  );
+  print(r);
+  /*String Q =
+      "INSERT INTO museum.user_ VALUES ('lolotheo', '123456789', 1, '$formatted');";
+  int a = await DBManager.executeNonQuery(Q);
+  print(a); //works*/
 
   // print(a);
 
@@ -46,8 +52,8 @@ void try_login() async {
 }
 
 void main() {
-  //runApp(MyApp());
-  try_login();
+  runApp(MyApp());
+  //try_login();
 }
 
 class MyApp extends StatelessWidget {

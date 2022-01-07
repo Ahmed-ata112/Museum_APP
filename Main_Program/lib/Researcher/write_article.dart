@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class NewArticle extends StatefulWidget {
-  const NewArticle({Key? key}) : super(key: key);
+import '../controller.dart';
 
+class NewArticle extends StatefulWidget {
+  final rId;
+  const NewArticle({Key? key, this.rId}) : super(key: key);
   @override
   NewArticleState createState() => NewArticleState();
 }
 
 class NewArticleState extends State<NewArticle> {
+  late Map<String, dynamic> article ;
   String _name = '';
   bool _finished = false;
+  String content = '';
   TextFormField nameField = TextFormField();
   void getArticleName()
   {
@@ -19,11 +23,10 @@ class NewArticleState extends State<NewArticle> {
         // return object of type Dialog
         nameField = TextFormField(decoration: const InputDecoration(
             hintText: 'Article header'
-        ),
-
+         ),
           onChanged: (value) {
               _name = value;},
-        );
+          );
 
         return AlertDialog(
           title: const Text('Save work'),
@@ -86,6 +89,26 @@ class NewArticleState extends State<NewArticle> {
                 onPressed: (){
                   //code to execute when this button is pressed
                   getArticleName();
+
+                  if(_finished)
+                  {article['state'] = 'F';}
+                  else
+                  {article['state'] = 'NF';}
+                  article['content'] = content;
+                  article['header'] = _name;
+                  article['rId'] = widget.rId;
+                  Controller.insertNewArticle(article).then((result){
+                    if(result == 1)
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Article is saved successfully')),);
+                      }
+                    else
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Something went wrong!')),);
+                      }
+                  });
                 }
             ),
           ],
@@ -110,7 +133,8 @@ class NewArticleState extends State<NewArticle> {
 
 
 class EditArticle extends StatefulWidget {
-  const EditArticle({Key? key}) : super(key: key);
+  final rId;
+  const EditArticle({Key? key, this.rId}) : super(key: key);
 
   @override
   EditArticleState createState() => EditArticleState();

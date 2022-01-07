@@ -22,9 +22,10 @@ Widget articleCardGenerator(int id)
 }
 
 
-class ArticlesHome extends StatefulWidget {
-  const ArticlesHome({Key? key}) : super(key: key);
 
+class ArticlesHome extends StatefulWidget {
+  final rId;
+  const ArticlesHome({Key? key, this.rId}) : super(key: key);
   @override
   _ArticlesHomeState createState() => _ArticlesHomeState();
 }

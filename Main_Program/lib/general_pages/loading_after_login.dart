@@ -17,7 +17,7 @@ class loading_after_login extends StatefulWidget {
 class _loading_after_loginState extends State<loading_after_login> {
   Map data = {};
   Future<void> getData() async {
-    await Future.delayed(const Duration(seconds: 1), () async {
+    await Future.delayed(const Duration(seconds: 0), () async {
       //Navigator.pop(context);
 
       String username = data['username'];
@@ -31,8 +31,19 @@ class _loading_after_loginState extends State<loading_after_login> {
           //print(mem.username);
           Navigator.pushReplacementNamed(context, '/member_home',
               arguments: {'member': mem});
-        } else {
-          print('NOT A VALID MEMBER - in users but nit members');
+        }
+        else if (type == 3) {
+          dynamic retrieved = await Controller.getResearcherData(username);
+          print(retrieved);
+          if (retrieved != null) {
+            Researcher res = retrieved;
+            print(res.username);
+            Navigator.pushReplacementNamed(context, '/ResearcherHome',
+                arguments: {'researcher': res});
+          }
+          else {
+            print('NOT A VALID MEMBER - in users but not members');
+          }
         }
       }
     });
