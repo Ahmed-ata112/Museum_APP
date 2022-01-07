@@ -1,9 +1,34 @@
+import 'package:main_program/Models/event_location.dart';
+
 import 'api.dart';
 import 'package:intl/intl.dart';
 import 'data_holders.dart';
 
 class Controller {
   Controller() {}
+
+  //------------------- my part ---------------------- just for quick access
+
+  static Future<dynamic> select_data() async
+  {
+    String result = 'SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;';
+    //String result = "select * from user_";
+    return DBManager.executeReader(result);
+  }
+
+  static Future<dynamic> show_coming_events() async
+  {
+    String result = "select * from events";
+    return DBManager.executeReader(result);
+  }
+
+  static Future<dynamic> show_coming_tours() async
+  {
+    String result = "select * from tour";
+    return DBManager.executeReader(result);
+  }
+
+  //------------------- my part ---------------------- just for quick access
 
   static Future<int> getUserType(Map<String, dynamic> formData) async {
     String username = formData["username"];
@@ -105,11 +130,16 @@ class Controller {
     return mem; //
   }
 
-  static Future<dynamic> select_data() async
-  {
-   // String result = 'SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;';
-    String result = "select * from user_";
-    return DBManager.executeReader(result);
+
+
+  static Future<List<event_loc>> geteventlocation(String eve_title) async {
+
+
+    List<event_loc> ret = await DBManager.geteventloc(eve_title);
+    if (ret == null) {
+      throw Exception("Cant get Events from database");
+    }
+    return ret;
   }
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/Receptionist/Home_receptionist.dart';
 import 'Accountant/AccountantHome.dart';
 import 'Researcher/researcher_home.dart';
 import 'controller.dart';
@@ -7,6 +8,7 @@ import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
 import 'api.dart';
 import 'package:intl/intl.dart';
+import 'package:main_program/Shop_Manager/Statistics_Dashboard.dart';
 
 void try_login() async {
   //String query = 'insert into myusers values("sdsd","hiii");';
@@ -17,11 +19,16 @@ void try_login() async {
   // String query = "SELECT * FROM mydb.bag;";
   //dynamic r = await DBManager.executeReader(query);
   //print(r);
-  // for (var vv in r) {
-  //   for (var v in vv) {
-  //     print(v);
-  //   }
-  // }
+  //String query = "insert into museum.visitor values (11,'2013-05-02', '2020-05-02');";
+  //String query = 'SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;';
+ /*String query = 'select * from museum.visitor;';
+  dynamic r = await DBManager.executeReader(query);
+  print(r);
+  for (var vv in r) {
+    for (var v in vv) {
+      print(v);
+    }
+  }*/
 
 //  final DateTime now = DateTime.now();
   // final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -44,6 +51,10 @@ void try_login() async {
 
   // dynamic aa = await Controller.getMembersData('aaaaaaaad');
   // if (aa == null) print(aa);
+  var a = await DBManager.geteventloc("coronavirus");
+  var b = await DBManager.gettourloc("fun");
+  var c = await DBManager.search_visitor_id(4);
+  print(c.first.id);
 }
 
 void main() {
@@ -58,7 +69,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => const login_page(),
+        '/login_page': (context) => Home_Receptionist(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/accountant_home': (context) => AccountantHome(),

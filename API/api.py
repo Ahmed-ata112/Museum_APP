@@ -2,13 +2,17 @@ from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 from flask_restful import Resource, Api, reqparse
 import json
+import simplejson
+
+
+
 app = Flask(__name__)
 
 
-app.config["DEBUG"] = True
+#app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '<dodo23597240>'
+app.config['MYSQL_PASSWORD'] = '123456789'
 app.config['MYSQL_DB'] = 'museum'
 
 mysql = MySQL(app)
@@ -64,10 +68,9 @@ def execute_nonquery_proc():
         parameters = args["Parameters"]  # needs to be a list of the parameters
         print(parameters)
         print(PROC_NAME)
-        # cursor.callproc(PROC_NAME,parameters)
-
-        # mysql.connection.commit()
-        # cursor.close()
+        cursor.callproc(PROC_NAME,parameters)
+        mysql.connection.commit()
+        cursor.close()
         ret = {'result': 1}
         return ret
     except:
@@ -123,6 +126,192 @@ def execute_reader():
         print(inst)          # __str__ allows args to be printed directly,
         cursor.close()
         return ''
+
+
+
+
+# --------------- doaa -------------------------------
+
+@app.route('/getdata', methods=['GET'])
+def get_data():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'sov_id': x[0],
+                'quantity': x[1]
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+@app.route('/getEvents', methods=['GET'])
+def get_events():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.callproc('show_coming_events')
+        #cursor.execute('SELECT ID,Date_Start,Date_End,description,theme,title,sec_number,staff_id FROM museum.event;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'ID': x[0],
+                'Date_Start': x[1].strftime("%d-%b-%Y (%H:%M:%S.%f)"),
+                'Date_End': x[2].strftime("%d-%b-%Y (%H:%M:%S.%f)"),
+                'description': x[3],
+                'theme': x[4],
+                'title': x[5],
+                'sec_number': x[6],
+                'staff_id': x[7]
+                
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+
+
+@app.route('/getTours', methods=['GET'])
+def get_Tours():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.callproc('show_coming_tours')
+        #cursor.execute('SELECT ID,Date_Start,Date_End,description,theme,title,sec_number,staff_id FROM museum.event;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'ID': x[0],
+                'place': x[1],
+                'description': x[2],
+                'topic': x[3],
+                'Date_Start': x[4].strftime("%d-%b-%Y (%H:%M:%S.%f)"),
+                'Date_End': x[5].strftime("%d-%b-%Y (%H:%M:%S.%f)"),
+                'organizer_id': x[6]
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+# @app.route('/getEventLocation', methods=['GET'])
+# def get_Event_Loc():
+#     try:
+#         cursor = mysql.connection.cursor()
+#         parser.add_argument("event_title")
+#         args = parser.parse_args()
+#         cursor.execute('SELECT sec_number FROM museum.event where title =  ?;', args)
+#         my_reader_response = [x for x in cursor]
+#         data = []
+#         for x in my_reader_response:
+#             data.append({
+#                 'sec_number': x[0],
+#             })
+#         cursor.close()
+#         return simplejson.dumps(data)
+#     except Exception as inst:
+#         cursor.close()
+#         return inst
+
+
+@app.route('/getEventLocation', methods=['POST'])
+def get_Event_Loc():
+    try:
+        parser.add_argument("event_title")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        cursor.callproc('search_event_location',(args["event_title"],) )
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'sec_number': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+@app.route('/getTourLocation', methods=['POST'])
+def get_Tour_Loc():
+    try:
+        parser.add_argument("tour_topic")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        cursor.callproc('search_tour_location',(args["tour_topic"],) )
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'place': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+
+@app.route('/SearchVisitorID', methods=['POST'])
+def Search_Visitor_ID():
+    try:
+        parser.add_argument("ID")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        cursor.callproc('search_visitor_id',(args["ID"],) )
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'ID': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+
+
+#search_visitor_id
+
+#search_event_location
+# show_coming_tours
+
+#  show_coming_events
+
+     #name               parameters                         
+#"exec dbo.UpdateCheck_In @room = '400', @building = 'PE', @department = 307, @global_id = 'bacon', @tag = '120420'"
+# Execute stored procedure
+#storedProc = "exec database..stored_procedure 'param1','param2'"
+
+
 
 
 if __name__ == '__main__':
