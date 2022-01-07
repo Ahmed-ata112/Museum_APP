@@ -3,6 +3,17 @@ from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 from flask_restful import Resource, Api, reqparse
 import json
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, z):
+        def default(self, z):
+            if isinstance(z, datetime.date):
+                return (str(z))
+            else:
+                return super().default(z)
+
+
 app = Flask(__name__)
 
 

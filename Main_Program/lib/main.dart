@@ -8,7 +8,7 @@ import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
 import 'api.dart';
 import 'package:intl/intl.dart';
-
+import 'data_holders.dart';
 void try_login() async {
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -19,20 +19,29 @@ void try_login() async {
   //print(a); //works
   //String query = "SELECT firstname FROM mydb.myusers where lastname='22';";
   //String query = "SELECT id FROM mydb.bag where id = 2;";
-  String query = "SELECT * FROM museum.user_;";
-  dynamic r = 'hi';
-  DBManager.executeReader(query).then((value)
+  String query =
+      "SELECT * FROM museum.researcher where R_username='resss';";
+  DBManager.executeReader(query).then((data)
   {
-
-    r = value;
-    for (var vv in r) {
-      for (var v in vv) {
-        print(v);
-      }
+    if (data.isEmpty) {
+      //don't exist
+      return null;
     }
-  }
-  );
-  print(r);
+    for(dynamic item in data)
+      print(item);
+
+    Map<String, dynamic> resData = data[0];
+    Researcher res = Researcher(
+        resData['ID'],
+        resData['Fname'],
+        resData['Mname'],
+        resData['Lname'],
+        resData['B_date'],
+        resData['years_of_experience'],
+        resData['R_username']);
+    print(res.fName);
+    return res;
+  });
   /*String Q =
       "INSERT INTO museum.user_ VALUES ('lolotheo', '123456789', 1, '$formatted');";
   int a = await DBManager.executeNonQuery(Q);
@@ -44,9 +53,9 @@ void try_login() async {
   // List<dynamic> LL = ['ALI', 'KOLKOLKOL', 2, '01-8-01'];
   //DBManager.executeNonQueryProc(proc, LL);
 
-  List<dynamic> to_send = ['ahmedaa', '123456789'];
+  /*List<dynamic> to_send = ['ahmedaa', '123456789'];
   dynamic userType = await DBManager.executeScalerProc('get_all_events', []);
-  print(userType);
+  print(userType);*/
   // dynamic aa = await Controller.getMembersData('aaaaaaaad');
   // if (aa == null) print(aa);
 }
@@ -61,7 +70,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/login_page',
+      initialRoute: '/loading_after_login',
       routes: {
         '/login_page': (context) => const login_page(),
         '/loading_after_login': (context) => const loading_after_login(),

@@ -87,8 +87,7 @@ class _login_pageState extends State<login_page> {
                           //go and check if this credentials is valid from the server (DB) side
                           //i.e check if this account exists and if the email and password matches (are correct)
                           //Server Validation Side
-                          dynamic userType = 3;
-                              //await Controller.getUserType(FormData);
+                          dynamic userType = await Controller.getUserType(FormData);
                           print(userType);
                           if (userType == -1) {
                             setState(() {

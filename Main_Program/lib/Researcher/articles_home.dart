@@ -3,6 +3,8 @@ import 'package:getwidget/getwidget.dart';
 import 'review_article.dart';
 import 'write_article.dart';
 import 'article_info.dart';
+import '../data_holders.dart';
+import '../controller.dart';
 
 Widget articleCardGenerator(int id)
 {
@@ -31,6 +33,120 @@ class ArticlesHome extends StatefulWidget {
 }
 
 class _ArticlesHomeState extends State<ArticlesHome> {
+
+  Map<String, List<resArticle>> allArticles = {'NF':[], 'P':[],
+    'Own_reviewed':[]
+    , 'To_cont_review':[], 'To_review':[]
+    ,'Gen':[]};
+  List<resArticle> temp = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Controller.getArtHomeArticles(widget.rId).then((map) {
+      setState(() {
+        List<dynamic> arts = map['NF'];
+        for(dynamic art in arts) {
+          temp.add(resArticle(
+              art['ID'],
+              art['state_'],
+              art['content']
+              ,
+              art['header'],
+              art['views_'],
+              art['likes_']
+              ,
+              null
+          ));
+        }
+        allArticles['NF'] = temp;
+
+        temp = [];
+        arts = map['P'];
+        for(dynamic art in arts) {
+          temp.add(resArticle(
+              art['ID'],
+              art['state_'],
+              art['content']
+              ,
+              art['header'],
+              art['views_'],
+              art['likes_']
+              ,
+              art['reviews']
+          ));
+        }
+          allArticles['P'] = temp;
+          temp = [];
+          arts = map['Own_reviewed'];
+
+          for(dynamic art in arts) {
+            temp.add(resArticle(
+                art['ID'],
+                art['state_'],
+                art['content']
+                ,
+                art['header'],
+                art['views_'],
+                art['likes_']
+                ,
+                art['reviews']
+            ));
+          }
+            allArticles['Own_reviewed'] = temp;
+            temp = [];
+            arts = map['To_cont_review'];
+            for(dynamic art in arts) {
+              temp.add(resArticle(
+                  art['ID'],
+                  art['state_'],
+                  art['content']
+                  ,
+                  art['header'],
+                  art['views_'],
+                  art['likes_']
+                  ,
+                  art['reviews']
+              ));
+            }
+              allArticles['To_cont_review'] = temp;
+              temp = [];
+              arts = map['To_review'];
+              for(dynamic art in arts) {
+                temp.add(resArticle(
+                    art['ID'],
+                    art['state_'],
+                    art['content']
+                    ,
+                    art['header'],
+                    art['views_'],
+                    art['likes_']
+                    ,
+                    art['reviews']
+                ));
+              }
+              allArticles['To_review'] = temp;
+              temp = [];
+              arts = map['Gen'];
+              for(dynamic art in arts) {
+                temp.add(resArticle(
+                    art['ID'],
+                    art['state_'],
+                    art['content']
+                    ,
+                    art['header'],
+                    art['views_'],
+                    art['likes_']
+                    ,
+                    art['reviews']
+                ));
+              }
+              allArticles['Gen'] = temp;
+              temp = [];
+        setState(() {}); //just call it to update screen
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +175,11 @@ class _ArticlesHomeState extends State<ArticlesHome> {
           child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: allArticles['NF'] != null?
+              allArticles['NF']!.length : 0,
               itemBuilder: (context,index){
                 return TextButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>EditArticle()));}
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>EditArticle(allArticles['NF'][index])));}
                     , child: articleCardGenerator(index));
               }),
         ),

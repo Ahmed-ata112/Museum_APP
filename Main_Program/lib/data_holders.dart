@@ -83,7 +83,7 @@ class Researcher {
   Researcher(this.id, this.fName, this.mName, this.lName,
       this.birthday, this.yearsExpert, this.username) {}
 }
-class Article {
+class resArticle {
   int id;
   String content;
   String state;
@@ -91,7 +91,7 @@ class Article {
   late int views;
   late int likes;
   late int reviews;
-  Article(this.id, this.state, this.content, this.header, views, likes, reviews)
+  resArticle(this.id, this.state, this.content, this.header, views, likes, reviews)
   {
     if(views) {this.views = views;}
     else {views = 0;}

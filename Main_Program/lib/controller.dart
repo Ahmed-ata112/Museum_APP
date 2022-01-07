@@ -70,6 +70,7 @@ class Controller {
     }
     return id;
   }
+
   static Future<int> addNewMember(Map<String, dynamic> formData) async {
     String username = formData["username"];
     String password = formData["Password"];
@@ -91,7 +92,7 @@ class Controller {
     List<dynamic> toSend = [username, password, 1, regDate];
     //first you add the user
     dynamic res =
-        await DBManager.executeNonQueryProc('insert_new_user', toSend);
+    await DBManager.executeNonQueryProc('insert_new_user', toSend);
 
     if (res == 0) {
       //don't exist
@@ -111,7 +112,7 @@ class Controller {
       img
     ];
     dynamic res2 =
-        await DBManager.executeNonQueryProc('insert_new_member', toSend2);
+    await DBManager.executeNonQueryProc('insert_new_member', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
@@ -132,10 +133,17 @@ class Controller {
 
     List<dynamic> mem_data = data[0];
     print(mem_data);
-    Member mem = Member(mem_data[0], mem_data[1], mem_data[2], mem_data[3],
-        mem_data[4], mem_data[5], mem_data[6], mem_data[7]
-        //mem_data[8]
-        ); //just need the first row as its the only one exists
+    Member mem = Member(
+        mem_data[0],
+        mem_data[1],
+        mem_data[2],
+        mem_data[3],
+        mem_data[4],
+        mem_data[5],
+        mem_data[6],
+        mem_data[7]
+      //mem_data[8]
+    ); //just need the first row as its the only one exists
     print(mem.Fname);
     return mem; //
   }
@@ -180,7 +188,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id, rating, comment];
 
     dynamic res =
-        await DBManager.executeNonQueryProc('insert_article_feedback', toSend);
+    await DBManager.executeNonQueryProc('insert_article_feedback', toSend);
 
     if (res == 0) {
       //don't exist
@@ -228,7 +236,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id, classe];
 
     dynamic res =
-        await DBManager.executeNonQueryProc('insert_into_attends', toSend);
+    await DBManager.executeNonQueryProc('insert_into_attends', toSend);
 
     if (res == 0) {
       //don't exist
@@ -245,7 +253,7 @@ class Controller {
     List<dynamic> toSend = [member_id, article_id];
 
     dynamic res =
-        await DBManager.executeNonQueryProc('insert_new_go_on', toSend);
+    await DBManager.executeNonQueryProc('insert_new_go_on', toSend);
 
     if (res == 0) {
       //don't exist
@@ -287,11 +295,13 @@ class Controller {
 
   static Future<int> updateExistingArticle(Map<String, dynamic> toEdit) async
   {
-    int id = toEdit['id'];
+    int artId = toEdit['id'];
+    int rId = toEdit['rId'];
+
     String content = toEdit['content'];
     String state = toEdit['state'];
 
-    List<dynamic> toSend = [id, state, content];
+    List<dynamic> toSend = [artId, rId, state, content];
 
     dynamic res =
     await DBManager.executeNonQueryProc('updateArticle', toSend);
@@ -301,26 +311,66 @@ class Controller {
     }
     return 1;
   }
-  static Future<dynamic> getOwnNFArticles(int rID) async {
+
+  static Future<dynamic> getSelfNFArticles(int rID) async {
     String query =
-        "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID;";
+        "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID"
+        " and state_='NF';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
     if (articles.isEmpty) {
       //don't exist
       return null;
     }
+    return articles;
+    /*
     List<dynamic> art;
-    List<Article> toReturn = List<Article>.generate(articles.length, (index)
-    {
+    List<resArticle> toReturn = List<resArticle>.generate(
+        articles.length, (index) {
       art = articles[index];
-      return Article(art[0], art[1], art[2], art[5], null, null, null);
+      return resArticle(
+          art[0],
+          art[1],
+          art[2],
+          art[5],
+          null,
+          null,
+          null);
     }
     );
-    return toReturn; //
+    return toReturn;*/ //
   }
 
-  static Future<dynamic> getOwnPubArticles(int rID) async {
+  static Future<dynamic> getGenNFArticles(int rID) async {
+    String query =
+        "SELECT * FROM article join writes on Art_ID=article.ID where state_='NF'"
+        " and article.ID NOT IN (SELECT Art_ID FROM writes where Re_ID=$rID);";
+
+    List<dynamic> articles = await DBManager.executeReader(query);
+    if (articles.isEmpty) {
+      //don't exist
+      return null;
+    }
+    return articles;
+    /*
+    List<dynamic> art;
+    List<resArticle> toReturn = List<resArticle>.generate(
+        articles.length, (index) {
+      art = articles[index];
+      return resArticle(
+          art[0],
+          art[1],
+          art[2],
+          art[5],
+          null,
+          null,
+          null);
+    }
+    );
+    return toReturn;*/ //
+  }
+  
+  static Future<dynamic> getSelfPubArticles(int rID) async {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
 
@@ -328,73 +378,154 @@ class Controller {
     if (articles.isEmpty) {
       return null;
     }
+    for (Map<String, dynamic> art in articles) {
+      int reviews = await getReviewsCount(art['ID']);
+      art['reviews'] = reviews;
+    }
+    return articles;
+    /*
     List<dynamic> art;
     List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for(art in articles)
-      {
-        int reviews = await getReviewsCount(art[0]);
-        toReturn.add(
-            Article(art[0], art[1], art[2], art[5], art[3], art[4], reviews));
-      }
-    return toReturn; //
+    for (art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      toReturn.add(
+          resArticle(
+              art[0],
+              art[1],
+              art[2],
+              art[5],
+              art[3],
+              art[4],
+              reviews));
+    }
+    return toReturn; *///
   }
 
-  static Future<dynamic> getOwnRevArticles(int rID) async {
+  static Future<dynamic> getSelfRevArticles(int rID) async {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='R';";
     List<dynamic> articles = await DBManager.executeReader(query);
     if (articles.isEmpty) {
       return null;
     }
-    List<dynamic> art;
+
+    for (Map<String, dynamic> art in articles) {
+      int reviews = await getReviewsCount(art['ID']);
+      art['reviews'] = reviews;
+    }
+    return articles;
+    /*List<dynamic> art;
     List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for(art in articles)
-    {
+    for (art in articles) {
       int reviews = await getReviewsCount(art[0]);
       toReturn.add(
-          Article(art[0], art[1], art[2], art[5], art[3], art[4], reviews));
+          resArticle(
+              art[0],
+              art[1],
+              art[2],
+              art[5],
+              art[3],
+              art[4],
+              reviews));
     }
-    return toReturn; //
+    return toReturn;*/ //
+  }
+
+  static Future<dynamic> getToContRevArticles(int rID) async
+  {
+    String query =
+        "SELECT * FROM article as A join reviews on A_ID=A.ID where Re_ID=$rID and progress!=100";
+    List<dynamic> articles = await DBManager.executeReader(query);
+    if (articles.isEmpty) {
+      return null;
+    }
+
+    for (Map<String, dynamic> art in articles) {
+      int reviews = await getReviewsCount(art['ID']);
+      art['reviews'] = reviews;
+    }
+    return articles;
+
+    /*List<dynamic> art;
+    List<dynamic> toReturn = List.filled(0, null, growable: true);
+    for (art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      toReturn.add(
+          resArticle(
+              art[0],
+              art[1],
+              art[2],
+              art[5],
+              art[3],
+              art[4],
+              reviews));
+    }
+    return toReturn;*/ //
   }
 
   static Future<dynamic> getToReviewArticles(int rID) async
   {
     String query =
-        "SELECT * FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='P'"
-  " and A.ID NOT IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID)";
+        "SELECT * FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='F'"
+        " and A.ID NOT IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID)";
     List<dynamic> articles = await DBManager.executeReader(query);
     if (articles.isEmpty) {
       return null;
     }
-    List<dynamic> art;
+
+    for (Map<String, dynamic> art in articles) {
+      int reviews = await getReviewsCount(art['ID']);
+      art['reviews'] = reviews;
+    }
+    return articles;
+    /*List<dynamic> art;
     List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for(art in articles)
-    {
+    for (art in articles) {
       int reviews = await getReviewsCount(art[0]);
       toReturn.add(
-          Article(art[0], art[1], art[2], art[5], art[3], art[4], reviews));
+          resArticle(
+              art[0],
+              art[1],
+              art[2],
+              art[5],
+              art[3],
+              art[4],
+              reviews));
     }
-    return toReturn; //
+    return toReturn;*/ //
   }
-  //reviewed articles or he reviewed
+
+  //published articles or he reviewed
   static Future<dynamic> getGenArticles(int rID) async
   {
     String query =
-        "SELECT * FROM article as A join writes on Art_ID=A.ID where (Re_ID!=$rID and state_='R')"
-    " OR A.ID IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID);";
+        "SELECT * FROM article as A join writes on Art_ID=A.ID where (Re_ID!=$rID and state_='P')"
+        " OR A.ID IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID);";
     List<dynamic> articles = await DBManager.executeReader(query);
     if (articles.isEmpty) {
       return null;
     }
-    List<dynamic> art;
-    List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for(art in articles)
-    {
+
+    for (Map<String, dynamic> art in articles) {
+      int reviews = await getReviewsCount(art['ID']);
+      art['reviews'] = reviews;
+    }
+    return articles;
+    /*List<dynamic> art;
+    List<dynamic> toReturn = [];
+    for (art in articles) {
       int reviews = await getReviewsCount(art[0]);
       toReturn.add(
-          Article(art[0], art[1], art[2], art[5], art[3], art[4], reviews));
+          resArticle(
+              art[0],
+              art[1],
+              art[2],
+              art[5],
+              art[3],
+              art[4],
+              reviews));
     }
-    return toReturn; //
+    return toReturn; *///
   }
 
   static Future<dynamic> addReview(Map<String, dynamic> review) async
@@ -403,7 +534,15 @@ class Controller {
     String result = review["result"];
     int articleId = review["articleId"];
     int rID = review['rId'];
+    List<dynamic> toSend = [rID, articleId, progress, result];
+    dynamic res =
+    await DBManager.executeNonQueryProc('addOrUpdateReview', toSend);
 
+    if (res == 0) {
+      //some problem occurred
+      return -1;
+    }
+    return 1;
   }
 
   static getResearcherData(String username) async {
@@ -415,16 +554,69 @@ class Controller {
       //don't exist
       return null;
     }
-    List<dynamic> resData = data[0];
+    for (dynamic item in data)
+      print(item);
+
+    Map<String, dynamic> resData = data[0];
     Researcher res = Researcher(
-        resData[0],
-        resData[1],
-        resData[2],
-        resData[3],
-        resData[4],
-        resData[5],
-        resData[6]);
+        resData['ID'],
+        resData['Fname'],
+        resData['Mname'],
+        resData['Lname'],
+        resData['B_date'],
+        resData['years_of_experience'],
+        resData['R_username']);
     print(res.fName);
-    return res; //
+    return res;
+  }
+
+  static Future<dynamic> getArtHomeArticles(int rID) async
+  {
+    Map<String, List<dynamic>>toReturn= {};
+    getSelfNFArticles(rID).then((map)
+    {
+      if(map!=null)
+          {toReturn['selfNF'] = map;}
+      else {toReturn['selfNF'] = [];}
+    });
+    getGenNFArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['GenNF'] = map;}
+      else {toReturn['GenNF'] = [];}
+    });
+    getSelfPubArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['P'] = map;}
+      else {toReturn['P'] = [];}
+    });
+    getSelfRevArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['Self_reviewed'] = map;}
+      else {toReturn['Self_reviewed'] = [];}
+    });
+
+    getToContRevArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['To_cont_review'] = map;}
+      else {toReturn['To_cont_review'] = [];}
+    });
+    getToReviewArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['To_review'] = map;}
+      else {toReturn['To_review'] = [];}
+    });
+    getGenArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['Gen'] = map;}
+      else {toReturn['Gen'] = [];}
+    });
+    return toReturn; //
   }
 }
+

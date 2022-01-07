@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-
+import '../data_holders.dart';
 import '../controller.dart';
 
 class NewArticle extends StatefulWidget {
   final rId;
-  const NewArticle({Key? key, this.rId}) : super(key: key);
+  const NewArticle({Key? key, required this.rId}) : super(key: key);
   @override
   NewArticleState createState() => NewArticleState();
 }
 
 class NewArticleState extends State<NewArticle> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late Map<String, dynamic> article ;
   String _name = '';
   bool _finished = false;
@@ -87,7 +88,6 @@ class NewArticleState extends State<NewArticle> {
                   color: Colors.black,),
 
                 onPressed: (){
-                  //code to execute when this button is pressed
                   getArticleName();
 
                   if(_finished)
@@ -97,18 +97,22 @@ class NewArticleState extends State<NewArticle> {
                   article['content'] = content;
                   article['header'] = _name;
                   article['rId'] = widget.rId;
-                  Controller.insertNewArticle(article).then((result){
-                    if(result == 1)
+                  if(formKey.currentState!.validate())
+                  {
+                    formKey.currentState!.save();
+                    Controller.insertNewArticle(article).then((result){
+                      if(result == 1)
                       {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Article is saved successfully')),);
                       }
-                    else
+                      else
                       {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Something went wrong!')),);
                       }
-                  });
+                    });
+                  }
                 }
             ),
           ],
@@ -119,14 +123,28 @@ class NewArticleState extends State<NewArticle> {
         ),
 
       ),),
-      body: TextFormField(
+      body: Form(
+          key: formKey,
+          child:
+      TextFormField(
         keyboardType: TextInputType.multiline,
+          validator: (value)
+          {
+            if(value == null || value.isEmpty)
+            {return 'Cannot save empty article';}
+            return null;
+          },
+          onSaved: (value) {
+            if(value != null)
+            {content = value;}
+          },
         maxLines: null,
         decoration: const InputDecoration(
             focusColor: Colors.black,
             icon: Icon(Icons.article)
         ),
       ),
+    )
     );
   }
 }
@@ -134,14 +152,18 @@ class NewArticleState extends State<NewArticle> {
 
 class EditArticle extends StatefulWidget {
   final rId;
-  const EditArticle({Key? key, this.rId}) : super(key: key);
+  final resArticle currArticle;
+  const EditArticle({Key? key, required this.rId, required this.currArticle}) : super(key: key);
 
   @override
   EditArticleState createState() => EditArticleState();
 }
 
 class EditArticleState extends State<EditArticle> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late Map<String, dynamic> article ;
   bool _finished = false;
+  String content = '';
   void isFinished() {
     showDialog(
       context: context,
@@ -171,6 +193,32 @@ class EditArticleState extends State<EditArticle> {
                 ,),
               onPressed: () {
                 Navigator.of(context).pop();
+                if(_finished)
+                {article['state'] = 'F';}
+                else
+                {article['state'] = 'NF';}
+                article['content'] = content;
+                article['id'] = widget.currArticle.id;
+                article['rId'] = widget.rId;
+
+                if(formKey.currentState!.validate())
+                {
+                  formKey.currentState!.save();
+                  Controller.updateExistingArticle(article).then((result){
+                    if(result == 1)
+                    {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Article is updated successfully')),);
+                    }
+                    else
+                    {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Something went wrong!')),);
+                    }
+                  });
+                }
+
+
               },
             ),
           ],
@@ -211,15 +259,28 @@ class EditArticleState extends State<EditArticle> {
             ),
 
           ),),
-        body: TextFormField(
-          initialValue: 'last state of article body',
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: const InputDecoration(
-              focusColor: Colors.black,
-              icon: Icon(Icons.article)
+        body: Form(
+          key: formKey,
+          child: TextFormField(
+            initialValue: widget.currArticle.content,
+            keyboardType: TextInputType.multiline,
+            validator: (value)
+            {
+              if(value == null || value.isEmpty)
+              {return 'Cannot save empty article';}
+              return null;
+            },
+            onSaved: (value) {
+              if(value != null)
+              {content = value;}
+            },
+            maxLines: null,
+            decoration: const InputDecoration(
+                focusColor: Colors.black,
+                icon: Icon(Icons.article)
+            ),
           ),
-        ),
+        )
       );
     }
 }
