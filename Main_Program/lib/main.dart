@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:main_program/Accountant/AccountantHome.dart';
+import 'package:main_program/Accountant/GivePromotion.dart';
 import 'package:main_program/Accountant/SouventirSale.dart';
+import 'package:main_program/PR/available_articles.dart';
 import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
 //import 'Accountant/AccountantHome.dart';
 import 'Researcher/researcher_home.dart';
@@ -11,6 +13,7 @@ import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
 import 'api.dart';
 import 'package:intl/intl.dart';
+import 'package:main_program/PR/Add event.dart';
 
 void try_login() async {
   //String query = 'insert into myusers values("sdsd","hiii");';
@@ -63,7 +66,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => const accHome(),
+        '/login_page': (context) => const available_articles(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         //'/accountant_home': (context) => AccountantHome(),

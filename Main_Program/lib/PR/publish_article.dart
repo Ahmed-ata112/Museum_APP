@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/controller.dart';
 
 class publish_article extends StatefulWidget {
-  const publish_article({Key? key}) : super(key: key);
+  final int S;
+  const publish_article({Key? key,required this.S}) : super(key: key);
 
   @override
-  _Add_FeedbackState createState() => _Add_FeedbackState();
+  publish_articleState createState() => publish_articleState(S);
 }
 
-class _Add_FeedbackState extends State<publish_article> {
+class publish_articleState extends State<publish_article> {
+  int S;
+  Map<String, dynamic> FormData = {
+    'ID': 0,
+  };
+
+  publish_articleState(this.S);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -38,12 +46,20 @@ class _Add_FeedbackState extends State<publish_article> {
                               style: TextStyle(
                                   color: Colors.white, fontSize: 15.0),
                             ),
-                            onPressed: () async {}),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
+
+                            onPressed: () async {
+                                    setState(() => FormData['ID'] = S);
+                                    void initState() {
+                                    super.initState();
+                                    Controller.UpdateArticleToP(FormData).then((ReturnedList) {
+                                    setState((){});});
+                                    };
+                            }
+                      ),),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        Expanded(
                         child: ElevatedButton(
                             child: Text(
                               "Cancel",

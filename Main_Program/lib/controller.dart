@@ -173,19 +173,21 @@ class Controller {
   }
   static Future<int> addNewEvent(Map<String, dynamic> formData) async {
     String Date_Start = formData["Date_Start"];
+    DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(Date_Start);
     String Date_End = formData["Date_End"];
+    DateTime tempDate1 = new DateFormat("yyyy-MM-dd").parse(Date_End);
     String description = formData["description"];
     String theme = formData["theme"];
     String title = formData["title"];
-    String sec_number = formData["sec_number"];
-    String staff_id = formData["staff_id"];
+    int sec_number = formData["sec_number"];
+    int staff_id = formData["staff_id"];
 
     int ID = await getEventsCount();
 
     List<dynamic> toSend2 = [
       ID,
-      Date_Start,
-      Date_End,
+      tempDate,
+      tempDate1,
       description,
       theme,
       title,
@@ -205,7 +207,9 @@ class Controller {
     String description = formData["description"];
     String topic = formData["topic"];
     String Date_Start = formData["Date_Start"];
+    DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(Date_Start);
     String Date_End = formData["Date_End"];
+    DateTime tempDate1 = new DateFormat("yyyy-MM-dd").parse(Date_End);
     String organizer_id = formData["organizer_id"];
     String title = formData["title"];
 
@@ -216,8 +220,8 @@ class Controller {
       place,
       description,
       topic,
-      Date_Start,
-      Date_End,
+      tempDate,
+      tempDate1,
       organizer_id,
       title
     ];
@@ -250,10 +254,11 @@ class Controller {
   }
   static Future<int> UpdateArticleToP(Map<String, dynamic> formData)async{
     int ID = formData["ID"];
-
+       print (ID);
     List<int> toSend = [ID];
     dynamic res =
     await DBManager.executeNonQueryProc('update_article_toP', toSend);
+    print(res);
     if(res==0){
       return -1;
     }
@@ -327,7 +332,7 @@ class Controller {
   }
   static Future<dynamic> getReviewedArticles()async{
     String query=
-        "select * from article where state_=R;";
+        "select * from article where state_='R';";
     List<dynamic> us= await DBManager.executeReader(query);
     if (us.isEmpty) {
 

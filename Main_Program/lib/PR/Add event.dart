@@ -21,8 +21,8 @@ class NewEventState extends State<NewEvent> {
     'sec_number': null,
     'staff_id': null,
   };
-  List<int> sec_number = [1];
-  List<int> staff_id = [1];
+  List<int> sec_number = [];
+  List<int> staff_id = [];
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
@@ -187,6 +187,27 @@ class NewEventState extends State<NewEvent> {
             : null,
       ),
     );
+  }
+  void initState() {
+    super.initState();
+    Controller.getSecNumber().then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          print(row['sec_number']);
+          sec_number.add(row['sec_number']);
+        }
+        setState(() {});
+      });
+    });
+    Controller.getAllEmployeesIDs().then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          print(row);
+          staff_id.add(row['ID']);
+        }
+        setState(() {});
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {

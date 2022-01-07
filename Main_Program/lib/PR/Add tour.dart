@@ -20,7 +20,7 @@ class NewTourState extends State<NewTour> {
     'organizer_id': null,
     'title' : null,
   };
-  List<int> IDs = [1];
+  List<int> IDs = [];
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
@@ -205,6 +205,18 @@ class NewTourState extends State<NewTour> {
       ),
     );
   }
+  void initState() {
+    super.initState();
+    Controller.getAllEmployeesIDs().then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          print(row['ID']);
+          IDs.add(row['ID']);
+        }
+        setState(() {});
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -224,7 +236,7 @@ class NewTourState extends State<NewTour> {
             buildTitileField(),
             buildTopicField(),
             buildPlaceField(),
-            buildIDField(),
+            //buildIDField(),
             buildDescField(),
             buildStartDateField(),
             buildEndDateField(),
