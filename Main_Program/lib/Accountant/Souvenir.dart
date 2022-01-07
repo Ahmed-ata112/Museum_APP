@@ -1,7 +1,7 @@
 class Souvenir
 {
   String sName;
-  String sPrice;
+  int sPrice;
   int sID;
   int squantity;
   Souvenir

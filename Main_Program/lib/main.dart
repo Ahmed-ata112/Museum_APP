@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/Accountant/AccountantHome.dart';
 import 'package:main_program/Accountant/SouventirSale.dart';
 import 'package:main_program/general_pages/Accountant/InsertNewEmployee.dart';
 //import 'Accountant/AccountantHome.dart';
@@ -52,6 +53,7 @@ void try_login() async {
 void main() {
   runApp(MyApp());
   //try_login();
+
 }
 
 class MyApp extends StatelessWidget {
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => const NewEmployee(),
+        '/login_page': (context) => const accHome(),
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         //'/accountant_home': (context) => AccountantHome(),

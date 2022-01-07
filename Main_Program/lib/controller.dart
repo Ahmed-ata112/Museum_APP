@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'api.dart';
 import 'package:intl/intl.dart';
 import 'data_holders.dart';
@@ -68,28 +70,40 @@ class Controller {
   }
   //
   static Future<int> addNewEmployee(Map<String,dynamic> formData)async{
+  print(formData);
     String Fname = formData["Fname"];
     String Mname = formData["Mname"];
     String Lname = formData["Lname"];
-    String gender = formData["gender"];
+    String gender = formData["gender"][0];
     String job_title = formData["job_title"];
     String B_date = formData["B_date"];
     String salary = formData["salary"];
+    int c = int.parse(salary);
+    print('aaaaaaaaaaaaaaaaaaa');
+
     String start_date = formData["start_date"];
-    String super_ID = formData["super_ID"];
-    String department_num = formData["department_num"];
+    print('aaaaaaaaaaaaaaaaaaa');
+  print (formData["super_ID"].runtimeType);
+    var d= formData["super_ID"];
+
+    print('aaaaaaaaaaaaaaaaaaa');
+    //int d = int.parse(super_ID);
+  print (formData["department_num"].runtimeType);
+    var e = formData["department_num"];
+  print('aaaaaaaaaaaaaaaaaaa');
     String staff_username = formData["staff_username"];
     String password = formData["password"];
-    String type = formData["type"];
+   var f = formData["type"];
 
-    int id = await getEmployeesCount();
+
+    int id = await Controller.getEmployeesCount()+1;
 
     // members have type int 1
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String regDate = formatter.format(now);
 
-    List<dynamic> toSend = [staff_username, password, type, regDate];
+    List<dynamic> toSend = [staff_username, password, f, regDate];
     //first you add the user
     dynamic res =
     await DBManager.executeNonQueryProc('insert_new_user', toSend);
@@ -98,9 +112,11 @@ class Controller {
       //don't exist
       return -1;
     }
-
-    List<dynamic> EmployeeToSend=[id,Fname,Mname,Lname,gender,job_title,B_date,salary,start_date,super_ID,department_num,staff_username];
-    
+    DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(start_date);
+    DateTime tempDate2 = new DateFormat("yyyy-MM-dd").parse(B_date);
+    print(id.runtimeType);
+    List<dynamic> EmployeeToSend=[id,Fname,Mname,Lname,gender,job_title,tempDate2,c,tempDate,d,e,staff_username];
+    print (EmployeeToSend);
     dynamic result= await DBManager.executeNonQueryProc('insert_new_employee',EmployeeToSend);
 
     if(result==0){
@@ -292,8 +308,8 @@ class Controller {
   static Future<dynamic> getSouvenirSale()async{
     String query=
         "select So_ID,buy_member_souvenir.quantity,S_ID,buys_visitor_souvenir.quantity from museum.buy_member_souvenir,museum.buys_visitor_souvenir;";
-    List<dynamic> us= await DBManager.executeReader(query);
-    if (us.isEmpty) {
+   var us= await DBManager.executeReader(query);
+    if (us==null) {
 
       return null;
     }

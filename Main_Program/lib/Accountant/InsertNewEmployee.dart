@@ -12,20 +12,19 @@ class NewEmployee extends StatefulWidget {
 
 class NewEmployeeState extends State<NewEmployee> {
   Map<String, dynamic> FormData = {
-    'Fname': null,
-    'Mname': null,
-    'Lname': null,
-    'gender': null,
-    'job_title': null,
-    'B_date': null,
-    'salary': null,
-    'start_date': null,
-    'super_ID': null,
-    'department_num': null,
-    'staff_username': null,
-    'staff_username': null,
-    'password': null,
-    'type': null,
+    'Fname': " ",
+    'Mname': " ",
+    'Lname': " ",
+    'gender':" ",
+    'job_title': " ",
+    'B_date': " ",
+    'salary': " ",
+    'start_date': " ",
+    'super_ID': 0,
+    'department_num': 0,
+    'staff_username': " ",
+    'password': " ",
+    'type': 0,
   };
   List<String> Genders = ["Male", "Female"];
   List<int> IDS=[];
@@ -42,19 +41,17 @@ class NewEmployeeState extends State<NewEmployee> {
               hintText: "First Name",
               icon: Icon(Icons.perm_identity_rounded),
           ),
-          onChanged: (val) {
-            setState(() => FormData['Fname'] = val);
+          onChanged: (value) {
+            setState(() => FormData['Fname'] = value);
           },
-          validator: (value)
-          {
-            if(value!.isEmpty)
-            {return "Please fill in employee's First Name";}
-            if (value.length > 20) {
-              return "First Name length can't exceed 20 characters";
-            }
-            return null;
-          },
-      ),);
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
+            ),
+            );
   }
   Widget buildmnameField()
   {
@@ -65,18 +62,15 @@ class NewEmployeeState extends State<NewEmployee> {
               hintText: "Middle Name",
               icon: Icon(Icons.perm_identity_rounded),
           ),
-        onChanged: (val) {
-          setState(() => FormData['Mname'] = val);
+        onChanged: (value) {
+          setState(() => FormData['Mname'] = value);
         },
-          validator: (value)
-          {
-            if(value!.isEmpty)
-            {return "Please fill in employee's Middle Name";}
-            if (value.length > 20) {
-              return "Middle Name length can't exceed 20 characters";
-            }
-            return null;
-          },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
       ),);
   }
   Widget buildlnameField()
@@ -88,18 +82,15 @@ class NewEmployeeState extends State<NewEmployee> {
               hintText: "Last Name",
               icon: Icon(Icons.perm_identity_rounded),
           ),
-        onChanged: (val) {
-          setState(() => FormData['Lname'] = val);
+        onChanged: (value) {
+          setState(() => FormData['Lname'] = value);
         },
-          validator: (value)
-          {
-            if(value!.isEmpty)
-            {return "Please fill in employee's Last Name";}
-            if (value.length > 20) {
-              return "Last Name length can't exceed 20 characters";
-            }
-            return null;
-          },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -112,10 +103,10 @@ class NewEmployeeState extends State<NewEmployee> {
             hintText: "Job Title",
                 icon: Icon(Icons.work)
         ),
-        onChanged: (val) {
-          setState(() => FormData['job_title'] = val);
+        onChanged: (value) {
+          setState(() => FormData['job_title'] = value);
         },
-        validator: (val) => (val == null)
+        validator: (value) => (value == null)
             ? "Please Choose the job that employee wants to apply for"
             : null,
       ),
@@ -153,12 +144,12 @@ class NewEmployeeState extends State<NewEmployee> {
           icon: Icon(Icons.money),
         ),
         keyboardType: TextInputType.number,
-        onChanged: (val) {
-          setState(() => FormData['salary'] = val);
+        onChanged: (value) {
+          setState(() => FormData['salary'] = value);
         },
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'this field is required';
+            return 'this field is required ';
           }
           return null;
         },
@@ -194,7 +185,7 @@ class NewEmployeeState extends State<NewEmployee> {
     child:
     DropdownButtonFormField(
       decoration: const InputDecoration(
-        hintText: "Your Gender",
+        hintText: "Gender",
         icon: Icon(Icons.transgender),
       ),
       items: Genders.map((gg) {
@@ -203,12 +194,12 @@ class NewEmployeeState extends State<NewEmployee> {
           child: Text(gg),
         );
       }).toList(),
-      onChanged: (val) {
+      onChanged: (value) {
         setState(() {
-          FormData["Gender"] = val;
+          FormData["gender"] = value;
         });
       },
-      validator: (val) => (val == null)
+      validator: (value) => (value == null)
           ? "Please Choose the gender"
           : null),
     );
@@ -274,12 +265,16 @@ class NewEmployeeState extends State<NewEmployee> {
         decoration: const InputDecoration(
             hintText: "username",
             icon: Icon(Icons.help_center_outlined)),
-        onChanged: (val) {
+        onChanged: (value) {
           setState(() =>
-          FormData['staff_username'] = val);
+          FormData['staff_username'] = value);
         },
-        validator: (val) =>
-        val!.isEmpty ? "Please fill in employee's username" : null,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -295,11 +290,11 @@ class NewEmployeeState extends State<NewEmployee> {
         onChanged: (val) {
           setState(() => FormData['password'] = val);
         },
-        validator: (val) {
-          if (val!.isEmpty) {
-            return "Please fill in password";
-          }
-          if (val.length < 6) {
+  validator: (value) {
+  if (value == null || value.isEmpty) {
+  return 'this field is required';
+  }
+          if (value.length < 6) {
             return "Password length must be greater than 6 characters";
           }
           return null;
@@ -319,6 +314,12 @@ class NewEmployeeState extends State<NewEmployee> {
         onChanged: (val) {
           setState(() => FormData['type'] = val);
         },
+        validator: (val) {
+          if (val == null || val.isEmpty) {
+            return 'this field is required';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -330,13 +331,28 @@ class NewEmployeeState extends State<NewEmployee> {
     //});
   //}
 
-  void initState(){
+  void initState() {
     super.initState();
-    (()async{
-      IDS=await Controller.getAllEmployeesIDs();
-      DepartmentNumbers=  await Controller.getAllDepNumbers();
-    })();
+    Controller.getAllEmployeesIDs().then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          print(row['ID']);
+          IDS.add(row['ID']);
+        }
+        setState(() {});
+      });
+    });
+    Controller.getAllDepNumbers().then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          print(row);
+          DepartmentNumbers.add(row['Dno']);
+        }
+        setState(() {});
+      });
+    });
   }
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -349,10 +365,15 @@ class NewEmployeeState extends State<NewEmployee> {
       ),
       body: Form(
         key: _formKey,
-        child:
-        ListView(
-          shrinkWrap: true,
-          children: <Widget>[
+        child: SingleChildScrollView(
+       // ListView(
+         // shrinkWrap: true,
+    padding: const EdgeInsets.all(8.0),
+    child: Center(
+    child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
             buildfnameField(),
             buildmnameField(),
             buildlnameField(),
@@ -383,8 +404,8 @@ class NewEmployeeState extends State<NewEmployee> {
 
                         //Server Validation Side
                         dynamic retV =
-                        await Controller.addNewMember(FormData);
-                        //print(userType);
+                        await Controller.addNewEmployee(FormData);
+                        print(retV);
                         if (retV == -1) {
                           setState(() {
                             error = 'Employee Already Exists';
@@ -410,9 +431,9 @@ class NewEmployeeState extends State<NewEmployee> {
               SizedBox(
                 height: 20.0,
               ),
-          ],
-        ),
+        ]),),
       ),
+    )
     );
   }
 }
