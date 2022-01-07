@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:getwidget/types/gf_button_type.dart';
+import 'package:main_program/data_holders.dart';
+import 'package:share_plus/share_plus.dart';
+import '../controller.dart';
+import 'package:like_button/like_button.dart';
 
-Widget Souvenirs_Card() {
+Widget Souvenirs_Card(Souvenir sou, BuildContext context) {
+  void _shareContent(String _content) {
+    Share.share(_content);
+  }
+
   return GFCard(
     boxFit: BoxFit.cover,
     titlePosition: GFPosition.end,
@@ -12,42 +19,68 @@ Widget Souvenirs_Card() {
     ),
     showImage: true,
     title: GFListTile(
-      titleText: 'Souvenirs Name',
-      subTitleText: 'Price: \$33',
+      titleText: sou.Name,
+      subTitleText: 'Price: \$${sou.price}',
     ),
-    content: Text(
-        "Some quick example text to build on the card ,Some quick example text to build on the card,Some quick example text to build on the card"),
+    content: Text(sou.description),
     buttonBar: GFButtonBar(
       padding: EdgeInsets.all(12),
       children: <Widget>[
-        GFAvatar(
-          backgroundColor: GFColors.PRIMARY,
-          child: Icon(
-            Icons.share,
-            color: Colors.white,
-          ),
-        ),
-        GFAvatar(
-          backgroundColor: GFColors.SUCCESS,
-          child: Icon(
-            Icons.add_box_outlined,
-            color: Colors.white,
-          ),
-        ),
+        ElevatedButton(
+            onPressed: () {
+              Share.share(sou.description);
+            },
+            child: Icon(Icons.share, color: Colors.white),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(20),
+              primary: Colors.blue, // <-- Button color
+              onPrimary: Colors.red, // <-- Splash color
+            )),
+        ElevatedButton(
+            onPressed: () {},
+            child: Icon(Icons.add_box_outlined, color: Colors.white),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(20),
+              primary: Colors.blue, // <-- Button color
+              onPrimary: Colors.red, // <-- Splash color
+            )),
       ],
     ),
   );
 }
 
 class StoreHome extends StatefulWidget {
-  const StoreHome({Key? key}) : super(key: key);
+  final int Member_id;
+
+  StoreHome({Key? key, required this.Member_id}) : super(key: key);
 
   @override
-  _StoreHomeState createState() => _StoreHomeState();
+  _StoreHomeState createState() => _StoreHomeState(Member_id);
 }
 
 class _StoreHomeState extends State<StoreHome> {
+  int Member_id;
+  List<Souvenir> allSouvenirs = [];
+  _StoreHomeState(this.Member_id);
   bool is_searching = false;
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Controller.getAllSouvenirs().then((ListOfSouvsRows) {
+      setState(() {
+        for (var row in ListOfSouvsRows) {
+          //print(row);
+          Souvenir eve =
+              Souvenir(row[0], row[1], row[2], row[3], row[4], Member_id);
+          allSouvenirs.add(eve);
+        }
+        setState(() {}); //just call it to update screen
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +89,7 @@ class _StoreHomeState extends State<StoreHome> {
         automaticallyImplyLeading: !is_searching,
         title: !is_searching
             ? Text("Available Souvenirs")
-            : TextField(
+            : const TextField(
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -92,9 +125,10 @@ class _StoreHomeState extends State<StoreHome> {
         ],
       ),
       body: ListView.builder(
-        itemCount: 5, // should be dynamic -> retrieve articles
+        itemCount:
+            allSouvenirs.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return Souvenirs_Card();
+          return Souvenirs_Card(allSouvenirs[index], context);
         },
       ),
     );

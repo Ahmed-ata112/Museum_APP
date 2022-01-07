@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:main_program/data_holders.dart';
 import 'attend_tour.dart';
 
 String ss = lorem(words: 100);
 
-class tours_info extends StatefulWidget {
-  const tours_info({Key? key}) : super(key: key);
+class Tour_info extends StatefulWidget {
+  Tour tour;
+  Tour_info({Key? key, required this.tour}) : super(key: key);
 
   @override
-  _tours_infoState createState() => _tours_infoState();
+  _Tour_infoState createState() => _Tour_infoState(tour);
 }
 
-class _tours_infoState extends State<tours_info> {
+class _Tour_infoState extends State<Tour_info> {
+  Tour tour;
+
+  _Tour_infoState(this.tour);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('tour name'),
+        title: const Text('Tour'),
         centerTitle: true,
       ),
       body: ListView(
@@ -43,25 +47,15 @@ class _tours_infoState extends State<tours_info> {
           Padding(
             padding: const EdgeInsets.fromLTRB(6.0, 16, 6, 6),
             child: Text(
-              "Some Heading Text",
-              style: TextStyle(
+              tour.title,
+              style: const TextStyle(
                   fontSize: 28.0,
-                  color: Colors.red,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(6.0, 6, 6, 15),
-            child: Text(
-              "Some sub Heading Text",
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.pink,
+                  color: Colors.lightBlue,
                   fontWeight: FontWeight.w600),
             ),
           ),
           Text(
-            ss,
+            tour.description,
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.black87,
@@ -78,7 +72,7 @@ class _tours_infoState extends State<tours_info> {
           return showDialog(
               context: context,
               builder: (BuildContext context) {
-                return attend_tours();
+                return attend_Tours(tour: tour);
               }).then((value) {
             setState(() {});
           });

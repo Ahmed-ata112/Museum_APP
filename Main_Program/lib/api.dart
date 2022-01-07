@@ -40,7 +40,7 @@ class DBManager {
   static Future<dynamic> executeScaler(String query) async {
     var queryParameters = {"query": query};
     var response = await http.post(Uri.parse('${BASE_URL}/ExecuteScaler'),
-        body: queryParameters);
+        body: queryParameters, headers: {"Connection": "Keep-Alive"});
     dynamic ret;
     if (response.statusCode == 200) {
       ret = json.decode(response.body)["result"];

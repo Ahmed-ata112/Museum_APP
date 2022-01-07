@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import '../data_holders.dart';
 import 'add_feedback.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
 
-String ss = lorem(words: 1000);
-
 class article_read extends StatefulWidget {
-  const article_read({Key? key}) : super(key: key);
+  final Article article;
+  const article_read({Key? key, required this.article}) : super(key: key);
 
   @override
-  _article_readState createState() => _article_readState();
+  _article_readState createState() => _article_readState(article);
 }
 
 class _article_readState extends State<article_read> {
+  final Article article;
+  _article_readState(this.article);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('an article'),
+        title: Text('Article'),
         centerTitle: true,
       ),
       body: ListView(
@@ -31,16 +33,16 @@ class _article_readState extends State<article_read> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              "Some Heading Text",
-              style: TextStyle(
+              article.header,
+              style: const TextStyle(
                   fontSize: 28.0,
                   color: Colors.black87,
                   fontWeight: FontWeight.w600),
             ),
           ),
           Text(
-            ss,
-            style: TextStyle(
+            article.content,
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black87,
             ),
@@ -56,7 +58,7 @@ class _article_readState extends State<article_read> {
           return showDialog(
               context: context,
               builder: (BuildContext context) {
-                return Add_Feedback();
+                return Add_Feedback(article: article);
               }).then((value) {
             setState(() {});
           });

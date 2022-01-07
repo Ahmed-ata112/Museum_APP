@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:main_program/data_holders.dart';
 import 'attend_event.dart';
 
 String ss = lorem(words: 100);
 
 class Events_info extends StatefulWidget {
-  const Events_info({Key? key}) : super(key: key);
+  Event eve;
+  Events_info({Key? key, required this.eve}) : super(key: key);
 
   @override
-  _Events_infoState createState() => _Events_infoState();
+  _Events_infoState createState() => _Events_infoState(eve);
 }
 
 class _Events_infoState extends State<Events_info> {
+  Event eve;
+
+  _Events_infoState(this.eve);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event name'),
+        title: const Text('Event'),
         centerTitle: true,
       ),
       body: ListView(
@@ -43,25 +47,25 @@ class _Events_infoState extends State<Events_info> {
           Padding(
             padding: const EdgeInsets.fromLTRB(6.0, 16, 6, 6),
             child: Text(
-              "Some Heading Text",
-              style: TextStyle(
+              eve.title,
+              style: const TextStyle(
                   fontSize: 28.0,
-                  color: Colors.red,
+                  color: Colors.lightBlue,
                   fontWeight: FontWeight.w600),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(6.0, 6, 6, 15),
             child: Text(
-              "Some sub Heading Text",
+              'With A Theme: ' + eve.theme,
               style: TextStyle(
                   fontSize: 20.0,
-                  color: Colors.pink,
+                  color: Colors.lightBlue,
                   fontWeight: FontWeight.w600),
             ),
           ),
           Text(
-            ss,
+            eve.description,
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.black87,
@@ -78,7 +82,7 @@ class _Events_infoState extends State<Events_info> {
           return showDialog(
               context: context,
               builder: (BuildContext context) {
-                return attend_Events();
+                return attend_Events(eve: eve);
               }).then((value) {
             setState(() {});
           });

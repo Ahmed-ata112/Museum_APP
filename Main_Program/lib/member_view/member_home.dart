@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:main_program/member_view/store_home.dart';
 import 'package:main_program/member_view/tours_home.dart';
-import '../controller.dart';
-import 'ArticlesHome.dart';
-import 'Events_home.dart';
+import 'articles_home.dart';
+import 'events_home.dart';
 import 'package:main_program/data_holders.dart';
 
 class member_home extends StatefulWidget {
@@ -14,7 +13,6 @@ class member_home extends StatefulWidget {
 }
 
 class _member_homeState extends State<member_home> {
-  Map data = {};
   late Member mem;
 
   @override
@@ -28,12 +26,12 @@ class _member_homeState extends State<member_home> {
           child: ListView(
             children: <Widget>[
               DrawerHeader(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.teal,
                 ),
                 child: Stack(
                   children: <Widget>[
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: CircleAvatar(
                         backgroundImage:
@@ -44,17 +42,8 @@ class _member_homeState extends State<member_home> {
                     Align(
                       alignment: Alignment.topRight + Alignment(0, .4),
                       child: Text(
-                        mem.Fname,
+                        mem.Fname + ' ' + mem.Sname,
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'USER JOB',
-                        style: TextStyle(
-                          color: Colors.white70,
-                        ),
                       ),
                     ),
                     Align(
@@ -64,7 +53,7 @@ class _member_homeState extends State<member_home> {
                           border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Padding(
+                        child: const Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Text(
                             'Verified',
@@ -78,18 +67,19 @@ class _member_homeState extends State<member_home> {
               ),
               ListTile(
                 title: const Text('Favorites'),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
+                onTap: () {},
               ),
               ListTile(
                 title: const Text('Articles'),
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ArticlesHome()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ArticlesHome(
+                                Member_id: mem.id,
+                              )));
                 },
               ),
               ListTile(
@@ -97,8 +87,12 @@ class _member_homeState extends State<member_home> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EventsHome()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EventsHome(
+                                Member_id: mem.id,
+                              )));
                 },
               ),
               ListTile(
@@ -106,8 +100,12 @@ class _member_homeState extends State<member_home> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => toursHome()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => toursHome(
+                                Member_id: mem.id,
+                              )));
                 },
               ),
               ListTile(
@@ -115,8 +113,12 @@ class _member_homeState extends State<member_home> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => StoreHome()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StoreHome(
+                                Member_id: mem.id,
+                              )));
                 },
               ),
             ],
