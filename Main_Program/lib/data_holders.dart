@@ -93,11 +93,11 @@ class resArticle {
   late int reviews;
   resArticle(this.id, this.state, this.content, this.header, views, likes, reviews)
   {
-    if(views) {this.views = views;}
+    if(views != null) {this.views = views;}
     else {views = 0;}
-    if(likes) {this.likes = likes;}
+    if(likes != null) {this.likes = likes;}
     else {likes = 0;}
-    if(reviews) {this.reviews = reviews;}
+    if(reviews != null) {this.reviews = reviews;}
     else {reviews = 0;}
   }
 }

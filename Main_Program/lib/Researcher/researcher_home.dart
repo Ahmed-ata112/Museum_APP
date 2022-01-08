@@ -94,10 +94,10 @@ class _ResearcherHomeState extends State<ResearcherHome> {
                   itemBuilder: (context, index) {
                     return TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          /*Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditArticle()));
+                                  builder: (context) => EditArticle()));*/
                         },
                         child: articleCardGenerator(index));
                   }),

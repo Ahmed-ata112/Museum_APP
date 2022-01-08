@@ -46,7 +46,7 @@ class _login_pageState extends State<login_page> {
                       decoration: const InputDecoration(
                           hintText: "username", icon: Icon(Icons.person)),
                       onChanged: (val) {
-                        setState(() => FormData['username'] = val);
+                        FormData['username'] = val;
                       },
                       validator: (val) =>
                           val!.isEmpty ? "Please fill in your username" : null,
@@ -60,7 +60,7 @@ class _login_pageState extends State<login_page> {
                       decoration: InputDecoration(
                           hintText: "Password", icon: Icon(Icons.password)),
                       onChanged: (val) {
-                        setState(() => FormData['password'] = val);
+                        FormData['password'] = val;
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
@@ -84,6 +84,7 @@ class _login_pageState extends State<login_page> {
                         if (_formKey.currentState!.validate()) {
                           //if the form from the client side is valid
                           print("All Valid at the client side :)");
+                          print(FormData);
                           //go and check if this credentials is valid from the server (DB) side
                           //i.e check if this account exists and if the email and password matches (are correct)
                           //Server Validation Side

@@ -5,15 +5,26 @@ import 'data_holders.dart';
 class Controller {
   Controller() {}
 
+
+
+  static Future<int> generateArtId() async {
+    String query = "SELECT count(*) FROM museum.article;";
+
+    dynamic count = await DBManager.executeReader(query);
+    return count[0]['count(*)'];
+  }
   static Future<int> getUserType(Map<String, dynamic> formData) async {
     String username = formData["username"];
     String password = formData["password"];
-
+    print('inside getusertype');
+    print(username);
+    print(password);
     String query =
         "select type_ from museum.user_ where username_='$username' and password_='$password';";
 
-    dynamic userType = await DBManager.executeScaler(query);
-
+    dynamic
+    userType = (await DBManager.executeReader(query))[0]['type_'];
+    print(userType);
     if (userType == null) {
       //don't exist
       return -1;
@@ -49,26 +60,13 @@ class Controller {
   static Future<int> getReviewsCount(int id) async {
     String query = "SELECT count(*) FROM museum.reviews where A_ID=$id;";
 
-    dynamic count = await DBManager.executeScaler(query);
+    dynamic count = await DBManager.executeReader(query);
 
     if (count == null) {
       //don't exist
       return -1;
     }
-    return count;
-  }
-
-  static Future<int> getResearcherID(String username) async {
-    String query =
-        "select id from museum.researcher where R_username='$username';";
-
-    dynamic id = await DBManager.executeScaler(query);
-
-    if (id == null) {
-      //don't exist
-      return -1;
-    }
-    return id;
+    return count[0]['count(*)'];
   }
 
   static Future<int> addNewMember(Map<String, dynamic> formData) async {
@@ -264,13 +262,13 @@ class Controller {
   }
 
 
-  static Future<int> insertNewArticle(Map<String, dynamic> newArticle) async {
+  static Future<int> insertNewArticle(Map<dynamic, dynamic> newArticle) async {
     String state = newArticle["state"];
     String content = newArticle["content"];
     String header = newArticle["header"];
     int rId = newArticle['rId'];
 
-    int id = await getArticlesCount();
+    int id = await generateArtId();
 
     List<dynamic> toSend = [id, state, content, header];
 
@@ -293,7 +291,7 @@ class Controller {
     return 1; // returned successfully
   }
 
-  static Future<int> updateExistingArticle(Map<String, dynamic> toEdit) async
+  static Future<int> updateExistingArticle(Map<dynamic, dynamic> toEdit) async
   {
     int artId = toEdit['id'];
     int rId = toEdit['rId'];
@@ -314,14 +312,10 @@ class Controller {
 
   static Future<dynamic> getSelfNFArticles(int rID) async {
     String query =
-        "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID"
+        "SELECT * FROM museum.article join museum.writes on Art_ID=article.ID where Re_ID=$rID"
         " and state_='NF';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      //don't exist
-      return null;
-    }
     return articles;
     /*
     List<dynamic> art;
@@ -347,10 +341,7 @@ class Controller {
         " and article.ID NOT IN (SELECT Art_ID FROM writes where Re_ID=$rID);";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      //don't exist
-      return null;
-    }
+
     return articles;
     /*
     List<dynamic> art;
@@ -375,9 +366,7 @@ class Controller {
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      return null;
-    }
+
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
       art['reviews'] = reviews;
@@ -405,9 +394,6 @@ class Controller {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='R';";
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      return null;
-    }
 
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
@@ -434,11 +420,8 @@ class Controller {
   static Future<dynamic> getToContRevArticles(int rID) async
   {
     String query =
-        "SELECT * FROM article as A join reviews on A_ID=A.ID where Re_ID=$rID and progress!=100";
+        "SELECT * FROM article as A join reviews on A_ID=A.ID where R_ID=$rID and progress!=100";
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      return null;
-    }
 
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
@@ -469,9 +452,6 @@ class Controller {
         "SELECT * FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='F'"
         " and A.ID NOT IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID)";
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      return null;
-    }
 
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
@@ -502,9 +482,7 @@ class Controller {
         "SELECT * FROM article as A join writes on Art_ID=A.ID where (Re_ID!=$rID and state_='P')"
         " OR A.ID IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID);";
     List<dynamic> articles = await DBManager.executeReader(query);
-    if (articles.isEmpty) {
-      return null;
-    }
+
 
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
@@ -573,10 +551,17 @@ class Controller {
   static Future<dynamic> getArtHomeArticles(int rID) async
   {
     Map<String, List<dynamic>>toReturn= {};
-    getSelfNFArticles(rID).then((map)
+    toReturn['selfNF'] = await getSelfNFArticles(rID);
+    toReturn['GenNF'] = await getGenNFArticles(rID);
+    toReturn['P'] = await getSelfPubArticles(rID);
+    toReturn['Self_reviewed'] = await getSelfRevArticles(rID);
+    toReturn['To_cont_review'] = await getToContRevArticles(rID);
+    toReturn['To_review'] = await getToReviewArticles(rID);
+    toReturn['Gen'] = await getGenArticles(rID);
+    /*getSelfNFArticles(rID).then((map)
     {
       if(map!=null)
-          {toReturn['selfNF'] = map;}
+      {toReturn['selfNF'] = map;}
       else {toReturn['selfNF'] = [];}
     });
     getGenNFArticles(rID).then((map)
@@ -591,18 +576,17 @@ class Controller {
       {toReturn['P'] = map;}
       else {toReturn['P'] = [];}
     });
-    getSelfRevArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['Self_reviewed'] = map;}
-      else {toReturn['Self_reviewed'] = [];}
-    });
-
     getToContRevArticles(rID).then((map)
     {
       if(map!=null)
       {toReturn['To_cont_review'] = map;}
       else {toReturn['To_cont_review'] = [];}
+    });
+    getSelfRevArticles(rID).then((map)
+    {
+      if(map!=null)
+      {toReturn['Self_reviewed'] = map;}
+      else {toReturn['Self_reviewed'] = [];}
     });
     getToReviewArticles(rID).then((map)
     {
@@ -615,10 +599,10 @@ class Controller {
       if(map!=null)
       {toReturn['Gen'] = map;}
       else {toReturn['Gen'] = [];}
-    });
+    });*/
+    print(toReturn);
     return toReturn; //
   }
-}
 
 
   static Future<List<dynamic>> getAllAttends() async {

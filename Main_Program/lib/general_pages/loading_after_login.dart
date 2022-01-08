@@ -20,8 +20,8 @@ class _loading_after_loginState extends State<loading_after_login> {
     await Future.delayed(const Duration(seconds: 1), () async {
       //Navigator.pop(context);
 
-      String username = 'resss';
-      int type = 3;
+      String username = data['username'];
+      int type = data['type'];
       //print(data);
       if (type == 1) {
         dynamic retrieved = await Controller.getMembersData(username);
@@ -63,9 +63,9 @@ class _loading_after_loginState extends State<loading_after_login> {
   @override
   Widget build(BuildContext context) {
     // if data is empty, initialize it
-    /*data = data.isNotEmpty
+    data = data.isNotEmpty
         ? data
-        : ModalRoute.of(context)!.settings.arguments as Map;*/
+        : ModalRoute.of(context)!.settings.arguments as Map;
 
     return Scaffold(
       backgroundColor: Colors.blue[900],
