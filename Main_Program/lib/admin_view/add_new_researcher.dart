@@ -18,7 +18,8 @@ class _addNewResearcherState extends State<addNewResearcher> {
     'Lname': null,
     'B_date': null,
     'years_of_experience': null,
-    'R_username': null
+    'R_username': null,
+    'password': null
   };
 
   List<dynamic> allUserNames = [];
@@ -130,7 +131,7 @@ class _addNewResearcherState extends State<addNewResearcher> {
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "Years Of Experience",
-                        icon: Icon(Icons.phone),
+                        icon: Icon(Icons.cases),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
@@ -163,7 +164,7 @@ class _addNewResearcherState extends State<addNewResearcher> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    DropdownButtonFormField(
+                    /*DropdownButtonFormField(
                       decoration: const InputDecoration(
                         hintText: "Username",
                         icon: Icon(Icons.person),
@@ -181,8 +182,49 @@ class _addNewResearcherState extends State<addNewResearcher> {
                       },
                       validator: (val) =>
                           (val == null) ? "Please Choose the Username" : null,
+                    ),*/
+                    const SizedBox(
+                      height: 20.0,
                     ),
-
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Username",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['R_username'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in your username";
+                        }
+                        if (val.length < 6) {
+                          return "Username must br longer than 6";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Password",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['password'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in password";
+                        }
+                        if (val.length < 6) {
+                          return "password must br longer than 6";
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),

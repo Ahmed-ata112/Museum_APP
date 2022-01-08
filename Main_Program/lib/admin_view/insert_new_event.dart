@@ -6,32 +6,25 @@ import '../controller.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class addNewStuff extends StatefulWidget {
+class addNewEvent extends StatefulWidget {
   @override
-  _addNewStuffState createState() => _addNewStuffState();
+  _addNewEventState createState() => _addNewEventState();
 }
 
-class _addNewStuffState extends State<addNewStuff> {
-  List<dynamic> DepsNums = [];
-  List<dynamic> AllUserNames = [];
+class _addNewEventState extends State<addNewEvent> {
+  List<dynamic> AllSecNums = [];
   List<dynamic> Ids = [];
   Map<String, dynamic> FormData = {
-    'Fname': null,
-    'Mname': null,
-    'Lname': null,
-    'gender': null,
-    'job_title': null,
-    'B_date': null,
-    'salary': null,
-    'start_date': null,
-    'super_ID': null,
-    'department_num': null,
-    'staff_username': null,
-    'password': null,
-    'type': null,
+    'ID': null,
+    'Date_Start': null,
+    'Date_End': null,
+    'description': null,
+    'theme': null,
+    'title': null,
+    'sec_number': null,
+    'staff_id': null
   };
   List<String> Genders = ["Male", "Female"];
-  //Fname, Mname, Lname, gender, job_title, B_date, salary, start_date, super_ID, department_num, staff_username
   final _formKey = GlobalKey<FormState>();
   String error = "";
 
@@ -39,22 +32,11 @@ class _addNewStuffState extends State<addNewStuff> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Controller.getAllUsernamesWithType(2).then((Listo) {
+    Controller.getAllSecNums().then((Listo) {
       setState(() {
         for (var vv in Listo) {
-          AllUserNames.add(vv[0]);
+          AllSecNums.add(vv[0]);
         }
-        print(AllUserNames);
-      });
-    });
-    Controller.getDepNums().then((Listo) {
-      setState(() {
-        //print(Listo);
-        for (var vv in Listo) {
-          DepsNums.add(vv[0]);
-          print(vv[0]);
-        }
-        //print(DepsNums);
       });
     });
     Controller.getEmpIDs().then((Listo) {
@@ -83,7 +65,7 @@ class _addNewStuffState extends State<addNewStuff> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Add an Employee!!",
+                      "Add an Event!!",
                       style: TextStyle(
                           fontSize: 30.0, color: Colors.lightBlueAccent),
                       textAlign: TextAlign.start,
@@ -94,19 +76,20 @@ class _addNewStuffState extends State<addNewStuff> {
                     //FirstName
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "First Name",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        hintText: "description",
+                        icon: Icon(Icons.description),
                       ),
+                      minLines: 1,
+                      maxLines: 100,
+                      keyboardType: TextInputType.multiline,
                       onChanged: (val) {
-                        setState(() => FormData['Fname'] = val);
+                        setState(() => FormData['description'] = val);
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return "Please fill in your First Name";
+                          return "Please fill description";
                         }
-                        if (val.length > 20) {
-                          return "First Name length can't exceed 20 characters";
-                        }
+
                         return null;
                       },
                     ),
@@ -116,19 +99,17 @@ class _addNewStuffState extends State<addNewStuff> {
                     //SecondName
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Second Name",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        hintText: "Theme",
+                        icon: Icon(Icons.multitrack_audio),
                       ),
                       onChanged: (val) {
-                        setState(() => FormData['Mname'] = val);
+                        setState(() => FormData['theme'] = val);
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return "Please fill in your Second Name";
+                          return "Please fill in theme";
                         }
-                        if (val.length > 20) {
-                          return "Second Name length can't exceed 20 characters";
-                        }
+
                         return null;
                       },
                     ),
@@ -137,19 +118,17 @@ class _addNewStuffState extends State<addNewStuff> {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Last Name",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        hintText: "Title",
+                        icon: Icon(Icons.add),
                       ),
                       onChanged: (val) {
-                        setState(() => FormData['Lname'] = val);
+                        setState(() => FormData['title'] = val);
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return "Please fill in your Last Name";
+                          return "Please fill in the title";
                         }
-                        if (val.length > 20) {
-                          return "Last Name length can't exceed 20 characters";
-                        }
+
                         return null;
                       },
                     ),
@@ -158,10 +137,10 @@ class _addNewStuffState extends State<addNewStuff> {
                     ),
                     DropdownButtonFormField(
                       decoration: const InputDecoration(
-                        hintText: "Department number",
+                        hintText: "Section number",
                         icon: Icon(Icons.person),
                       ),
-                      items: DepsNums.map((gg) {
+                      items: AllSecNums.map((gg) {
                         return DropdownMenuItem(
                           value: gg.toString(),
                           child: Text(gg.toString()),
@@ -169,7 +148,7 @@ class _addNewStuffState extends State<addNewStuff> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          FormData["department_num"] = val;
+                          FormData["sec_number"] = val;
                         });
                       },
                       validator: (val) =>
@@ -180,7 +159,7 @@ class _addNewStuffState extends State<addNewStuff> {
                     ),
                     DropdownButtonFormField(
                       decoration: const InputDecoration(
-                        hintText: "Super ID",
+                        hintText: "Supervisor ID",
                         icon: Icon(Icons.person),
                       ),
                       items: Ids.map((gg) {
@@ -191,7 +170,7 @@ class _addNewStuffState extends State<addNewStuff> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          FormData["super_ID"] = val;
+                          FormData["staff_id"] = val;
                         });
                       },
                       validator: (val) =>
@@ -204,45 +183,6 @@ class _addNewStuffState extends State<addNewStuff> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Job Title",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['job_title'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in  job title";
-                        }
-
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Salary",
-                        icon: Icon(Icons.monetization_on_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['salary'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in The Salary";
-                        }
-
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    //PhoneNumber
 
                     SizedBox(
                       height: 20.0,
@@ -251,10 +191,10 @@ class _addNewStuffState extends State<addNewStuff> {
                         cursorColor: Colors.black,
                         type: DateTimePickerType.date,
                         //dateLabelText: 'Birthday Date',
-                        dateHintText: 'Birthday date',
+                        dateHintText: 'Start Date',
                         icon: Icon(Icons.date_range),
                         firstDate: DateTime(DateTime.now().year - 100),
-                        lastDate: DateTime(DateTime.now().year + 5),
+                        lastDate: DateTime(DateTime.now().year + 50),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'this field is required';
@@ -262,89 +202,28 @@ class _addNewStuffState extends State<addNewStuff> {
                           return null;
                         },
                         onChanged: (value) {
-                          FormData['B_date'] = value;
+                          FormData['Date_Start'] = value;
                         }),
                     SizedBox(
                       height: 20.0,
-                    ), //Position
-                    DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Your Gender",
-                        icon: Icon(Icons.transgender),
-                      ),
-                      items: Genders.map((gg) {
-                        return DropdownMenuItem(
-                          value: gg[0],
-                          child: Text(gg),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          FormData["gender"] = val;
-                        });
-                      },
-                      validator: (val) => (val == null) ? "required" : null,
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Username",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['staff_username'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in your username";
-                        }
-                        if (val.length < 6) {
-                          return "Username must br longer than 6";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Password",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['password'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in password";
-                        }
-                        if (val.length < 6) {
-                          return "password must br longer than 6";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "type",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['type'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in typr";
-                        }
-                        return null;
-                      },
-                    ),
+                    DateTimePicker(
+                        cursorColor: Colors.black,
+                        type: DateTimePickerType.date,
+                        //dateLabelText: 'Birthday Date',
+                        dateHintText: 'End Date',
+                        icon: Icon(Icons.date_range),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(DateTime.now().year + 50),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'this field is required';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          FormData['Date_End'] = value;
+                        }),
 
                     const SizedBox(
                       height: 20.0,
@@ -360,7 +239,7 @@ class _addNewStuffState extends State<addNewStuff> {
                     //Sign up (submit) button
                     ElevatedButton(
                         child: const Text(
-                          "Add Employee!",
+                          "Add Event!",
                           style: TextStyle(color: Colors.white, fontSize: 20.0),
                         ),
                         onPressed: () async {
@@ -371,11 +250,11 @@ class _addNewStuffState extends State<addNewStuff> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                                await Controller.addNewStaff(FormData);
+                                await Controller.addNewEvent(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
-                                error = 'User Already Exists';
+                                error = 'Event Already Exists';
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                   content: Text("Error occured"),
