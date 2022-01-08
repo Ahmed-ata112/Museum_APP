@@ -91,7 +91,8 @@ class resArticle {
   late int views;
   late int likes;
   late int reviews;
-  resArticle(this.id, this.state, this.content, this.header, views, likes, reviews)
+   List<Map<String, String>> writers;
+  resArticle(this.id, this.state, this.content, this.header, views, likes, reviews, this.writers)
   {
     if(views != null) {this.views = views;}
     else {views = 0;}

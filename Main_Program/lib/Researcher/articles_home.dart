@@ -49,7 +49,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], null));
+                art['header'], art['views_'], art['likes_'], null, art['writers']));
         }
         allArticles['selfNF'] = temp;
 
@@ -59,7 +59,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], art['reviews']));
+                art['header'], art['views_'], art['likes_'], art['reviews'], art['writers']));
         }
         allArticles['P'] = temp;
         temp = [];
@@ -68,7 +68,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], art['reviews']));
+                art['header'], art['views_'], art['likes_'], art['reviews'], art['writers']));
         }
         allArticles['Own_reviewed'] = temp;
         temp = [];
@@ -77,7 +77,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], art['reviews']));
+                art['header'], art['views_'], art['likes_'], art['reviews'], art['writers']));
         }
         allArticles['To_cont_review'] = temp;
         temp = [];
@@ -86,7 +86,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], art['reviews']));
+                art['header'], art['views_'], art['likes_'], art['reviews'], art['writers']));
         }
         allArticles['To_review'] = temp;
         temp = [];
@@ -94,7 +94,7 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         for (dynamic art in arts) {
           if (art != null)
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], art['views_'], art['likes_'], art['reviews']));
+                art['header'], art['views_'], art['likes_'], art['reviews'], art['writers']));
         }
         allArticles['Gen'] = temp;
         temp = [];
