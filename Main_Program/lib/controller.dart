@@ -70,6 +70,17 @@ class Controller {
     }
     return count;
   }
+  static Future<int> getDepartmentCount() async {
+    String query = "SELECT count(Dno) FROM museum.department;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
 
   static Future<int> getVisitorCount() async {
     String query = "SELECT count(id) FROM museum.visitor;";
@@ -295,7 +306,22 @@ class Controller {
     }
     return ret;
   }
+  //Dno, name, manager_ID
+  static Future<int> addNewDepartment(Map<String, dynamic> formData) async {
+    //name_, number, floor_, hall
+    String name = formData["name"];
+    int Dno = await getDepartmentCount();
+    int manager_ID = int.parse(formData["manager_ID"]);
 
+    List<dynamic> toSend2 = [Dno, name, manager_ID];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_department', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
   static Future<List<dynamic>> getDepNums() async {
     String query = "SELECT Dno FROM museum.department;";
 
