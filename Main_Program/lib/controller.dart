@@ -84,9 +84,9 @@ class Controller {
   }
 
   static Future<int> addNewUser(Map<String, dynamic> formData) async {
-    String username_ = formData["username"];
-    String password_ = formData["Password"];
-    String type_ = formData['type_'];
+    String username_ = formData["username_"];
+    String password_ = formData["password_"];
+    int type_ = int.parse(formData['type_']);
 
     // members have type int 1
     final DateTime now = DateTime.now();
