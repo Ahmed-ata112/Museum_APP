@@ -1,3 +1,4 @@
+import 'package:main_program/admin_view/add_new_Painting&artifacts.dart';
 import 'package:main_program/admin_view/add_new_visitor.dart';
 
 import 'api.dart';
@@ -663,4 +664,31 @@ return -1;
 }
 return 1; // returned successfully
 }
+  static Future<List<dynamic>> getAllSectionNumbers() async {
+    String query = "SELECT number FROM museum.section;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get go_on from database");
+    }
+    return ret;
+  }
+  static Future<int> addNewPaintingAndArtifacts(Map<String, dynamic> formData) async {
+    //ID, name, type, description, section_number
+
+    int ID = await getSectionCount();
+    String name = formData["name"];
+    String type = formData["type"];
+    String description = formData["description"];
+    int section_number=int.parse(formData["section_number"]);
+
+    List<dynamic> toSend2 = [ID, name, type, description, section_number];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_PaintingandArtifact', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
 }
