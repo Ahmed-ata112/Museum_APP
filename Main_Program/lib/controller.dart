@@ -59,6 +59,18 @@ class Controller {
     return count;
   }
 
+  static Future<int> getSectionCount() async {
+    String query = "SELECT count(id) FROM museum.section;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
   static Future<int> getVisitorCount() async {
     String query = "SELECT count(id) FROM museum.visitor;";
 
@@ -249,6 +261,24 @@ class Controller {
     ];
     dynamic res2 =
         await DBManager.executeNonQueryProc('insert_new_researcher', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+//ID, Fname, Mname, Lname, B_date, years_of_experience, R_username
+  static Future<int> addNewSection(Map<String, dynamic> formData) async {
+    //name_, number, floor_, hall
+    String name_ = formData["name_"];
+    int number = await getSectionCount();
+    int floor_ = int.parse(formData["floor_"]);
+    String hall = formData["hall"];
+
+    List<dynamic> toSend2 = [name_, number, floor_, hall];
+    dynamic res2 =
+        await DBManager.executeNonQueryProc('insert_new_section', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;

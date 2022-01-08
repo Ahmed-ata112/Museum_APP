@@ -8,6 +8,7 @@ import 'package:main_program/data_holders.dart';
 import '../controller.dart';
 import 'add_new_member.dart';
 import 'add_new_researcher.dart';
+import 'add_new_section.dart';
 import 'all_users.dart';
 
 class admin_home extends StatefulWidget {
@@ -586,6 +587,19 @@ class _admin_homeState extends State<admin_home> {
             onPressed: () async {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => addNewStuff()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Section'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewSection()));
             },
           ),
         ],
