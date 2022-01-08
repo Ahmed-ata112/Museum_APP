@@ -136,7 +136,7 @@ def execute_reader():
 def get_data():
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;')
+        cursor.execute('SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID ORDER BY a.SO_ID;')
         my_reader_response = [x for x in cursor]
         data = []
         for x in my_reader_response:
@@ -149,6 +149,67 @@ def get_data():
     except Exception as inst:
         cursor.close()
         return inst
+
+
+@app.route('/getMaxQuantity', methods=['GET'])
+def get_Max_Sold():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT max(b.q) as maximum FROM (SELECT a.SO_ID, SUM(a.quantity) as q FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID)b;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'maximum': x[0]
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+@app.route('/getstatistics', methods=['GET'])
+def get_Stat():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT a.timestamp as time, SUM(a.quantity) as q FROM ((SELECT timestamp, quantity FROM buy_member_souvenir) UNION (SELECT  timestamp, quantity FROM buys_visitor_souvenir))a GROUP BY a.timestamp ORDER BY a.timestamp;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'time': x[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'q': x[1]
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
+
+
+@app.route('/getMaxSale', methods=['GET'])
+def get_max_sale():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT MAX(b.q) as maximum FROM (SELECT a.timestamp as time, SUM(a.quantity) as q FROM ((SELECT timestamp, quantity FROM buy_member_souvenir) UNION (SELECT  timestamp, quantity FROM buys_visitor_souvenir))a GROUP BY a.timestamp ORDER BY a.timestamp)b;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'maximum': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+
+
 
 
 
@@ -210,24 +271,6 @@ def get_Tours():
 
 
 
-# @app.route('/getEventLocation', methods=['GET'])
-# def get_Event_Loc():
-#     try:
-#         cursor = mysql.connection.cursor()
-#         parser.add_argument("event_title")
-#         args = parser.parse_args()
-#         cursor.execute('SELECT sec_number FROM museum.event where title =  ?;', args)
-#         my_reader_response = [x for x in cursor]
-#         data = []
-#         for x in my_reader_response:
-#             data.append({
-#                 'sec_number': x[0],
-#             })
-#         cursor.close()
-#         return simplejson.dumps(data)
-#     except Exception as inst:
-#         cursor.close()
-#         return inst
 
 
 @app.route('/getEventLocation', methods=['POST'])
@@ -297,10 +340,75 @@ def Search_Visitor_ID():
 
 
 
+@app.route('/selectSoveID', methods=['POST'])
+def get_Sov_ID():
+    try:
+        parser.add_argument("ID")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        cursor.callproc('search_sov_id',(args["ID"],) )
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'ID': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
 
 
-#search_visitor_id
 
+
+
+# @app.route('/selectSovID', methods=['GET'])
+# def get_Sov_ID():
+#     try:
+#         cursor = mysql.connection.cursor()
+#         cursor.execute('SELECT ID FROM museum.souvenir;')
+#         my_reader_response = [x for x in cursor]
+#         data = []
+#         for x in my_reader_response:
+#             data.append({
+#                 'ID': x[0],
+#             })
+#         cursor.close()
+#         return simplejson.dumps(data)
+#     except Exception as inst:
+#         cursor.close()
+#         return inst
+
+
+
+#SELECT ID FROM museum.visitor WHERE ID = id_;
+
+
+
+
+# @app.route('/getMaxQuantity', methods=['GET'])
+# def get_Max_Sold():
+#     try:
+#         cursor = mysql.connection.cursor()
+#         cursor.callproc('get_max_quantity_sold_sov')
+#         my_reader_response = [x for x in cursor]
+#         data = []
+#         for x in my_reader_response:
+#             data.append({
+#                 'quantity': x[0],
+                
+#             })
+#         cursor.close()
+#         return simplejson.dumps(data)
+#     except Exception as inst:
+#         cursor.close()
+#         return inst
+
+
+
+
+#get_max_quantity_sold_sov
 #search_event_location
 # show_coming_tours
 

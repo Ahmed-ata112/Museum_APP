@@ -23,15 +23,14 @@ class _coming_toursState extends State<coming_tours> {
             future: DBManager.gettours(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.builder(
-                    itemCount: snapshot.data!.length,  //! --> for null safety --> as it is future --> as if the length is empty
-                    itemBuilder: (context, index) {
                       return SingleChildScrollView(
                         scrollDirection:Axis.horizontal,
                         child: SingleChildScrollView(
+                          scrollDirection:Axis.vertical,
                           child: Card(
                             child: Expanded(
                               child: DataTable(
+                                sortAscending: true,
                                 columns: const[
                                   DataColumn(label: Text("ID",style: TextStyle(
                                       fontStyle: FontStyle.italic, color: Colors.red)), tooltip: 'the id of the tour'),
@@ -48,16 +47,18 @@ class _coming_toursState extends State<coming_tours> {
                                   DataColumn(label: Text("organizer_id",style: TextStyle(
                                       fontStyle: FontStyle.italic,color: Colors.red)), tooltip: "the id of the staff who organizes this event"),
                                 ],
-                                rows: [DataRow(cells: [
-                                  DataCell(Text("${snapshot.data![index].ID}")),
-                                  DataCell(Text("${snapshot.data![index].place}")),
-                                  DataCell(Text("${snapshot.data![index].description}")),
-                                  DataCell(Text("${snapshot.data![index].topic}")),
-                                  DataCell(Text("${snapshot.data![index].Date_Start}")),
-                                  DataCell(Text("${snapshot.data![index].Date_End}")),
-                                  DataCell(Text("${snapshot.data![index].organizer_id}"))
+                                rows: [
+                                  for(tours t in snapshot.data!)
+                                    DataRow(cells: [
+                                    DataCell(Text("${t.ID}")),
+                                    DataCell(Text("${t.place}")),
+                                    DataCell(Text("${t.description}")),
+                                    DataCell(Text("${t.topic}")),
+                                    DataCell(Text("${t.Date_Start}")),
+                                    DataCell(Text("${t.Date_End}")),
+                                    DataCell(Text("${t.organizer_id}"))
 
-                                ])
+                                  ])
 
 
                                 ],
@@ -68,9 +69,6 @@ class _coming_toursState extends State<coming_tours> {
                         ),
                       );
 
-
-                    }
-                );
 
 
               }

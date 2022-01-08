@@ -3,11 +3,15 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:main_program/Models/Goods.dart';
+import 'package:main_program/Models/max_sold_quantity.dart';
 import 'package:main_program/Models/coming_events.dart';
 import 'package:main_program/Models/coming_tours.dart';
 import 'package:main_program/Models/event_location.dart';
+import 'package:main_program/Models/search_sov_id.dart';
 import 'package:main_program/Models/tour_location.dart';
 import 'package:main_program/Models/visitor_id.dart';
+import 'package:main_program/Models/statistics.dart';
+
 
 class list_holder {
   List<dynamic> arguments;
@@ -107,6 +111,47 @@ class DBManager {
   }
 
 
+  static Future<List<max_sold>> getmaxsold() async {
+    final response = await http.get((Uri.parse('${BASE_URL}/getMaxQuantity')));
+    try {
+      final max_sold = max_soldFromJson(response.body);
+      return max_sold;
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  static Future<List<stat>> getstat() async {
+    final response = await http.get((Uri.parse('${BASE_URL}/getstatistics')));
+    try {
+      final stat = statFromJson(response.body);
+      return stat;
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+
+
+
+  static Future<List<max_sold>> getmaxsale() async {
+    final response = await http.get((Uri.parse('${BASE_URL}/getMaxSale')));
+    try {
+      final max_sold = max_soldFromJson(response.body);
+      return max_sold;
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+
+
+
+
+
   //using procedure
   static Future<List<events>> getevents() async {
     final response = await http.get((Uri.parse('${BASE_URL}/getEvents')));
@@ -172,6 +217,23 @@ class DBManager {
       //rethrow;
     }
   }
+
+
+  //using procedure
+  static Future<List<sov_id>> search_sov_id(int id) async {
+
+    final response = await http.post(Uri.parse('${BASE_URL}/selectSoveID'), body:{'ID':id.toString()});
+    try {
+      final sov_id = sov_idFromJson(response.body);
+      return sov_id;
+    } catch (error) {
+      print(error);
+      return [];
+      //rethrow;
+    }
+  }
+
+
 
 
 

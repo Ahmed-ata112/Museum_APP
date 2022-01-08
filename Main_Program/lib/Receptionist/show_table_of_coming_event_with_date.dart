@@ -29,15 +29,14 @@ class _coming_eventsState extends State<coming_events> {
               future: DBManager.getevents(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
-                  itemCount: snapshot.data!.length,  //! --> for null safety --> as it is future --> as if the length is empty
-                  itemBuilder: (context, index) {
                     return SingleChildScrollView(
                       scrollDirection:Axis.horizontal,
                       child: SingleChildScrollView(
+                        scrollDirection:Axis.vertical,
                         child: Card(
                           child: Expanded(
                             child: DataTable(
+                              sortAscending: true,
                               columns: const[
                                 DataColumn(label: Text("ID",style: TextStyle(
                                   fontStyle: FontStyle.italic, color: Colors.red)), tooltip: 'the id of the event'),
@@ -56,17 +55,22 @@ class _coming_eventsState extends State<coming_events> {
                                 DataColumn(label: Text("Staff ID",style: TextStyle(
                                   fontStyle: FontStyle.italic,color: Colors.red)), tooltip: "the id of the staff who organizes this event"),
                               ],
-                              rows: [DataRow(cells: [
-                                  DataCell(Text("${snapshot.data![index].event_id}")),
-                                  DataCell(Text("${snapshot.data![index].event_date_start}")),
-                                  DataCell(Text("${snapshot.data![index].event_date_end}")),
-                                  DataCell(Text("${snapshot.data![index].description}")),
-                                  DataCell(Text("${snapshot.data![index].theme}")),
-                                  DataCell(Text("${snapshot.data![index].title}")),
-                                  DataCell(Text("${snapshot.data![index].sec_number}")),
-                                  DataCell(Text("${snapshot.data![index].staff_id}")),
+                              rows: [
+                                for(events e in snapshot.data!)
+                                  DataRow(cells: [
+                                  DataCell(Text("${e.event_id}")),
 
-                                ])
+
+                                  //DataCell(Text("${snapshot.data![index].event_id}")),
+                                  DataCell(Text("${e.event_date_start}")),
+                                  DataCell(Text("${e.event_date_end}")),
+                                  DataCell(Text("${e.description}")),
+                                  DataCell(Text("${e.theme}")),
+                                  DataCell(Text("${e.title}")),
+                                  DataCell(Text("${e.sec_number}")),
+                                  DataCell(Text("${e.staff_id}")),]
+
+                                )
 
 
                               ],
@@ -78,8 +82,6 @@ class _coming_eventsState extends State<coming_events> {
                     );
 
 
-                  }
-                  );
 
 
                 }

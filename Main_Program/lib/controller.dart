@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:main_program/Models/event_location.dart';
 
 import 'api.dart';
@@ -8,6 +10,15 @@ class Controller {
   Controller() {}
 
   //------------------- my part ---------------------- just for quick access
+
+
+  static Future<int> addNewSouvenir(int id, String name, double price, int quantity) async {
+    String query = "INSERT INTO souvenir (ID, name, price, quantity ) VALUES ('$id', '$name', '$price', '$quantity');";
+        // "INSERT INTO souvenir (ID, name, price, quantity ) " +
+        // "Values ('" + id.toString() + "','" + name + "','" + price.toString() + "','" + quantity.toString() + "');";
+    return DBManager.executeNonQuery(query);
+  }
+
 
   static Future<dynamic> select_data() async
   {
