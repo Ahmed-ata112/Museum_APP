@@ -167,6 +167,8 @@ class Controller {
     String job_title = formData["job_title"];
     String gender = formData["gender"];
     String B_date = formData["B_date"];
+    String password = formData["password"];
+    int type = int.parse(formData["type"]);
     int ID = await getStaffCount();
     int salary = int.parse(formData["salary"]);
     int super_ID = int.parse(formData["super_ID"]);
@@ -176,6 +178,15 @@ class Controller {
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String regDate = formatter.format(now);
+
+    List<dynamic> toSend = [username, password, type, regDate];
+    //first you add the user
+    dynamic res =
+        await DBManager.executeNonQueryProc('insert_new_user', toSend);
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
 
     // if inserted correctly then add the member
 
@@ -205,12 +216,27 @@ class Controller {
   //ID, Fname, Mname, Lname, B_date, years_of_experience, R_username
   static Future<int> addNewResearcher(Map<String, dynamic> formData) async {
     String username = formData["R_username"];
+    String password = formData["password"];
     String Mname = formData["Mname"];
     String Fname = formData["Fname"];
     String Lname = formData["Lname"];
     String B_date = formData["B_date"];
     int ID = await getResearcherCount();
     int years_of_experience = int.parse(formData["years_of_experience"]);
+
+    // members have type int 1
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String regDate = formatter.format(now);
+
+    List<dynamic> toSend = [username, password, 3, regDate];
+    //first you add the user
+    dynamic res =
+        await DBManager.executeNonQueryProc('insert_new_user', toSend);
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
 
     List<dynamic> toSend2 = [
       ID,

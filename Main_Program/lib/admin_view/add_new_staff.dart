@@ -26,7 +26,9 @@ class _addNewStuffState extends State<addNewStuff> {
     'start_date': null,
     'super_ID': null,
     'department_num': null,
-    'staff_username': null
+    'staff_username': null,
+    'password': null,
+    'type': null,
   };
   List<String> Genders = ["Male", "Female"];
   //Fname, Mname, Lname, gender, job_title, B_date, salary, start_date, super_ID, department_num, staff_username
@@ -198,25 +200,7 @@ class _addNewStuffState extends State<addNewStuff> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Staff Username",
-                        icon: Icon(Icons.person),
-                      ),
-                      items: AllUserNames.map((gg) {
-                        return DropdownMenuItem(
-                          value: gg,
-                          child: Text(gg),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          FormData["staff_username"] = val;
-                        });
-                      },
-                      validator: (val) =>
-                          (val == null) ? "This is Required" : null,
-                    ),
+
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -303,6 +287,63 @@ class _addNewStuffState extends State<addNewStuff> {
                     ),
                     const SizedBox(
                       height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Username",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['staff_username'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in your username";
+                        }
+                        if (val.length < 6) {
+                          return "Username must br longer than 6";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Password",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['password'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in password";
+                        }
+                        if (val.length < 6) {
+                          return "password must br longer than 6";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "type",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['type'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in typr";
+                        }
+                        return null;
+                      },
                     ),
 
                     const SizedBox(
