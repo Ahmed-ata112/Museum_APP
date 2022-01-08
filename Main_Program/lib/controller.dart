@@ -306,6 +306,24 @@ class Controller {
     }
     return ret;
   }
+  static Future<List<dynamic>> getAllResearcherID() async {
+    String query = "SELECT ID FROM museum.researcher;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get res IDs from database");
+    }
+    return ret;
+  }
+  static Future<List<dynamic>> getAllArticleID() async {
+    String query = "SELECT ID FROM museum.article;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get art IDs from database");
+    }
+    return ret;
+  }
   //Dno, name, manager_ID
   static Future<int> addNewDepartment(Map<String, dynamic> formData) async {
     //name_, number, floor_, hall
@@ -627,4 +645,22 @@ class Controller {
     }
     return ret;
   }
+
+static Future<int> addNewReview(Map<String, dynamic> formData) async {
+int result = int.parse(formData["result"]);
+int progress = int.parse(formData['progress']);
+int R_ID = int.parse(formData['R_ID']);
+int A_ID = int.parse(formData['A_ID']);
+
+List<dynamic> toSend = [result, progress, R_ID, A_ID];
+//first you add the user
+dynamic res =
+    await DBManager.executeNonQueryProc('insert_new_review', toSend);
+
+if (res == 0) {
+//don't exist
+return -1;
+}
+return 1; // returned successfully
+}
 }
