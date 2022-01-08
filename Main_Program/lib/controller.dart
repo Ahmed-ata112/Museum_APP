@@ -93,7 +93,7 @@ class Controller {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String registerDate = formatter.format(now);
 
-    List<dynamic> toSend = [username_, password_, 1, registerDate];
+    List<dynamic> toSend = [username_, password_, type_, registerDate];
     //first you add the user
     dynamic res =
         await DBManager.executeNonQueryProc('insert_new_user', toSend);
