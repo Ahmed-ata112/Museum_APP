@@ -83,6 +83,18 @@ class Controller {
     return count;
   }
 
+  static Future<int> getEventCount() async {
+    String query = "SELECT count(id) FROM museum.event;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
   static Future<int> addNewUser(Map<String, dynamic> formData) async {
     String username_ = formData["username_"];
     String password_ = formData["password_"];
@@ -115,6 +127,38 @@ class Controller {
     //first you add the user
     dynamic res =
         await DBManager.executeNonQueryProc('insert_new_visitor', toSend);
+
+    if (res == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+  //ID, Date_Start, Date_End, description, theme, title, sec_number, staff_id
+  static Future<int> addNewEvent(Map<String, dynamic> formData) async {
+    String Date_Start = formData["Date_Start"];
+    String Date_End = formData['Date_End'];
+    String description = formData['description'];
+    String theme = formData['theme'];
+    String title = formData['title'];
+    int sec_number = int.parse(formData['sec_number']);
+    int staff_id = int.parse(formData['staff_id']);
+    int ID = await getEventCount();
+
+    List<dynamic> toSend = [
+      ID,
+      Date_Start,
+      Date_End,
+      description,
+      theme,
+      title,
+      sec_number,
+      staff_id
+    ];
+    //first you add the user
+    dynamic res =
+        await DBManager.executeNonQueryProc('insert_new_event', toSend);
 
     if (res == 0) {
       //don't exist
@@ -288,6 +332,16 @@ class Controller {
 
   static Future<List<dynamic>> getAllUsernamesWithType(int type) async {
     String query = "SELECT username_ FROM museum.user_ where type_=${type};";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get res usernames from database");
+    }
+    return ret;
+  }
+
+  static Future<List<dynamic>> getAllSecNums() async {
+    String query = "SELECT number FROM museum.section;";
 
     dynamic ret = await DBManager.executeReader(query);
     if (ret == null) {
