@@ -10,7 +10,7 @@ import 'member_view/member_home.dart';
 import 'api.dart';
 import 'package:intl/intl.dart';
 import 'package:main_program/Shop_Manager/Pie_Chart.dart';
-import 'package:main_program/Shop_Manager/All_Statistics.dart';
+import 'package:main_program/Shop_Manager/all_statistics.dart';
 import 'package:main_program/Shop_Manager/Dashboard.dart';
 
 void try_login() async {
@@ -24,7 +24,7 @@ void try_login() async {
   //print(r);
   //String query = "insert into museum.visitor values (11,'2013-05-02', '2020-05-02');";
   //String query = 'SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;';
- /*String query = 'select * from museum.visitor;';
+  /*String query = 'select * from museum.visitor;';
   dynamic r = await DBManager.executeReader(query);
   print(r);
   for (var vv in r) {
@@ -61,7 +61,7 @@ void try_login() async {
   // var s = await DBManager.getstat();
   // print(DateTime.parse(s.first.time).toString());
 
- // await Controller.addNewSouvenir(55, 'sov', 34, 70);
+  // await Controller.addNewSouvenir(55, 'sov', 34, 70);
 
   //List<dynamic> tosend = [50, 'sov', 34, 70];
   //await DBManager.executeNonQueryProc('inert_new_souvenir', tosend);
@@ -87,7 +87,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => Dashboard(),//Home_Receptionist(),//Dashboard(),//Statistics(),//
+        '/login_page': (context) =>
+            Dashboard(), //Home_Receptionist(),//Dashboard(),//Statistics(),//
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/accountant_home': (context) => AccountantHome(),
