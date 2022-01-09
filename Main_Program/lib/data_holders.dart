@@ -96,3 +96,19 @@ class Staff{
   this.department_num,
   this.staff_username){}
 }
+class article{
+  int ID;
+  String state_;
+  String content;
+  int likes;
+  int views_;
+  String header;
+  article(
+      this.ID,
+      this.state_,
+      this.content,
+      this.likes,
+      this.views_,
+      this.header,
+      ){}
+}

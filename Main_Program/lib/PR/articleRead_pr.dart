@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 import 'publish_article.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
-
+import 'package:main_program/data_holders.dart';
 String ss = lorem(words: 1000);
 
 class article_read_pr extends StatefulWidget {
-  const article_read_pr({Key? key}) : super(key: key);
+  final article S;
+  const article_read_pr({Key? key,required this.S}) : super(key: key);
 
   @override
-  _article_readState createState() => _article_readState();
+  _article_readState createState() => _article_readState(S);
 }
 
 class _article_readState extends State<article_read_pr> {
+  article S;
+  _article_readState(this.S);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('an article'),
+        title: Text(S.header),
         centerTitle: true,
       ),
       body: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
-            child: Image.network(
-              'http://placekitten.com/g/400/400',
-              fit: BoxFit.fitWidth,
+
             ),
-          ),
+
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              "Some Heading Text",
+              S.header,
               style: TextStyle(
                   fontSize: 28.0,
                   color: Colors.black87,
@@ -39,7 +40,7 @@ class _article_readState extends State<article_read_pr> {
             ),
           ),
           Text(
-            ss,
+            S.content,
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.black87,
@@ -56,7 +57,7 @@ class _article_readState extends State<article_read_pr> {
           return showDialog(
               context: context,
               builder: (BuildContext context) {
-                return publish_article();
+                return publish_article(S:S.ID);
               }).then((value) {
             setState(() {});
           });

@@ -5,8 +5,9 @@ import 'package:main_program/PR/available_articles.dart';
 import 'package:main_program/PR/Add tour.dart';
 import 'package:main_program/PR/Add event.dart';
 import 'articleRead_pr.dart';
-
-Widget articleCard(index, context) {
+import 'package:main_program/controller.dart';
+import'package:main_program/data_holders.dart';
+Widget articleCard(index, context,article S) {
   return GFCard(
     boxFit: BoxFit.cover,
     titlePosition: GFPosition.start,
@@ -14,17 +15,14 @@ Widget articleCard(index, context) {
     imageOverlay: NetworkImage('https://via.placeholder.com/150/FFFFFF/FFFFFF'),
     title: GFListTile(
       avatar: GFAvatar(),
-      titleText: 'Article NAME',
-      subTitleText: 'Auther name',
+      titleText:'ID : ${S.ID.toString()}',
+      //subTitleText: 'S.ID',
     ),
     content: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 15,
-        ),
-        Text(
-            "Some quicsssssssk example text to build on thecard Somesad quick example text to build on the card Some quick example text to build on the card"),
+        Text(S.header
+            ),
       ],
     ),
     buttonBar: GFButtonBar(
@@ -32,7 +30,7 @@ Widget articleCard(index, context) {
         GFButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => article_read_pr()));
+                MaterialPageRoute(builder: (context) => article_read_pr(S:S)));
           },
           text: "Read",
           blockButton: true,
@@ -50,6 +48,21 @@ class available_articles extends StatefulWidget {
 }
 
 class _ArticlesHomePRState extends State<available_articles> {
+  List<article> S=[];
+  void initState() {
+    super.initState();
+    Controller.getReviewedArticles().then((ReturnedList) {
+      print(ReturnedList[0]);
+      setState(() {
+        for (var row in ReturnedList) {
+          article e= article(row['ID'],row['state_'], row['content'], row['likes'],row['views_'],row['header']);
+          print ('aaaaaaaaaaaaaa');
+          S.add(e);
+        }
+
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,14 +78,6 @@ class _ArticlesHomePRState extends State<available_articles> {
                   ),
                   child: Stack(
                     children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CircleAvatar(
-                          backgroundImage:
-                          NetworkImage(''),
-                          radius: 50.0,
-                        ),
-                      ),
                       Align(
                         alignment: Alignment.topRight + Alignment(0, .4),
                         child: Text(
@@ -139,9 +144,9 @@ class _ArticlesHomePRState extends State<available_articles> {
             ),
           ),
       body: ListView.builder(
-        itemCount: 5, // should be dynamic -> retrieve articles
+        itemCount: S.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return articleCard(index, context);
+          return articleCard(index, context,S[index]);
         },
       ),
     );

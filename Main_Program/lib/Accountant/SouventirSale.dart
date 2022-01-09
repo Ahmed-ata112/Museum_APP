@@ -21,14 +21,12 @@ class SouvenirSaleState extends State<SouvenirSale> {
   List<String> labels=['Souvenir ID ','quantity'];
   void initState() {
     super.initState();
-    Controller.getSouvenirSale().then((ReturnedList) {
+    Controller.getSouvenirSale_visitor().then((ReturnedList) {
       setState(() {
         for (var row in ReturnedList) {
          Souvenir e= Souvenir('sName', 1, row[0], row[1]);
          print (e);
           S.add(e);
-         Souvenir e1= Souvenir('sName', 1, row[2], row[3]);
-         S.add(e1);
         }
         setState(() {});
       });
@@ -37,7 +35,7 @@ class SouvenirSaleState extends State<SouvenirSale> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Souvenir Sale"),
+        title: Text("Souvenir Sale by visitors"),
       ),
     body: SingleChildScrollView(
     scrollDirection: Axis.horizontal,
