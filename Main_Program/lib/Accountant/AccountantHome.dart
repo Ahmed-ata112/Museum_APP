@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:main_program/Accountant/SouvenirSale_member_edition.dart';
 import 'package:main_program/controller.dart';
 import 'package:main_program/Accountant/Souvenir.dart';
 import 'package:main_program/Accountant/SouventirSale.dart';
@@ -17,6 +18,7 @@ class accHome extends StatefulWidget {
 class accHomeState extends State<accHome> {
   @override
   List<Souvenir> S=[];
+  List<Souvenir> SV=[];
   void initState() {
     super.initState();
     Controller.getSouvenirSale().then((ReturnedList) {
@@ -26,10 +28,18 @@ class accHomeState extends State<accHome> {
           Souvenir e= Souvenir('sName', 1, row['So_ID'], row['quantity']);
           print (e);
           S.add(e);
-          Souvenir e1= Souvenir('sName', 1, row['S_ID'], row['buys_visitor_souvenir.quantity']);
-          S.add(e1);
         }
 
+      });
+    });
+    Controller.getSouvenirSale_visitor().then((ReturnedList) {
+      print(ReturnedList[0]);
+      setState(() {
+        for (var row in ReturnedList) {
+          Souvenir e= Souvenir('sName', 1, row['So_ID'], row['quantity']);
+          print (e);
+          SV.add(e);
+        }
       });
     });
   }
@@ -90,12 +100,21 @@ class accHomeState extends State<accHome> {
               ),
             ),
             ListTile(
-              title: const Text('Souvenirs Sale'),
+              title: const Text('Souvenirs Sale by visitors'),
               onTap: () {
                 // Update the state of the app.
                 // ...
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SouvenirSale(S:S)));
+              },
+            ),
+            ListTile(
+              title: const Text('Souvenirs Sale by members'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SouvenirSale_member_edition(S:SV)));
               },
             ),
             ListTile(

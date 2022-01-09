@@ -70,8 +70,7 @@ class GivePromoState extends State<GivePromo> {
     Controller.getAllEmployeesIDs().then((ReturnedList) {
       setState(() {
         for (var row in ReturnedList) {
-          print(row['ID']);
-          IDs.add(row['ID']);
+          IDs.add(row);
         }
         setState(() {});
       });
