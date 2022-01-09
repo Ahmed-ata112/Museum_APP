@@ -18,17 +18,16 @@ class NewTourState extends State<NewTour> {
     'Date_Start': null,
     'Date_End': null,
     'organizer_id': null,
-    'title' : null,
+    'title': null,
   };
   List<int> IDs = [];
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
-  Widget buildTitileField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+  Widget buildTitileField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Topic",
           icon: Icon(Icons.tour),
@@ -45,13 +44,14 @@ class NewTourState extends State<NewTour> {
           }
           return null;
         },
-      ),);
+      ),
+    );
   }
-  Widget buildTopicField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+
+  Widget buildTopicField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Topic",
           icon: Icon(Icons.tour),
@@ -68,13 +68,14 @@ class NewTourState extends State<NewTour> {
           }
           return null;
         },
-      ),);
+      ),
+    );
   }
-  Widget buildPlaceField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+
+  Widget buildPlaceField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Place",
           icon: Icon(Icons.place),
@@ -94,10 +95,11 @@ class NewTourState extends State<NewTour> {
       ),
     );
   }
-  Widget buildIDField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:          TextFormField(
+
+  Widget buildIDField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "ID",
           icon: Icon(Icons.tour_outlined),
@@ -115,11 +117,11 @@ class NewTourState extends State<NewTour> {
       ),
     );
   }
-  Widget buildDescField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+
+  Widget buildDescField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Tour Description",
           icon: Icon(Icons.description),
@@ -136,11 +138,11 @@ class NewTourState extends State<NewTour> {
       ),
     );
   }
-  Widget buildStartDateField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      DateTimePicker(
+
+  Widget buildStartDateField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
           dateHintText: 'Start date',
@@ -158,11 +160,11 @@ class NewTourState extends State<NewTour> {
           }),
     );
   }
-  Widget buildEndDateField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      DateTimePicker(
+
+  Widget buildEndDateField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
           dateHintText: 'End date',
@@ -180,10 +182,11 @@ class NewTourState extends State<NewTour> {
           }),
     );
   }
-  Widget buildstaff_idField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:DropdownButtonFormField(
+
+  Widget buildstaff_idField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(
         decoration: const InputDecoration(
           hintText: "Your Gender",
           icon: Icon(Icons.person_add_alt_1_sharp),
@@ -199,15 +202,14 @@ class NewTourState extends State<NewTour> {
             FormData["organizer_id"] = val;
           });
         },
-        validator: (val) => (val == null)
-            ? "this field is required"
-            : null,
+        validator: (val) => (val == null) ? "this field is required" : null,
       ),
     );
   }
+
   void initState() {
     super.initState();
-    Controller.getAllEmployeesIDs().then((ReturnedList) {
+    Controller.getEmpIDs().then((ReturnedList) {
       setState(() {
         for (var row in ReturnedList) {
           print(row['ID']);
@@ -217,20 +219,20 @@ class NewTourState extends State<NewTour> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: const Text('New Tour',
-          style: TextStyle(
-              color: Colors.black
-          ),),
+        title: const Text(
+          'New Tour',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Form(
         key: _formKey,
-        child:
-        ListView(
+        child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             buildTitileField(),
@@ -241,7 +243,8 @@ class NewTourState extends State<NewTour> {
             buildStartDateField(),
             buildEndDateField(),
             const SizedBox(height: 50),
-            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+            Padding(
+              padding: const EdgeInsets.only(left: 130, right: 130),
               child: ElevatedButton(
                   child: const Text(
                     "Add",
@@ -256,8 +259,7 @@ class NewTourState extends State<NewTour> {
                       //i.e check if this account exists and if the email and password matches (are correct)
 
                       //Server Validation Side
-                      dynamic retV =
-                      await Controller.addNewTour(FormData);
+                      dynamic retV = await Controller.addNewTour(FormData);
                       //print(userType);
                       if (retV == -1) {
                         setState(() {
@@ -267,45 +269,23 @@ class NewTourState extends State<NewTour> {
                         setState(() => error = "");
                         // navigate to member home
                         // pushes and never go back
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/pr_home',
-                                (Route<dynamic> route) => false);
+                        Navigator.pushNamedAndRemoveUntil(context, '/pr_home',
+                            (Route<dynamic> route) => false);
                       }
                     }
-                  }),),
-              Text(
-                error,
-                style: TextStyle(
-                    color: Colors.red,
-                    fontSize: error.isEmpty ? 0.0 : 14.0),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
+                  }),
+            ),
+            Text(
+              error,
+              style: TextStyle(
+                  color: Colors.red, fontSize: error.isEmpty ? 0.0 : 14.0),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

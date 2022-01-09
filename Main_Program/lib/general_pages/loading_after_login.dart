@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:main_program/Researcher/researcher_home.dart';
 import 'package:main_program/member_view/member_home.dart';
-//import 'package:main_program/Accountant/AccountantHome.dart';
+//import 'package:main_program/Accountant/accountant_home.dart';
 import 'package:main_program/data_holders.dart';
 
 import '../controller.dart';
@@ -39,6 +39,18 @@ class _loading_after_loginState extends State<loading_after_login> {
         Navigator.pushReplacementNamed(context, '/admin_home', arguments: {
           'data': data,
         });
+      } else if (type == 2) {
+        //accountant
+        dynamic retrieved = await Controller.getAccData(username);
+        print(retrieved);
+        if (retrieved != null) {
+          Staff mem = retrieved;
+          //print(mem.username);
+          Navigator.pushReplacementNamed(context, '/accountant_home',
+              arguments: {'member': mem});
+        } else {
+          print('NOT A VALID staff - in users but not members');
+        }
       }
     });
   }

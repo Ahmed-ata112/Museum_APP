@@ -92,7 +92,7 @@ class _login_pageState extends State<login_page> {
                           //Server Validation Side
                           dynamic userType =
                               await Controller.getUserType(FormData);
-                          //print(userType);
+                          print(userType);
                           if (userType == -1) {
                             setState(() {
                               error = 'username or password are not valid!';

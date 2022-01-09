@@ -222,12 +222,13 @@ class Controller {
 
 //ID, Fname, Mname, Lname, gender, job_title, B_date, salary, start_date, super_ID, department_num, staff_username
   static Future<int> addNewStaff(Map<String, dynamic> formData) async {
+    print(formData);
     String username = formData["staff_username"];
     String Mname = formData["Mname"];
     String Fname = formData["Fname"];
     String Lname = formData["Lname"];
     String jobTitle = formData["job_title"];
-    String gender = formData["gender"];
+    String gender = formData["gender"][0];
     String BDate = formData["B_date"];
     String password = formData["password"];
     int type = int.parse(formData["type"]);
@@ -420,6 +421,36 @@ class Controller {
         memData[4], memData[5], memData[6], memData[7]
         //mem_data[8]
         ); //just need the first row as its the only one exists
+    print(mem.Fname);
+    return mem; //
+  }
+
+  static Future<dynamic> getAccData(String username) async {
+    String query =
+        "SELECT * FROM museum.staff where staff_username = '$username';";
+
+    List<dynamic> data = await DBManager.executeReader(query); // list of rows
+    //print(data);
+    if (data.isEmpty) {
+      //don't exist
+      return null;
+    }
+
+    List<dynamic> memData = data[0];
+    print(memData);
+    Staff mem = Staff(
+        memData[0],
+        memData[1],
+        memData[2],
+        memData[3],
+        memData[4],
+        memData[5],
+        memData[6],
+        memData[7],
+        memData[8],
+        memData[9],
+        memData[10],
+        memData[11]); //just need the first row as its the only one exists
     print(mem.Fname);
     return mem; //
   }
@@ -1182,6 +1213,19 @@ class Controller {
     }
     return 1; // returned successfully
   }
+
+  static Future<int> getSouvenirCount() async {
+    String query = "SELECT count(ID) FROM museum.souvenir;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+
   static Future<int> addNewSouvenir(Map<String, dynamic> formData) async {
     //ID int PK
     // _name varchar(50)
@@ -1194,7 +1238,7 @@ class Controller {
 
     List<dynamic> toSend2 = [ID, _name, price, quantity];
     dynamic res2 =
-    await DBManager.executeNonQueryProc('insert_new_souvenir', toSend2);
+        await DBManager.executeNonQueryProc('insert_new_souvenir', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
@@ -1257,5 +1301,65 @@ class Controller {
         await DBManager.executeNonQueryProc('up_painting_artifact', toSend2);
 
     return 1; // returned successfully
+  }
+
+  static Future<dynamic> getSouvenirSale() async {
+    String query =
+        "select So_ID,count(quantity) from museum.buy_member_souvenir group by So_ID ;";
+    var us = await DBManager.executeReader(query);
+    if (us == null) {
+      return null;
+    }
+    return us;
+  }
+
+  static Future<dynamic> getSouvenirSale_visitor() async {
+    String query =
+        "select S_ID,count(quantity) from museum.buys_visitor_souvenir group by S_ID;";
+    var us = await DBManager.executeReader(query);
+    if (us == null) {
+      return null;
+    }
+    return us;
+  }
+
+  static Future<int> UpdateSalary(Map<String, dynamic> formData) async {
+    int ID = formData["ID"];
+    int promotion = int.parse(formData["Promotion"]);
+    // String query = "select salary from museum.staff where ID = '$ID';";
+    // int salary = await DBManager.executeScaler(query);
+    // if (salary == null) {
+    //   return -1;
+    // }
+    List<int> toSend = [ID, promotion];
+    dynamic res =
+        await DBManager.executeNonQueryProc('update_employee_salary', toSend);
+    if (res == 0) {
+      return -1;
+    }
+    return 1;
+  }
+
+  static Future<dynamic> getReviewedArticles() async {
+    String query =
+        "select ID,state_,content,likes,views_,header from article,reviews where result='F' and article.ID=reviews.A_ID;";
+    List<dynamic> us = await DBManager.executeReader(query);
+    if (us.isEmpty) {
+      return null;
+    }
+    return us;
+  }
+
+  static Future<int> UpdateArticleToP(Map<String, dynamic> formData) async {
+    int ID = formData["ID"];
+    print(ID);
+    List<int> toSend = [ID];
+    dynamic res =
+        await DBManager.executeNonQueryProc('update_article_toP', toSend);
+    print(res);
+    if (res == 0) {
+      return -1;
+    }
+    return 1;
   }
 }

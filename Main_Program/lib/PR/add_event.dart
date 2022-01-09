@@ -27,11 +27,10 @@ class NewEventState extends State<NewEvent> {
   final _formKey = GlobalKey<FormState>();
   String error = "";
 
-  Widget buildTitleField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+  Widget buildTitleField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Title",
           icon: Icon(Icons.event),
@@ -48,13 +47,14 @@ class NewEventState extends State<NewEvent> {
           }
           return null;
         },
-      ),);
+      ),
+    );
   }
-  Widget buildThemeField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+
+  Widget buildThemeField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Theme",
           icon: Icon(Icons.event),
@@ -74,11 +74,11 @@ class NewEventState extends State<NewEvent> {
       ),
     );
   }
-  Widget buildDescField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      TextFormField(
+
+  Widget buildDescField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
         decoration: const InputDecoration(
           hintText: "Description",
           icon: Icon(Icons.description),
@@ -88,17 +88,18 @@ class NewEventState extends State<NewEvent> {
         },
         validator: (val) {
           if (val!.isEmpty) {
-            return "this field is required";}
+            return "this field is required";
+          }
           return null;
         },
       ),
     );
   }
-  Widget buildStartDateField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      DateTimePicker(
+
+  Widget buildStartDateField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
           dateHintText: 'Start date',
@@ -116,11 +117,11 @@ class NewEventState extends State<NewEvent> {
           }),
     );
   }
-  Widget buildEndDateField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:
-      DateTimePicker(
+
+  Widget buildEndDateField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DateTimePicker(
           cursorColor: Colors.black,
           type: DateTimePickerType.date,
           dateHintText: 'End date',
@@ -138,10 +139,11 @@ class NewEventState extends State<NewEvent> {
           }),
     );
   }
-  Widget buildsec_numberField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:  DropdownButtonFormField(
+
+  Widget buildsec_numberField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(
         decoration: const InputDecoration(
           hintText: "Section Number",
           icon: Icon(Icons.transgender),
@@ -157,16 +159,16 @@ class NewEventState extends State<NewEvent> {
             FormData["sec_number"] = val;
           });
         },
-        validator: (val) => (val == null)
-            ? "Please Choose the section number"
-            : null,
+        validator: (val) =>
+            (val == null) ? "Please Choose the section number" : null,
       ),
     );
   }
-  Widget buildstaff_idField()
-  {
-    return Padding(padding: const EdgeInsets.all(20),
-      child:  DropdownButtonFormField(
+
+  Widget buildstaff_idField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(
         decoration: const InputDecoration(
           hintText: "Staff ID",
           icon: Icon(Icons.person_add),
@@ -182,24 +184,23 @@ class NewEventState extends State<NewEvent> {
             FormData["staff_id"] = val;
           });
         },
-        validator: (val) => (val == null)
-            ? "this field is required"
-            : null,
+        validator: (val) => (val == null) ? "this field is required" : null,
       ),
     );
   }
+
   void initState() {
     super.initState();
-    Controller.getSecNumber().then((ReturnedList) {
+    Controller.getAllSecNums().then((ReturnedList) {
       setState(() {
         for (var row in ReturnedList) {
-          print(row['sec_number']);
-          sec_number.add(row['sec_number']);
+          print(row[0]);
+          sec_number.add(row[0]);
         }
         setState(() {});
       });
     });
-    Controller.getAllEmployeesIDs().then((ReturnedList) {
+    Controller.getEmpIDs().then((ReturnedList) {
       setState(() {
         for (var row in ReturnedList) {
           print(row);
@@ -209,20 +210,20 @@ class NewEventState extends State<NewEvent> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: const Text('New Event',
-          style: TextStyle(
-              color: Colors.black
-          ),),
+        title: const Text(
+          'New Event',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Form(
         key: _formKey,
-        child:
-        ListView(
+        child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             buildTitleField(),
@@ -233,7 +234,8 @@ class NewEventState extends State<NewEvent> {
             buildsec_numberField(),
             buildstaff_idField(),
             const SizedBox(height: 50),
-            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+            Padding(
+              padding: const EdgeInsets.only(left: 130, right: 130),
               child: ElevatedButton(
                   child: const Text(
                     "Add!",
@@ -248,8 +250,7 @@ class NewEventState extends State<NewEvent> {
                       //i.e check if this account exists and if the email and password matches (are correct)
 
                       //Server Validation Side
-                      dynamic retV =
-                      await Controller.addNewEvent(FormData);
+                      dynamic retV = await Controller.addNewEvent(FormData);
                       //print(userType);
                       if (retV == -1) {
                         setState(() {
@@ -259,20 +260,16 @@ class NewEventState extends State<NewEvent> {
                         setState(() => error = "");
                         // navigate to member home
                         // pushes and never go back
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/pr_home',
-                                (Route<dynamic> route) => false);
+                        Navigator.pushNamedAndRemoveUntil(context, '/pr_home',
+                            (Route<dynamic> route) => false);
                       }
                     }
                   }),
             ),
-
             Text(
               error,
               style: TextStyle(
-                  color: Colors.red,
-                  fontSize: error.isEmpty ? 0.0 : 14.0),
+                  color: Colors.red, fontSize: error.isEmpty ? 0.0 : 14.0),
             ),
             SizedBox(
               height: 20.0,
@@ -280,27 +277,6 @@ class NewEventState extends State<NewEvent> {
           ],
         ),
       ),
-
     );
-
-  }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
+}

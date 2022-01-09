@@ -15,7 +15,6 @@ class Member {
   String birthday;
   String username;
   String phoneNumber;
-  late String image;
   Member(this.Fname, this.Sname, this.Lname, this.gender, this.id,
       this.birthday, this.username, this.phoneNumber);
 }
@@ -71,7 +70,8 @@ class Souvenir {
   Souvenir(this.id, this.Name, this.price, this.quantity, this.description,
       this.Member_ID);
 }
-class Staff{
+
+class Staff {
   int ID;
   String Fname;
   String Mname;
@@ -84,19 +84,22 @@ class Staff{
   int super_ID;
   int department_num;
   String staff_username;
-  Staff(this.ID, this.Fname,
-  this.Mname,
-  this.Lname,
-  this.gender,
-  this.job_title,
-  this.B_date,
-  this.salary,
-  this.start_date,
-  this.super_ID,
-  this.department_num,
-  this.staff_username){}
+  Staff(
+      this.ID,
+      this.Fname,
+      this.Mname,
+      this.Lname,
+      this.gender,
+      this.job_title,
+      this.B_date,
+      this.salary,
+      this.start_date,
+      this.super_ID,
+      this.department_num,
+      this.staff_username) {}
 }
-class article{
+
+class article {
   int ID;
   String state_;
   String content;
@@ -104,11 +107,11 @@ class article{
   int views_;
   String header;
   article(
-      this.ID,
-      this.state_,
-      this.content,
-      this.likes,
-      this.views_,
-      this.header,
-      ){}
+    this.ID,
+    this.state_,
+    this.content,
+    this.likes,
+    this.views_,
+    this.header,
+  ) {}
 }
