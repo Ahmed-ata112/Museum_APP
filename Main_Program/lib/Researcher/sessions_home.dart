@@ -20,18 +20,6 @@ class SessionsHomeState extends State<SessionsHome> {
         ),
       ),
       body: Container(
-        color: Colors.black12,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        onPressed: (){
-          Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NewSession()));
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
       ),
       //floatingActionButtonLocation: ,
     );
