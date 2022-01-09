@@ -73,12 +73,11 @@ class _addNewReviewsState extends State<addNewReviews> {
                         hintText: "Result",
                         icon: Icon(Icons.article),
                       ),
-                      keyboardType: TextInputType.number,
                       onChanged: (val) {
                         setState(() => FormData['result'] = val);
                       },
                       validator: (val) =>
-                      (val!.length == 0) ? "this is required" : null,
+                          (val!.length == 0) ? "this is required" : null,
                     ),
                     SizedBox(
                       height: 20.0,
@@ -93,7 +92,7 @@ class _addNewReviewsState extends State<addNewReviews> {
                         setState(() => FormData['progress'] = val);
                       },
                       validator: (val) =>
-                      (val!.length == 0) ? "this is required" : null,
+                          (val!.length == 0) ? "this is required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -115,7 +114,7 @@ class _addNewReviewsState extends State<addNewReviews> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -137,7 +136,7 @@ class _addNewReviewsState extends State<addNewReviews> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -161,8 +160,8 @@ class _addNewReviewsState extends State<addNewReviews> {
                             //if the form from the client side is valid
                             print("All Valid at the client side:)");
                             //Server Validation Side
-                            dynamic retV =
-                            await Controller.addNewReview(FormData);////////////////
+                            dynamic retV = await Controller.addNewReview(
+                                FormData); ////////////////
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
