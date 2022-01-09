@@ -3,15 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../controller.dart';
-import 'dart:convert';
-import 'dart:io';
 
 class addNewPaintingAndArtifacts extends StatefulWidget {
+  const addNewPaintingAndArtifacts({Key? key}) : super(key: key);
+
   @override
-  _addNewPaintingAndArtifactsState createState() => _addNewPaintingAndArtifactsState();
+  _addNewPaintingAndArtifactsState createState() =>
+      _addNewPaintingAndArtifactsState();
 }
 
-class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts> {
+class _addNewPaintingAndArtifactsState
+    extends State<addNewPaintingAndArtifacts> {
   //ID, name, type, description, section_number
   List<dynamic> section_number = [];
   Map<String, dynamic> FormData = {
@@ -19,7 +21,6 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
     'name': null,
     'type': null,
     'description': null,
-    'Password': null,
     'section_number': null,
   };
 
@@ -38,6 +39,7 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,13 +81,13 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
                         return null;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "Type",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        icon: Icon(Icons.list),
                       ),
                       onChanged: (val) {
                         setState(() => FormData['Type'] = val);
@@ -108,6 +110,8 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
                         hintText: "description",
                         icon: Icon(Icons.description),
                       ),
+                      maxLines: 10,
+                      minLines: 1,
                       onChanged: (val) {
                         setState(() => FormData['description'] = val);
                       },
@@ -117,6 +121,9 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
                         }
                         return null;
                       },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
                     ),
                     DropdownButtonFormField(
                       decoration: const InputDecoration(
@@ -135,7 +142,7 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     SizedBox(
                       height: 20.0,
@@ -159,7 +166,8 @@ class _addNewPaintingAndArtifactsState extends State<addNewPaintingAndArtifacts>
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewPaintingAndArtifacts(FormData);
+                                await Controller.addNewPaintingAndArtifacts(
+                                    FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

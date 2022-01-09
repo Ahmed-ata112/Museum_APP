@@ -6,24 +6,25 @@ import '../controller.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class addNewEvent extends StatefulWidget {
+class addNewTour extends StatefulWidget {
   @override
-  _addNewEventState createState() => _addNewEventState();
+  _addNewTourState createState() => _addNewTourState();
 }
 
-class _addNewEventState extends State<addNewEvent> {
-  List<dynamic> organizer_id = [];
+//ID, place, description, topic, Date_Start, Date_End, organizer_id, title
+class _addNewTourState extends State<addNewTour> {
+  List<dynamic> AllSecNums = [];
+  List<dynamic> Ids = [];
   Map<String, dynamic> FormData = {
-    //ID, place, description, topic, Date_Start, Date_End, organizer_id, title
-    'place':null,
-    'description': null,
-    'topic': null,
+    'ID': null,
     'Date_Start': null,
     'Date_End': null,
-    'organizer_id': null,
+    'description': null,
+    'topic': null,
     'title': null,
+    'place': null,
+    'organizer_id': null
   };
-
   final _formKey = GlobalKey<FormState>();
   String error = "";
 
@@ -31,14 +32,15 @@ class _addNewEventState extends State<addNewEvent> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     Controller.getEmpIDs().then((Listo) {
       setState(() {
         //print(Listo);
         for (var vv in Listo) {
-          organizer_id.add(vv[0]);
+          Ids.add(vv[0]);
           print(vv[0]);
         }
-
+        //print(DepsNums);
       });
     });
   }
@@ -57,33 +59,10 @@ class _addNewEventState extends State<addNewEvent> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Add an Tour!!",
+                      "Add a Tour!!",
                       style: TextStyle(
                           fontSize: 30.0, color: Colors.lightBlueAccent),
                       textAlign: TextAlign.start,
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    //FirstName
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "place",
-                        icon: Icon(Icons.place),
-                      ),
-                      minLines: 1,
-                      maxLines: 100,
-                      keyboardType: TextInputType.multiline,
-                      onChanged: (val) {
-                        setState(() => FormData['place'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill place";
-                        }
-
-                        return null;
-                      },
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -115,7 +94,7 @@ class _addNewEventState extends State<addNewEvent> {
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "topic",
-                        icon: Icon(Icons.topic),
+                        icon: Icon(Icons.multitrack_audio),
                       ),
                       onChanged: (val) {
                         setState(() => FormData['topic'] = val);
@@ -131,12 +110,51 @@ class _addNewEventState extends State<addNewEvent> {
                     const SizedBox(
                       height: 20.0,
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Title",
+                        icon: Icon(Icons.add),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['title'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in the title";
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "place",
+                        icon: Icon(Icons.add),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['place'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in the place";
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     DropdownButtonFormField(
                       decoration: const InputDecoration(
-                        hintText: "organizer ID",
+                        hintText: "Organizer ID",
                         icon: Icon(Icons.person),
                       ),
-                      items: organizer_id.map((gg) {
+                      items: Ids.map((gg) {
                         return DropdownMenuItem(
                           value: gg.toString(),
                           child: Text(gg.toString()),
@@ -148,8 +166,16 @@ class _addNewEventState extends State<addNewEvent> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+
                     SizedBox(
                       height: 20.0,
                     ),
@@ -190,26 +216,7 @@ class _addNewEventState extends State<addNewEvent> {
                         onChanged: (value) {
                           FormData['Date_End'] = value;
                         }),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    //SecondName
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "title",
-                        icon: Icon(Icons.topic),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['title'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in title";
-                        }
 
-                        return null;
-                      },
-                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -235,7 +242,7 @@ class _addNewEventState extends State<addNewEvent> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewTour(FormData);
+                                await Controller.addNewTour(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

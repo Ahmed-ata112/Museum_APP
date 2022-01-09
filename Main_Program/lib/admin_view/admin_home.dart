@@ -3,15 +3,17 @@ import 'package:main_program/admin_view/add_new_staff.dart';
 import 'package:main_program/admin_view/add_new_user.dart';
 import 'package:main_program/admin_view/add_new_visitor.dart';
 import 'package:main_program/admin_view/insert_new_event.dart';
-import 'package:main_program/member_view/store_home.dart';
-import 'package:main_program/member_view/tours_home.dart';
-import 'package:main_program/data_holders.dart';
-
 import '../controller.dart';
+import 'add_new_painting_artifacts.dart';
+import 'add_new_department.dart';
 import 'add_new_member.dart';
 import 'add_new_researcher.dart';
+import 'add_new_reviews.dart';
 import 'add_new_section.dart';
+import 'add_new_tour.dart';
 import 'all_users.dart';
+import 'delete_ids.dart';
+import 'delete_users.dart';
 
 class admin_home extends StatefulWidget {
   const admin_home({Key? key}) : super(key: key);
@@ -630,6 +632,278 @@ class _admin_homeState extends State<admin_home> {
                   MaterialPageRoute(builder: (context) => addNewUser()));
             },
           ),
+          ElevatedButton(
+            child: const Text('Add New Tour'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewTour()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Department'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const addNewDepartment()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Painting and Artifacts'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => addNewPaintingAndArtifacts()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Reviews'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewReviews()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete User'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllUserIDs().then((value) {
+                print(value);
+                List<String> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Deleteusers(allIDs: ll, name: 'User')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Department'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllDepIDs().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Department')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Events'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllEventsIDs().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Event')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Tours'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getTourIDs().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Tour')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Sections'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllSecNums().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Section')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Articles'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllArticleID().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Article')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Painting & Artifacts'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllPaintingArtifactIDs().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DeleteID(
+                            allIDs: ll, name: 'Paintings & Artifact')));
+              });
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete Visitors'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Controller.getAllVisitorsIDs().then((value) {
+                print(value);
+                List<int> ll = [];
+                for (var v in value) {
+                  ll.add(v[0]);
+                }
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteID(allIDs: ll, name: 'Visitor')));
+              });
+            },
+          ),
+          // ElevatedButton(
+          //   child: const Text('Delete Souvenirs'),
+          //   style: ElevatedButton.styleFrom(
+          //       primary: Colors.purple[300],
+          //       padding:
+          //           const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          //       textStyle:
+          //           const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          //   onPressed: () async {
+          //     Controller.getAllSouvenirIDs().then((value) {
+          //       print(value);
+          //       List<int> ll = [];
+          //       for (var v in value) {
+          //         ll.add(v[0]);
+          //       }
+          //
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) =>
+          //                   DeleteID(allIDs: ll, name: 'Souvenir')));
+          //     });
+          //   },
+          // ),
         ],
       )),
     );

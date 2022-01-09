@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'dart:io';
 
 class addNewDepartment extends StatefulWidget {
+  const addNewDepartment({Key? key}) : super(key: key);
+
   @override
   _addNewDepartmentState createState() => _addNewDepartmentState();
 }
@@ -97,7 +99,7 @@ class _addNewDepartmentState extends State<addNewDepartment> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -122,7 +124,7 @@ class _addNewDepartmentState extends State<addNewDepartment> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewDepartment(FormData);
+                                await Controller.addNewDepartment(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
