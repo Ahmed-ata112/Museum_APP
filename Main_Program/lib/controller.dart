@@ -1362,7 +1362,7 @@ class Controller {
     }
     return 1;
   }
-  static Future<int> UpdateASouvenir(Map<String, dynamic> formData) async {
+  static Future<int> UpdateSouvenir(Map<String, dynamic> formData) async {
     int ID = int.parse(formData["ID"]);
     int quantity = int.parse(formData["quantity"]);
     List<int> toSend = [ID];
