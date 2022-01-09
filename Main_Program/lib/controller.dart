@@ -881,6 +881,38 @@ class Controller {
     }
     return 1; // returned successfully
   }
+  static Future<int> addNewArticle(Map<String, dynamic> formData) async {
+    //ID, state_, content, likes, views_, header
+    int ID = await getArticleCount();
+    String state_ = formData["state_"];
+    String content = formData["content"];
+    int likes=int.parse(formData["likes"]);
+    int views_ = int.parse(formData["views_"]);
+    String header = formData["header"];
+
+    List<dynamic> toSend2 = [ID, state_, content, likes, views_, header];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_article', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<int> addNewSession(Map<String, dynamic> formData) async {
+    //R_ID, E_ID
+    int R_ID = int.parse(formData["R_ID"]);
+    int E_ID = int.parse(formData["E_ID"]);
+
+    List<dynamic> toSend2 = [R_ID, E_ID];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_session', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
 
   static Future<List<dynamic>> getEventIDs() async {
     String query = "SELECT ID FROM museum.event;";
@@ -888,6 +920,57 @@ class Controller {
     dynamic ret = await DBManager.executeReader(query);
     if (ret == null) {
       throw Exception("Cant get go_on from database");
+    }
+    return ret;
+  }
+  static Future<int> getArticleCount() async {
+    String query = "SELECT count(ID) FROM museum.article;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+  static Future<int> getTourCount() async {
+    String query = "SELECT count(ID) FROM museum.tour;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
+  static Future<int> addNewTour(Map<String, dynamic> formData) async {
+    //ID, place, description, topic, Date_Start, Date_End, organizer_id, title
+    int ID = await getTourCount();
+    String place = formData["place"];
+    String description = formData["description"];
+    String topic = formData["topic"];
+    String Date_Start= formData["Date_Start"];
+    String Date_End= formData["Date_End"];
+    int organizer_id = int.parse(formData["organizer_id"]);
+    String title = formData["title"];
+
+    List<dynamic> toSend2 = [ID, place, description, topic, Date_Start, Date_End, organizer_id, title];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_tour', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<List<dynamic>> getSouvenirIDs() async {
+    String query = "SELECT ID FROM museum.souvenir;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get ID from database");
     }
     return ret;
   }
