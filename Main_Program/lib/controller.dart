@@ -1409,4 +1409,16 @@ class Controller {
     }
     return ret;
   }
+  static Future<int> ChangePassowrd(Map<String, dynamic> formData) async {
+    String password = formData["password"];
+    String username = formData["username"];
+    List<dynamic> toSend = [username,password];
+    dynamic res =
+    await DBManager.executeNonQueryProc('update_password', toSend);
+    print(res);
+    if (res == 0) {
+      return -1;
+    }
+    return 1;
+  }
 }
