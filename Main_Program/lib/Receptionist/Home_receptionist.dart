@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/Accountant/change_password.dart';
 import 'package:main_program/Receptionist/Events_Tours.dart';
 import 'package:main_program/Receptionist/Records_visitors.dart';
 import 'package:main_program/Receptionist/Records_visitors.dart';
 import 'package:main_program/Receptionist/Tracking_State.dart';
+import 'package:main_program/general_pages/login_page.dart';
 
 
-class Home_Receptionist extends StatelessWidget{
+class Home_Receptionist extends StatefulWidget{
+  final String username;
+  const Home_Receptionist({Key? key, required this.username}) : super(key: key);
+
+  @override
+  _Home_ReceptionistState createState() => _Home_ReceptionistState(username);
+  }
+
+  class _Home_ReceptionistState extends State<Home_Receptionist> {
+  late String username;
+  _Home_ReceptionistState(this.username);
   // static String id='Receptionist_Home';
   @override
   Widget build (BuildContext context) {
@@ -81,6 +93,30 @@ class Home_Receptionist extends StatelessWidget{
               leading: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
                 child: Image.asset('Images/museum.png'),//add image location here
+              ),
+            ),
+            ListTile(
+              title: const Text('Change password'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>changePasswordAcc(username: username)));
+                // Update the state of the app.
+                // ...
+              },
+              leading: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
+                //child: Image.asset('Images/museum.png'),//add image location here
+              ),
+            ),
+            ListTile(
+              title: const Text('Sign out'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>login_page()));
+                // Update the state of the app.
+                // ...
+              },
+              leading: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
+                //child: Image.asset('Images/museum.png'),//add image location here
               ),
             ),
           ],

@@ -50,7 +50,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "new password",
-                        icon: Icon(Icons.multitrack_audio),
+                        icon: Icon(Icons.lock),
                       ),
                       onChanged: (val) {
                         setState(() => FormData['password'] = val);

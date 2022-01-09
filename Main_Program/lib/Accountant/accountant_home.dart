@@ -8,14 +8,18 @@ import 'package:main_program/Accountant/souventir_sale.dart';
 import 'package:main_program/Accountant/insert_new_employee.dart';
 import 'package:main_program/Accountant/give_promotion.dart';
 import'package:main_program/general_pages/login_page.dart';
+import 'package:main_program/Accountant/change_password.dart';
 class accHome extends StatefulWidget {
-  const accHome({Key? key}) : super(key: key);
+  final String username;
+  const accHome({Key? key, required this.username}) : super(key: key);
 
   @override
-  accHomeState createState() => accHomeState();
+  _accHomeState createState() => _accHomeState(username);
 }
 
-class accHomeState extends State<accHome> {
+class _accHomeState extends State<accHome> {
+  late String username;
+  _accHomeState(this.username);
   @override
   List<Souvenir> S = [];
   List<Souvenir> SV = [];
@@ -137,6 +141,15 @@ class accHomeState extends State<accHome> {
                 // ...
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GivePromo()));
+              },
+            ),
+            ListTile(
+              title: const Text('change password'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => changePasswordAcc(username:username)));
               },
             ),
             ListTile(
