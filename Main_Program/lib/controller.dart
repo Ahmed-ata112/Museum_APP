@@ -1180,6 +1180,25 @@ class Controller {
       //don't exist
       return -1;
     }
+    return 1; // returned successfully
+  }
+  static Future<int> addNewSouvenir(Map<String, dynamic> formData) async {
+    //ID int PK
+    // _name varchar(50)
+    // price int
+    // quantity
+    int ID = await getSouvenirCount();
+    String _name = formData["_name"];
+    int price = int.parse(formData["price"]);
+    int quantity = formData["quantity"];
+
+    List<dynamic> toSend2 = [ID, _name, price, quantity];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_souvenir', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
     dynamic res3 =
         await DBManager.executeNonQueryProc('up_researcher', toSend2);
 
