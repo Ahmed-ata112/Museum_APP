@@ -70,7 +70,7 @@ class _accHomeState extends State<accHome> {
                   Align(
                     alignment: Alignment.topRight + Alignment(0, .4),
                     child: Text(
-                      'USER NAME',
+                      username,
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                   ),

@@ -1305,7 +1305,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale() async {
     String query =
-        "select So_ID,count(quantity) from museum.buy_member_souvenir group by So_ID ;";
+        "select So_ID,sum(quantity) from museum.buy_member_souvenir group by So_ID ;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;
@@ -1315,7 +1315,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale_visitor() async {
     String query =
-        "select S_ID,count(quantity) from museum.buys_visitor_souvenir group by S_ID;";
+        "select S_ID,sum(quantity) from museum.buys_visitor_souvenir group by S_ID;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;

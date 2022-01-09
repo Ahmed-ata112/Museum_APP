@@ -7,6 +7,8 @@ import 'package:main_program/PR/add_event.dart';
 import 'articleRead_pr.dart';
 import 'package:main_program/controller.dart';
 import 'package:main_program/data_holders.dart';
+import'package:main_program/Accountant/change_password.dart';
+import 'package:main_program/general_pages/login_page.dart';
 
 Widget articleCard(index, context, article S) {
   return GFCard(
@@ -142,6 +144,25 @@ class _ArticlesHomePRState extends State<available_articles> {
                     MaterialPageRoute(builder: (context) => NewTour()));
               },
             ),
+            ListTile(
+              title: const Text('Change Password'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => changePasswordAcc(username:'username')));
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => login_page()));
+              },
+            ),
+
           ],
         ),
       ),
