@@ -126,30 +126,23 @@ class _addNewBMSState extends State<addNewBMS> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    DateTimePicker(
-                        cursorColor: Colors.black,
-                        type: DateTimePickerType.date,
-                        //dateLabelText: 'Birthday Date',
-                        dateHintText: 'End Date',
-                        icon: Icon(Icons.date_range),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(DateTime.now().year + 50),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'this field is required';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          FormData['Date_End'] = value;
-                        }),
 
-
-
-
-
-
-
+                DateTimePicker(
+                    cursorColor: Colors.black,
+                    type: DateTimePickerType.dateTime,
+                    dateHintText: 'timestamp',
+                    icon: Icon(Icons.date_range),
+                    firstDate: DateTime(DateTime.now().year - 100),
+                    lastDate: DateTime(DateTime.now().year + 5),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'this field is required';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      FormData['timestamp'] = value;
+                    }),
                     const SizedBox(
                       height: 20.0,
                     ),
