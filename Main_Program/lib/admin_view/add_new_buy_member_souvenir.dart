@@ -6,21 +6,46 @@ import '../controller.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class addNewSection extends StatefulWidget {
+class addNewBMS extends StatefulWidget {
   @override
-  _addNewSectionState createState() => _addNewSectionState();
+  _addNewBMSState createState() => _addNewBMSState();
 }
 
-class _addNewSectionState extends State<addNewSection> {
+class _addNewBMSState extends State<addNewBMS> {
+  //Dno, name, manager_ID
+  List<dynamic> M_ID = [];
+  List<dynamic> So_ID = [];
+
   Map<String, dynamic> FormData = {
-    'name_': null,
-    'number': null,
-    'floor_': null,
-    'hall': null
+    'BMS': null,
+    'So_ID': null,
+    'quantity': 0,
+    'timestamp':null,
   };
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Controller.getMemIDs().then((Listo) {
+      setState(() {
+        for (var vv in Listo) {
+          M_ID.add(vv[0]);
+          print(vv[0]);
+        }
+      });
+    });
+    Controller.getSouvenirIDs().then((Listo) {
+      setState(() {
+        for (var vv in Listo) {
+          So_ID.add(vv[0]);
+          print(vv[0]);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +61,7 @@ class _addNewSectionState extends State<addNewSection> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Add a Section!!",
+                      "Add an sale!!",
                       style: TextStyle(
                           fontSize: 30.0, color: Colors.lightBlueAccent),
                       textAlign: TextAlign.start,
@@ -44,64 +69,87 @@ class _addNewSectionState extends State<addNewSection> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    //FirstName
-                    TextFormField(
+                    DropdownButtonFormField(
                       decoration: const InputDecoration(
-                        hintText: "Section Name",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        hintText: "Member ID",
+                        icon: Icon(Icons.person),
                       ),
+                      items: M_ID.map((gg) {
+                        return DropdownMenuItem(
+                          value: gg.toString(),
+                          child: Text(gg.toString()),
+                        );
+                      }).toList(),
                       onChanged: (val) {
-                        setState(() => FormData['name_'] = val);
+                        setState(() {
+                          FormData["M_ID"] = val;
+                        });
                       },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in Name";
-                        }
-                        if (val.length > 20) {
-                          return "First Name length can't exceed 20 characters";
-                        }
-                        return null;
-                      },
+                      validator: (val) =>
+                      (val == null) ? "This is Required" : null,
                     ),
-
                     const SizedBox(
                       height: 20.0,
                     ),
-                    //PhoneNumber
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Souvenir ID",
+                        icon: Icon(Icons.card_giftcard),
+                      ),
+                      items: So_ID.map((gg) {
+                        return DropdownMenuItem(
+                          value: gg.toString(),
+                          child: Text(gg.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          FormData["So_ID"] = val;
+                        });
+                      },
+                      validator: (val) =>
+                      (val == null) ? "This is Required" : null,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Floor number",
-                        icon: Icon(Icons.cases),
+                        hintText: "quantity",
+                        icon: Icon(Icons.card_giftcard),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
-                        setState(() => FormData['floor_'] = val);
+                        setState(() => FormData['quantity'] = val);
                       },
-                      validator: (val) =>
-                          (val!.isEmpty) ? "this is required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
+                    DateTimePicker(
+                        cursorColor: Colors.black,
+                        type: DateTimePickerType.date,
+                        //dateLabelText: 'Birthday Date',
+                        dateHintText: 'End Date',
+                        icon: Icon(Icons.date_range),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(DateTime.now().year + 50),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'this field is required';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          FormData['Date_End'] = value;
+                        }),
 
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Hall",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['hall'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in Hall";
-                        }
-                        return null;
-                      },
-                    ),
+
+
+
+
+
+
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -114,7 +162,7 @@ class _addNewSectionState extends State<addNewSection> {
                     //Sign up (submit) button
                     ElevatedButton(
                         child: const Text(
-                          "Add Section!",
+                          "Add Attendee!",
                           style: TextStyle(color: Colors.white, fontSize: 20.0),
                         ),
                         onPressed: () async {
@@ -125,11 +173,11 @@ class _addNewSectionState extends State<addNewSection> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                                await Controller.addNewSection(FormData);
+                            await Controller.addNewEventAttends(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
-                                error = 'Section Already Exists';
+                                error = 'Attendee Already Exists';
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                   content: Text("Error occured"),

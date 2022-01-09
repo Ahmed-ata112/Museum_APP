@@ -6,17 +6,22 @@ import '../controller.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class addNewSection extends StatefulWidget {
+class addNewArticle extends StatefulWidget {
   @override
-  _addNewSectionState createState() => _addNewSectionState();
+  _addNewArticleState createState() => _addNewArticleState();
 }
 
-class _addNewSectionState extends State<addNewSection> {
+class _addNewArticleState extends State<addNewArticle> {
+  //Dno, name, manager_ID
+  List<dynamic> memb_ID = [];
+  List<dynamic> EV_ID = [];
+
   Map<String, dynamic> FormData = {
-    'name_': null,
-    'number': null,
-    'floor_': null,
-    'hall': null
+    'state_': null,
+    'content': null,
+    'likes': 0,
+    'views_': 0,
+    'header': null,
   };
 
   final _formKey = GlobalKey<FormState>();
@@ -36,7 +41,7 @@ class _addNewSectionState extends State<addNewSection> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Add a Section!!",
+                      "Add an article!!",
                       style: TextStyle(
                           fontSize: 30.0, color: Colors.lightBlueAccent),
                       textAlign: TextAlign.start,
@@ -44,60 +49,81 @@ class _addNewSectionState extends State<addNewSection> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    //FirstName
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Section Name",
+                        hintText: "State",
                         icon: Icon(Icons.perm_identity_rounded),
                       ),
                       onChanged: (val) {
-                        setState(() => FormData['name_'] = val);
+                        setState(() => FormData['state_'] = val);
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return "Please fill in Name";
-                        }
-                        if (val.length > 20) {
-                          return "First Name length can't exceed 20 characters";
+                          return "Please fill in state";
                         }
                         return null;
                       },
                     ),
-
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "content",
+                        icon: Icon(Icons.perm_identity_rounded),
+                      ),
+                      onChanged: (val) {
+                        setState(() => FormData['content'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in content";
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     //PhoneNumber
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Floor number",
-                        icon: Icon(Icons.cases),
+                        hintText: "likes",
+                        icon: Icon(Icons.article),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
-                        setState(() => FormData['floor_'] = val);
+                        setState(() => FormData['likes'] = val);
                       },
-                      validator: (val) =>
-                          (val!.isEmpty) ? "this is required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
-
+                    //PhoneNumber
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "views",
+                        icon: Icon(Icons.article),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (val) {
+                        setState(() => FormData['views_'] = val);
+                      },
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Hall",
-                        icon: Icon(Icons.perm_identity_rounded),
+                        hintText: "header",
+                        icon: Icon(Icons.article),
                       ),
                       onChanged: (val) {
-                        setState(() => FormData['hall'] = val);
+                        setState(() => FormData['header'] = val);
                       },
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return "Please fill in Hall";
+                          return "Please fill in header";
                         }
                         return null;
                       },
@@ -114,7 +140,7 @@ class _addNewSectionState extends State<addNewSection> {
                     //Sign up (submit) button
                     ElevatedButton(
                         child: const Text(
-                          "Add Section!",
+                          "Add Article!",
                           style: TextStyle(color: Colors.white, fontSize: 20.0),
                         ),
                         onPressed: () async {
@@ -125,11 +151,11 @@ class _addNewSectionState extends State<addNewSection> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                                await Controller.addNewSection(FormData);
+                            await Controller.addNewArticle(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
-                                error = 'Section Already Exists';
+                                error = 'Article Already Exists';
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                   content: Text("Error occured"),
