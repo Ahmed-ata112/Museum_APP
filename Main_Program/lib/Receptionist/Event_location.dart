@@ -54,7 +54,7 @@ class _Event_locationState extends State<Event_location> {
           backgroundColor: Colors.blue[900],
           title: Text('Events'),
         ),
-        body: FutureBuilder(
+        body: FutureBuilder<List<event_loc>>(
         future: DBManager.geteventloc(event_name),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

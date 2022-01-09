@@ -169,6 +169,9 @@ def get_Max_Sold():
         return inst
 
 
+    
+
+
 @app.route('/getstatistics', methods=['GET'])
 def get_Stat():
     try:
@@ -207,6 +210,27 @@ def get_max_sale():
     except Exception as inst:
         cursor.close()
         return inst
+
+
+
+
+@app.route('/getVisitorsArrivalTime', methods=['GET'])
+def get_visitors_arriaval_time():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('select ArrivalTime from museum.visitor;')
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'ArrivalTime': x[0].strftime("%Y-%m-%d %H:%M:%S"),
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
 
 
 
@@ -361,6 +385,28 @@ def get_Sov_ID():
 
 
 
+
+
+@app.route('/getNumVisitorsNow', methods=['POST'])
+def count_num_visitors():
+    try:
+        parser.add_argument("arr_time")
+        args = parser.parse_args()
+        cursor = mysql.connection.cursor()
+        cursor.callproc('get_number_of_visitors_now',(args["arr_time"],) )
+        my_reader_response = [x for x in cursor]
+        data = []
+        for x in my_reader_response:
+            data.append({
+                'numVisitors': x[0],
+            })
+        cursor.close()
+        return simplejson.dumps(data)
+    except Exception as inst:
+        cursor.close()
+        return inst
+
+#get_number_of_visitors_now
 
 
 # @app.route('/selectSovID', methods=['GET'])

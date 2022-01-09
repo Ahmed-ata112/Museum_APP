@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:main_program/Receptionist/Home_receptionist.dart';
 import 'Accountant/AccountantHome.dart';
@@ -8,7 +9,9 @@ import 'general_pages/login_page.dart';
 import 'member_view/member_home.dart';
 import 'api.dart';
 import 'package:intl/intl.dart';
-import 'package:main_program/Shop_Manager/Statistics_Dashboard.dart';
+import 'package:main_program/Shop_Manager/Pie_Chart.dart';
+import 'package:main_program/Shop_Manager/All_Statistics.dart';
+import 'package:main_program/Shop_Manager/Dashboard.dart';
 
 void try_login() async {
   //String query = 'insert into myusers values("sdsd","hiii");';
@@ -51,10 +54,25 @@ void try_login() async {
 
   // dynamic aa = await Controller.getMembersData('aaaaaaaad');
   // if (aa == null) print(aa);
-  var a = await DBManager.geteventloc("coronavirus");
-  var b = await DBManager.gettourloc("fun");
-  var c = await DBManager.search_visitor_id(4);
-  print(c.first.id);
+  // var a = await DBManager.geteventloc("coronavirus");
+  // var b = await DBManager.gettourloc("fun");
+  // var c = await DBManager.search_visitor_id(4);
+  // var d = await DBManager.getmaxsold();
+  // var s = await DBManager.getstat();
+  // print(DateTime.parse(s.first.time).toString());
+
+ // await Controller.addNewSouvenir(55, 'sov', 34, 70);
+
+  //List<dynamic> tosend = [50, 'sov', 34, 70];
+  //await DBManager.executeNonQueryProc('inert_new_souvenir', tosend);
+
+  //String query = "insert into museum.souvenir values (8,'sov', 34.0, 70);";
+  //await DBManager.executeNonQuery(query);
+  //print(d.first.max_quantity);
+  //var x = await DBManager.search_sov_id(1);
+  //var x = await DBManager.count_visitors_now('2020-05-02 00:00:00');
+  var y = await DBManager.getVisitorsArrivalTime();
+  print(y.first.arrivalV);
 }
 
 void main() {
@@ -69,11 +87,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login_page',
       routes: {
-        '/login_page': (context) => Home_Receptionist(),
+        '/login_page': (context) => Dashboard(),//Home_Receptionist(),//Dashboard(),//Statistics(),//
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/accountant_home': (context) => AccountantHome(),
         '/ResearcherHome': (context) => const ResearcherHome(),
+        '/Home_Receptionist': (context) => Home_Receptionist(),
+        '/Home_Shop_Manager': (context) => const Dashboard(),
       },
     );
   }

@@ -41,7 +41,7 @@ class _Tour_locationState extends State<Tour_location> {
           backgroundColor: Colors.blue[900],
           title: Text('Tours'),
         ),
-        body: FutureBuilder(
+        body: FutureBuilder<List<tour_loc>>(
         future: DBManager.gettourloc(tour_topic),
           builder: (context, snapshot) {
            if (snapshot.hasData) {

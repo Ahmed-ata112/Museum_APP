@@ -12,6 +12,9 @@ import 'package:main_program/Models/tour_location.dart';
 import 'package:main_program/Models/visitor_id.dart';
 import 'package:main_program/Models/statistics.dart';
 
+import 'Models/Visitors_Arrival_Time.dart';
+import 'Models/num_visitors.dart';
+
 
 class list_holder {
   List<dynamic> arguments;
@@ -148,6 +151,19 @@ class DBManager {
   }
 
 
+  static Future<List<visitors_arr_time>> getVisitorsArrivalTime() async {
+    final response = await http.get((Uri.parse('${BASE_URL}/getVisitorsArrivalTime')));
+    try {
+      final visitors_arr_time = visitors_arr_timeFromJson(response.body);
+      return visitors_arr_time;
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+
+
 
 
 
@@ -226,6 +242,23 @@ class DBManager {
     try {
       final sov_id = sov_idFromJson(response.body);
       return sov_id;
+    } catch (error) {
+      print(error);
+      return [];
+      //rethrow;
+    }
+  }
+
+
+
+
+  //using procedure
+  static Future<List<num_visiotrs>> count_visitors_now(String arrTime) async {
+
+    final response = await http.post(Uri.parse('${BASE_URL}/getNumVisitorsNow'), body:{'arr_time':arrTime});
+    try {
+      final num_visiotrs = num_visiotrsFromJson(response.body);
+      return num_visiotrs;
     } catch (error) {
       print(error);
       return [];
