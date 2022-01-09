@@ -1362,4 +1362,16 @@ class Controller {
     }
     return 1;
   }
+  static Future<int> UpdateASouvenir(Map<String, dynamic> formData) async {
+    int ID = int.parse(formData["ID"]);
+    int quantity = int.parse(formData["quantity"]);
+    List<int> toSend = [ID];
+    dynamic res =
+    await DBManager.executeNonQueryProc('update_souvenir', toSend);
+    print(res);
+    if (res == 0) {
+      return -1;
+    }
+    return 1;
+  }
 }
