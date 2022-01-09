@@ -72,13 +72,13 @@ class Controller {
   static Future<int> getReviewsCount(int id) async {
     String query = "SELECT count(*) FROM museum.reviews where A_ID=$id;";
 
-    dynamic count = await DBManager.executeReader(query);
+    dynamic count = await DBManager.executeScaler(query);
 
     if (count == null) {
       //don't exist
       return -1;
     }
-    return count[0]['count(*)'];
+    return count;
   }
 
   static Future<int> getStaffCount() async {
@@ -607,16 +607,16 @@ class Controller {
 
   static Future<List<dynamic>> getSelfNFArticles(int rID) async {
     String query =
-        "SELECT * FROM museum.article join museum.writes on Art_ID=article.ID where Re_ID=$rID"
+        "SELECT ID, state_, content FROM museum.article join museum.writes on Art_ID=article.ID where Re_ID=$rID"
         " and state_='NF';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (Map<String, dynamic> art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
 
     return articles;
@@ -640,14 +640,16 @@ class Controller {
 
   static Future<dynamic> getGenNFArticles(int rID) async {
     String query =
-        "SELECT * FROM article join writes on Art_ID=article.ID where state_='NF'"
+        "SELECT ID, state_, content FROM article join writes on Art_ID=article.ID where state_='NF'"
         " and article.ID NOT IN (SELECT Art_ID FROM writes where Re_ID=$rID);";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      dynamic writers = await getArtWriters(art['ID']);
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
     /*
@@ -670,107 +672,65 @@ class Controller {
 
   static Future<dynamic> getSelfPubArticles(int rID) async {
     String query =
-        "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
+        "SELECT ID, state_, content, likes, views_ FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
-    /*
-    List<dynamic> art;
-    List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for (art in articles) {
-      int reviews = await getReviewsCount(art[0]);
-      toReturn.add(
-          resArticle(
-              art[0],
-              art[1],
-              art[2],
-              art[5],
-              art[3],
-              art[4],
-              reviews));
-    }
-    return toReturn; *///
+
   }
 
-  static Future<dynamic> getSelfRevArticles(int rID) async {
+  /*static Future<dynamic> getSelfRevArticles(int rID) async {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='R';";
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
-    /*List<dynamic> art;
-    List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for (art in articles) {
-      int reviews = await getReviewsCount(art[0]);
-      toReturn.add(
-          resArticle(
-              art[0],
-              art[1],
-              art[2],
-              art[5],
-              art[3],
-              art[4],
-              reviews));
-    }
-    return toReturn;*/ //
-  }
+
+  }*/
 
   static Future<dynamic> getToContRevArticles(int rID) async
   {
     String query =
-        "SELECT * FROM article as A join reviews on A_ID=A.ID where R_ID=$rID and progress!=100";
+        "SELECT ID, state_, content FROM article as A join reviews on A_ID=A.ID where R_ID=$rID and progress!=100";
+
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
 
-    /*List<dynamic> art;
-    List<dynamic> toReturn = List.filled(0, null, growable: true);
-    for (art in articles) {
-      int reviews = await getReviewsCount(art[0]);
-      toReturn.add(
-          resArticle(
-              art[0],
-              art[1],
-              art[2],
-              art[5],
-              art[3],
-              art[4],
-              reviews));
-    }
-    return toReturn;*/ //
+
   }
 
   static Future<dynamic> getToReviewArticles(int rID) async
   {
     String query =
-        "SELECT * FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='F'"
+        "SELECT ID, state_, content FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='F'"
         " and A.ID NOT IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID)";
     List<dynamic> articles = await DBManager.executeReader(query);
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
     /*List<dynamic> art;
@@ -793,34 +753,18 @@ class Controller {
   //published articles or he reviewed
   static Future<dynamic> getGenArticles(int rID) async
   {
-    String query =
-        "SELECT * FROM article as A join writes on Art_ID=A.ID where (Re_ID!=$rID and state_='P')"
-        " OR A.ID IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID);";
-    List<dynamic> articles = await DBManager.executeReader(query);
 
-    articles = List<Map<String, dynamic>>.from(articles);
-    for (dynamic art in articles) {
-      int reviews = await getReviewsCount(art['ID']);
-      List<dynamic> writers = await getArtWriters(art['ID']);
-      art['reviews'] = reviews;
-      art['writers'] = writers;
+    String query =
+        "SELECT ID, state_, content, likes, views_ FROM article as A join writes on Art_ID=A.ID where (Re_ID!=$rID and state_='P');";
+    List<dynamic> articles = await DBManager.executeReader(query);
+    articles = List<List<dynamic>>.from(articles);
+    for (List<dynamic> art in articles) {
+      int reviews = await getReviewsCount(art[0]);
+      List<dynamic> writers = await getArtWriters(art[0]);
+      art.add(reviews);
+      art.add(writers);
     }
     return articles;
-    /*List<dynamic> art;
-    List<dynamic> toReturn = [];
-    for (art in articles) {
-      int reviews = await getReviewsCount(art[0]);
-      toReturn.add(
-          resArticle(
-              art[0],
-              art[1],
-              art[2],
-              art[5],
-              art[3],
-              art[4],
-              reviews));
-    }
-    return toReturn; *///
   }
 
   static Future<dynamic> addReview(Map<String, dynamic> review) async
@@ -854,13 +798,13 @@ class Controller {
 
     Map<String, dynamic> resData = data[0];
     Researcher res = Researcher(
-        resData['ID'],
-        resData['Fname'],
-        resData['Mname'],
-        resData['Lname'],
-        resData['B_date'],
-        resData['years_of_experience'],
-        resData['R_username']);
+        resData[0],
+        resData[1],
+        resData[2],
+        resData[3],
+        resData[4],
+        resData[5],
+        resData[6]);
     print(res.fName);
     return res;
   }
@@ -871,52 +815,12 @@ class Controller {
     toReturn['selfNF'] = await getSelfNFArticles(rID);
     toReturn['GenNF'] = await getGenNFArticles(rID);
     toReturn['P'] = await getSelfPubArticles(rID);
-    toReturn['Self_reviewed'] = await getSelfRevArticles(rID);
+    /*
+    toReturn['Self_reviewed'] = await getSelfRevArticles(rID);*/
     toReturn['To_cont_review'] = await getToContRevArticles(rID);
     toReturn['To_review'] = await getToReviewArticles(rID);
     toReturn['Gen'] = await getGenArticles(rID);
-    /*getSelfNFArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['selfNF'] = map;}
-      else {toReturn['selfNF'] = [];}
-    });
-    getGenNFArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['GenNF'] = map;}
-      else {toReturn['GenNF'] = [];}
-    });
-    getSelfPubArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['P'] = map;}
-      else {toReturn['P'] = [];}
-    });
-    getToContRevArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['To_cont_review'] = map;}
-      else {toReturn['To_cont_review'] = [];}
-    });
-    getSelfRevArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['Self_reviewed'] = map;}
-      else {toReturn['Self_reviewed'] = [];}
-    });
-    getToReviewArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['To_review'] = map;}
-      else {toReturn['To_review'] = [];}
-    });
-    getGenArticles(rID).then((map)
-    {
-      if(map!=null)
-      {toReturn['Gen'] = map;}
-      else {toReturn['Gen'] = [];}
-    });*/
+
     print(toReturn);
     return toReturn; //
   }

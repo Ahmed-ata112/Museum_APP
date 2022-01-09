@@ -48,8 +48,8 @@ Widget ArticleCardGenerator(int rId, resArticle article, context, String help) {
           List<dynamic> prevRev = [];
           dynamic value = await Controller.getPrevReview(rId, article.id);
                 if(value != null)
-                {prevRev.add(value[0]['progress']);
-                prevRev.add(value[0]['result']);}
+                {prevRev.add(value[0][0]);
+                prevRev.add(value[0][1]);}
 
                 Navigator.push(
                     context,
@@ -173,19 +173,10 @@ class _ArticlesHomeState extends State<ArticlesHome> {
     Controller.getArtHomeArticles(widget.rId).then((map) {
       setState(() {
         List<dynamic> arts;
-        dynamic views;
-        dynamic likes;
-        dynamic reviews;
         arts = (map['selfNF'] != null) ? map['selfNF'] : [];
         for (dynamic art in arts) {
-          if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
-
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
-          }
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], 0,0,0));
         }
         allArticles['selfNF'] = temp;
 
@@ -194,12 +185,10 @@ class _ArticlesHomeState extends State<ArticlesHome> {
         arts = (map['GenNF'] != null) ? map['GenNF'] : [];
         for (dynamic art in arts) {
           if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
 
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
+
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], 0,0,0));
           }
         }
         allArticles['GenNF'] = temp;
@@ -209,40 +198,29 @@ class _ArticlesHomeState extends State<ArticlesHome> {
 
         for (dynamic art in arts) {
           if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
-
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], art[5], art[4], art[7]));
           }
         }
         allArticles['P'] = temp;
-        temp = [];
+        /*temp = [];
         arts = (map['Own_reviewed'] != null) ? map['Own_reviewed'] : [];
 
         for (dynamic art in arts) {
           if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
 
             temp.add(resArticle(art['ID'], art['state_'], art['content'],
                 art['header'], views, likes, reviews));
           }
         }
-        allArticles['Own_reviewed'] = temp;
+        allArticles['Own_reviewed'] = temp;*/
         temp = [];
         arts = (map['To_cont_review'] != null) ? map['To_cont_review'] : [];
 
         for (dynamic art in arts) {
           if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
-
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], 0, 0, 0));
           }
         }
         allArticles['To_cont_review'] = temp;
@@ -251,27 +229,17 @@ class _ArticlesHomeState extends State<ArticlesHome> {
 
         for (dynamic art in arts) {
           if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
-
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], 0, 0, 0));
           }
         }
         allArticles['To_review'] = temp;
         temp = [];
         arts = (map['Gen'] != null) ? map['Gen'] : [];
         for (dynamic art in arts) {
-          if (art != null) {
-            views = art['views_'] ?? 0;
-            likes = art['likes'] ?? 0;
-            reviews = art['reviews'] ?? 0;
-
-            temp.add(resArticle(art['ID'], art['state_'], art['content'],
-                art['header'], views, likes, reviews));
+            temp.add(resArticle(art[0], art[1], art[2],
+                art[3], art[5], art[4], art[7]));
           }
-        }
         allArticles['Gen'] = temp;
         temp = [];
         setState(() {}); //just call it to update screen

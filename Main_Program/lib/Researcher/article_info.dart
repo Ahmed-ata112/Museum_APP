@@ -22,18 +22,23 @@ class showReviews extends StatelessWidget {
                 reviews[index][1];
                 String result = reviews[index][3];
                 int progress = reviews[index][2];
-                return Card(
+                return Padding(padding: EdgeInsets.fromLTRB(8, 10, 8, 5),
+                    child:
+                    Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
                         leading: Icon(Icons.reviews),
                         title: Text(name),
-                        subtitle: Text(result),
                       ),
+                      Text('Progress: $progress%'),
+                      Text('Result:'),
+                      Text('$result'),
+                      
                     ],
                   ),
-                );
+                ));
               }),
 
     );
@@ -88,8 +93,8 @@ class _OpenArticleState extends State<OpenArticle> {
               review = List<List<dynamic>>.from(value);
               for(dynamic item in value)
                 {
-                  review.add([value['Fname'], value['Lname'],
-                    value['progress'], value['result']]);
+                  review.add([value[0], value[1],
+                    value[2], value[3]]);
                 }
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => showReviews(reviews: review)));

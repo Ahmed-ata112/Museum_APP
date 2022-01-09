@@ -82,7 +82,23 @@ class _ResearcherHomeState extends State<ResearcherHome> {
                   ],
                 ),
               ),
-
+              ListView(
+                children: [
+                  ListTile(
+                    title: const Text('log out'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/login_page');
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('change password'),
+                    onTap: () {
+                      /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => chagepassword(res.username)));*/
+                    },
+                  ),
+                ],
+              )
             ],
           ),
         ),
