@@ -23,7 +23,20 @@ class _changePasswordAccState extends State<changePasswordAcc> {
   final _formKey = GlobalKey<FormState>();
   String error = "";
   late String username;
+  late String oldPassword;
   _changePasswordAccState(this.username);
+  @override
+  void initState() {
+    super.initState();
+    Controller.getPassword(username).then((ReturnedList) {
+      setState(() {
+        for (var row in ReturnedList) {
+          oldPassword=row[0];
+        }
+        setState(() {});
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +59,27 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                     const SizedBox(
                       height: 20.0,
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "old password",
+                        icon: Icon(Icons.lock),
+                      ),
+                      onChanged: (val) {
 
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in new password";
+                        }
+                        if (val.length<6) {
+                          return "Password must be longer than 6 characters";
+                        }
+                        if (val!=oldPassword) {
+                          return "Password is incorrect";
+                        }
+                        return null;
+                      },
+                    ),
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "new password",

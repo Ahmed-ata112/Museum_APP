@@ -1349,6 +1349,15 @@ class Controller {
     }
     return us;
   }
+  static Future<dynamic> getPassword(String username) async {
+    String query =
+        "select password_ from user_ where username_='$username';";
+    List<dynamic> us = await DBManager.executeReader(query);
+    if (us.isEmpty) {
+      return null;
+    }
+    return us;
+  }
 
   static Future<int> UpdateArticleToP(Map<String, dynamic> formData) async {
     int ID = formData["ID"];
