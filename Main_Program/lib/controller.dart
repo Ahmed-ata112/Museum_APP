@@ -673,6 +673,27 @@ return 1; // returned successfully
     }
     return ret;
   }
+  //getMemIDs
+  static Future<List<dynamic>> getMemIDs() async {
+    String query = "SELECT ID FROM museum.member;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get go_on from database");
+    }
+    return ret;
+  }
+  static Future<List<dynamic>> getPIDs() async {
+    String query = "SELECT ID FROM museum.painting_artifact;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get go_on from database");
+    }
+    return ret;
+  }
+
+
   static Future<int> addNewPaintingAndArtifacts(Map<String, dynamic> formData) async {
     //ID, name, type, description, section_number
 
@@ -690,5 +711,30 @@ return 1; // returned successfully
       return -1;
     }
     return 1; // returned successfully
+  }
+  static Future<int> addNewFeedback(Map<String, dynamic> formData) async {
+    //rate, comment, ME_ID, P_ID
+    int rate = int.parse(formData["rate"]);
+    String comment = formData["comment"];
+    int ME_ID = int.parse(formData["ME_ID"]);
+    int P_ID = int.parse(formData["P_ID"]);
+
+    List<dynamic> toSend2 = [rate,comment,ME_ID,P_ID];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_feedback', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<List<dynamic>> getEventIDs() async {
+    String query = "SELECT ID FROM museum.event;";
+
+    dynamic ret = await DBManager.executeReader(query);
+    if (ret == null) {
+      throw Exception("Cant get go_on from database");
+    }
+    return ret;
   }
 }
