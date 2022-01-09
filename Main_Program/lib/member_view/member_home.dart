@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/general_pages/confirm_signout.dart';
 import 'package:main_program/member_view/store_home.dart';
 import 'package:main_program/member_view/tours_home.dart';
+import '../controller.dart';
 import 'articles_home.dart';
 import 'events_home.dart';
 import 'package:main_program/data_holders.dart';
@@ -66,10 +68,6 @@ class _member_homeState extends State<member_home> {
                 ),
               ),
               ListTile(
-                title: const Text('Favorites'),
-                onTap: () {},
-              ),
-              ListTile(
                 title: const Text('Articles'),
                 onTap: () {
                   // Update the state of the app.
@@ -119,6 +117,13 @@ class _member_homeState extends State<member_home> {
                           builder: (context) => StoreHome(
                                 Member_id: mem.id,
                               )));
+                },
+              ),
+              ListTile(
+                title: const Text('Sign out'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CONFIRMORNOT()));
                 },
               ),
             ],
