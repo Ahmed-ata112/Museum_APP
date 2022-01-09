@@ -51,6 +51,30 @@ class _loading_after_loginState extends State<loading_after_login> {
         } else {
           print('NOT A VALID staff - in users but not members');
         }
+      } else if (type == 4) {
+        //accountant
+        dynamic retrieved = await Controller.getAccData(username);
+        print(retrieved);
+        if (retrieved != null) {
+          Staff mem = retrieved;
+          //print(mem.username);
+          Navigator.pushReplacementNamed(context, '/shopManager',
+              arguments: {'member': mem});
+        } else {
+          print('NOT A VALID staff - in users but not members');
+        }
+      } else if (type == 5) {
+        //accountant
+        dynamic retrieved = await Controller.getAccData(username);
+        print(retrieved);
+        if (retrieved != null) {
+          Staff mem = retrieved;
+          //print(mem.username);
+          Navigator.pushReplacementNamed(context, '/Receptionist',
+              arguments: {'member': mem});
+        } else {
+          print('NOT A VALID staff - in users but not members');
+        }
       }
     });
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Accountant/accountant_home.dart';
+import 'Receptionist/Home_receptionist.dart';
 import 'Researcher/researcher_home.dart';
+import 'Shop_Manager/Dashboard.dart';
 import 'admin_view/admin_home.dart';
 import 'controller.dart';
 import 'Accountant/accountant_home.dart';
@@ -69,6 +71,8 @@ class MyApp extends StatelessWidget {
         '/admin_home': (context) => const admin_home(),
         '/accountant_home': (context) => accHome(),
         '/ResearcherHome': (context) => const ResearcherHome(),
+        '/shopManager': (context) => const Dashboard(),
+        '/Receptionist': (context) => Home_Receptionist(),
       },
     );
   }

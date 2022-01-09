@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from flask_restful import Resource, Api, reqparse
 import json
 import simplejson
+import datetime
 
 
 
@@ -12,7 +13,7 @@ app = Flask(__name__)
 # app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '123456789'
+app.config['MYSQL_PASSWORD'] = '<Ahmedata>'
 app.config['MYSQL_DB'] = 'museum'
 
 mysql = MySQL(app)
@@ -157,7 +158,7 @@ def execute_reader():
         #print(json.dumps(my_reader_response, cls=DateTimeEncoder))
         # print(my_reader_response) # ((1, 'ahmed'), (2, 'ali'), (3, 'ibrahim'))
         cursor.close()
-        return json.dumps(my_reader_response)
+        return json.dumps(my_reader_response, cls=DateTimeEncoder)
     except Exception as inst:
         print(type(inst))    # the exception instance
         print(inst.args)     # arguments stored in .args
