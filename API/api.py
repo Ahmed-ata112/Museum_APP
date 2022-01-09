@@ -173,7 +173,7 @@ def get_Max_Sold():
 def get_Stat():
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT a.timestamp as time, SUM(a.quantity) as q FROM ((SELECT timestamp, quantity FROM buy_member_souvenir) UNION (SELECT  timestamp, quantity FROM buys_visitor_souvenir))a GROUP BY a.timestamp ORDER BY a.timestamp;')
+        cursor.execute('SELECT a.timestamp as time, SUM(a.quantity) as q FROM ((SELECT timestamp, quantity FROM buy_member_souvenir) UNION (SELECT  timestamp, quantity FROM buys_visitor_souvenir))a GROUP BY a.timestamp ORDER BY a.timestamp DESC;')
         my_reader_response = [x for x in cursor]
         data = []
         for x in my_reader_response:

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';   // to use inputFormatters --> allow user ot input digits only
+import 'package:flutter/services.dart';
+import 'package:main_program/Models/search_sov_id.dart';
+
+import '../api.dart';   // to use inputFormatters --> allow user ot input digits only
 
 
 class insert_goods extends StatefulWidget {
@@ -14,6 +17,27 @@ class _insert_goodsState extends State<insert_goods> {
   late int price = -1;
   late int quantity = -1;
   late String name = "";
+
+
+  late List<sov_id> so_id = [];
+
+
+
+  @override
+  void function() async {
+    // do something here
+
+    so_id = await DBManager.search_sov_id(id);
+
+  }
+  void initState() {  //the program will start by it at the first of the program
+
+    function();
+    super.initState();
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +64,7 @@ class _insert_goodsState extends State<insert_goods> {
                         onChanged:(text) async {setState(() {
                           id = -1;
                           id = int.parse(text);
+                          function();
                         });} ,
                       ),
                     ),
@@ -50,6 +75,7 @@ class _insert_goodsState extends State<insert_goods> {
                           labelText: 'Enter The Name',
                           hintText: 'Enter Souvenir Name',),
                         onChanged: (text) async {setState(() {
+                          function();
                           name = "";
                           name = text;
                         });},
@@ -67,6 +93,7 @@ class _insert_goodsState extends State<insert_goods> {
                           FilteringTextInputFormatter.digitsOnly
                         ], // On
                         onChanged: (text) async {setState(() {
+                          function();
                           price = -1;
                           price = int.parse(text);
                         });},
@@ -85,6 +112,7 @@ class _insert_goodsState extends State<insert_goods> {
                           FilteringTextInputFormatter.digitsOnly
                         ], // On
                         onChanged: (text)async{setState(() {
+                          function();
                           quantity = -1;
                           quantity = int.parse(text);
                         });},
@@ -95,7 +123,7 @@ class _insert_goodsState extends State<insert_goods> {
                     RaisedButton(
                       onPressed: () async{
                         //TODO -> make validation  & EXECUTE QUERY
-
+                        //function();
                         if(id == -1 || quantity == -1 || price == -1 || name == ""){
                           createAlterDialog(BuildContext context){
                             return showDialog(context: context, builder: (context){
@@ -112,6 +140,27 @@ class _insert_goodsState extends State<insert_goods> {
                           }
                           createAlterDialog(context);
                           return;
+                        }
+
+
+                        if(so_id.isNotEmpty){
+                          createAlterDialog(BuildContext context){
+                            return showDialog(context: context, builder: (context){
+                              return AlertDialog(
+                                title: Text("This ID Is Already Exists."),
+                                actions: [
+                                  FlatButton(
+                                    onPressed: () => Navigator.pop(context, false), // passing false
+                                    child: Text('Cancel'),
+                                  ),
+                                ],
+                              );
+                            });
+
+                          }
+                          createAlterDialog(context);
+                          return;
+
                         }
 
 
