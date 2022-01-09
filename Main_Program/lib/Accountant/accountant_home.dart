@@ -7,7 +7,7 @@ import 'package:main_program/Accountant/Souvenir.dart';
 import 'package:main_program/Accountant/souventir_sale.dart';
 import 'package:main_program/Accountant/insert_new_employee.dart';
 import 'package:main_program/Accountant/give_promotion.dart';
-
+import'package:main_program/general_pages/login_page.dart';
 class accHome extends StatefulWidget {
   const accHome({Key? key}) : super(key: key);
 
@@ -137,6 +137,15 @@ class accHomeState extends State<accHome> {
                 // ...
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GivePromo()));
+              },
+            ),
+            ListTile(
+              title: const Text('Sign out'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => login_page()));
               },
             ),
           ],
