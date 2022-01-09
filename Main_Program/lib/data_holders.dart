@@ -88,17 +88,11 @@ class resArticle {
   String content;
   String state;
   String header;
-  late int views;
-  late int likes;
-  late int reviews;
-   List<Map<String, String>> writers;
-  resArticle(this.id, this.state, this.content, this.header, views, likes, reviews, this.writers)
+  int views;
+  int likes;
+  int reviews;
+
+  resArticle(this.id, this.state, this.content, this.header, this.views, this.likes, this.reviews)
   {
-    if(views != null) {this.views = views;}
-    else {views = 0;}
-    if(likes != null) {this.likes = likes;}
-    else {likes = 0;}
-    if(reviews != null) {this.reviews = reviews;}
-    else {reviews = 0;}
   }
 }

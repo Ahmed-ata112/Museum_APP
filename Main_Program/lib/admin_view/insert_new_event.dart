@@ -32,7 +32,7 @@ class _addNewEventState extends State<addNewEvent> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Controller.getAllSecNums().then((Listo) {
+    /*Controller.getAllSecNums().then((Listo) {
       setState(() {
         for (var vv in Listo) {
           AllSecNums.add(vv[0]);
@@ -48,7 +48,7 @@ class _addNewEventState extends State<addNewEvent> {
         }
         //print(DepsNums);
       });
-    });
+    });*/
   }
 
   @override
@@ -249,8 +249,8 @@ class _addNewEventState extends State<addNewEvent> {
                             //if the form from the client side is valid
                             print("All Valid at the client side:)");
                             //Server Validation Side
-                            dynamic retV =
-                                await Controller.addNewEvent(FormData);
+                            dynamic retV = -1;
+                                //await Controller.addNewEvent(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

@@ -1,3 +1,4 @@
+
 import 'package:main_program/admin_view/add_new_Painting&artifacts.dart';
 import 'package:main_program/admin_view/add_new_visitor.dart';
 
@@ -8,6 +9,16 @@ import 'data_holders.dart';
 class Controller {
   Controller() {}
 
+  static Future<dynamic> getArtReviews(int id) async {
+    String query =
+        "select Fname, Lname , progress, result from reviews, researcher where R_ID=ID and A_ID=$id"
+    " order by progress desc;";
+
+    dynamic
+    ret = await DBManager.executeReader(query);
+
+    return ret;
+  }
 
 
   static Future<int> generateArtId() async {
@@ -538,11 +549,12 @@ class Controller {
     return res;
   }
 
-  static Future<dynamic> getArtWriters(int aId) async
+  static Future<List<dynamic>> getArtWriters(int aId) async
   {
     String query = "SELECT Fname, Lname From researcher, writes where Art_ID=$aId"
         " and Re_ID=ID;";
     dynamic ret = await DBManager.executeReader(query);
+
     return ret;
   }
   static Future<int> insertNewArticle(Map<dynamic, dynamic> newArticle) async {
@@ -593,16 +605,16 @@ class Controller {
     return 1;
   }
 
-  static Future<dynamic> getSelfNFArticles(int rID) async {
+  static Future<List<dynamic>> getSelfNFArticles(int rID) async {
     String query =
         "SELECT * FROM museum.article join museum.writes on Art_ID=article.ID where Re_ID=$rID"
         " and state_='NF';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-
+    articles = List<Map<String, dynamic>>.from(articles);
     for (Map<String, dynamic> art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -632,8 +644,9 @@ class Controller {
         " and article.ID NOT IN (SELECT Art_ID FROM writes where Re_ID=$rID);";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-    for (Map<String, dynamic> art in articles) {
-      List<String> writers = await getArtWriters(art['ID']);
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
+      dynamic writers = await getArtWriters(art['ID']);
       art['writers'] = writers;
     }
     return articles;
@@ -660,10 +673,10 @@ class Controller {
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='P';";
 
     List<dynamic> articles = await DBManager.executeReader(query);
-
-    for (Map<String, dynamic> art in articles) {
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -690,10 +703,10 @@ class Controller {
     String query =
         "SELECT * FROM article join writes on Art_ID=article.ID where Re_ID=$rID and state_='R';";
     List<dynamic> articles = await DBManager.executeReader(query);
-
-    for (Map<String, dynamic> art in articles) {
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -720,10 +733,10 @@ class Controller {
     String query =
         "SELECT * FROM article as A join reviews on A_ID=A.ID where R_ID=$rID and progress!=100";
     List<dynamic> articles = await DBManager.executeReader(query);
-
-    for (Map<String, dynamic> art in articles) {
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -752,10 +765,10 @@ class Controller {
         "SELECT * FROM article as A join writes on Art_ID=A.ID where Re_ID!=$rID and state_='F'"
         " and A.ID NOT IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID)";
     List<dynamic> articles = await DBManager.executeReader(query);
-
-    for (Map<String, dynamic> art in articles) {
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -785,10 +798,10 @@ class Controller {
         " OR A.ID IN (SELECT A_ID FROM reviews where A_ID=A.ID and R_ID=$rID);";
     List<dynamic> articles = await DBManager.executeReader(query);
 
-
-    for (Map<String, dynamic> art in articles) {
+    articles = List<Map<String, dynamic>>.from(articles);
+    for (dynamic art in articles) {
       int reviews = await getReviewsCount(art['ID']);
-      List<String> writers = await getArtWriters(art['ID']);
+      List<dynamic> writers = await getArtWriters(art['ID']);
       art['reviews'] = reviews;
       art['writers'] = writers;
     }
@@ -1102,5 +1115,12 @@ return 1; // returned successfully
       return -1;
     }
     return 1; // returned successfully
+  }
+  static Future<dynamic> getPrevReview(int rId, int aId) async
+  {
+    String query = "Select progress, result from reviews where R_ID=$rId"
+    " and A_ID=$aId";
+    dynamic res = await DBManager.executeReader(query);
+    return res;
   }
 }
