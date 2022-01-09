@@ -23,7 +23,6 @@ class _addNewSouvenirState extends State<addNewSouvenir> {
   };
 
   @override
-
   final _formKey = GlobalKey<FormState>();
   String error = "";
 
@@ -108,6 +107,25 @@ class _addNewSouvenirState extends State<addNewSouvenir> {
                     const SizedBox(
                       height: 20.0,
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "description",
+                        icon: Icon(Icons.description),
+                      ),
+                      minLines: 1,
+                      maxLines: 100,
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (val) {
+                        setState(() => FormData['description'] = val);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill description";
+                        }
+
+                        return null;
+                      },
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -127,8 +145,8 @@ class _addNewSouvenirState extends State<addNewSouvenir> {
                             //if the form from the client side is valid
                             print("All Valid at the client side:)");
                             //Server Validation Side
-                            dynamic retV =
-                            await Controller.addNewSouvenir(FormData);////////////////
+                            dynamic retV = await Controller.addNewSouvenir(
+                                FormData); ////////////////
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

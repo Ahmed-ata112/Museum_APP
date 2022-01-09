@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/admin_view/add_new_attends.dart';
 import 'package:main_program/admin_view/add_new_staff.dart';
 import 'package:main_program/admin_view/add_new_user.dart';
 import 'package:main_program/admin_view/add_new_visitor.dart';
 import 'package:main_program/admin_view/insert_new_event.dart';
 import '../controller.dart';
+import 'add_new_feedback.dart';
 import 'add_new_painting_artifacts.dart';
 import 'add_new_department.dart';
 import 'add_new_member.dart';
 import 'add_new_researcher.dart';
 import 'add_new_reviews.dart';
 import 'add_new_section.dart';
+import 'add_new_session.dart';
+import 'add_new_souvenir.dart';
 import 'add_new_tour.dart';
 import 'all_users.dart';
 import 'delete_ids.dart';
@@ -686,6 +690,58 @@ class _admin_homeState extends State<admin_home> {
             onPressed: () async {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => addNewReviews()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Souvenir'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewSouvenir()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Review'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewReviews()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Attends'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewAttends()));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Add New Feedback'),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.purple[300],
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNewFeedback()));
             },
           ),
           ElevatedButton(

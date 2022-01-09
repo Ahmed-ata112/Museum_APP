@@ -77,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
                                       padding: EdgeInsets.all(16.0),
                                       child: Center(
                                         child: Column(
-                                          children: <Widget>[
+                                          children: const <Widget>[
                                             Icon(Icons.bar_chart,
                                                 color: Colors.white,
                                                 size: 30.0),
@@ -162,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
                     MaterialPageRoute(builder: (context) => update_goods()));
               }),
             ],
-            staggeredTiles: [
+            staggeredTiles: const [
               StaggeredTile.extent(2, 220.0),
               StaggeredTile.extent(2, 220.0),
               StaggeredTile.extent(2, 220.0),

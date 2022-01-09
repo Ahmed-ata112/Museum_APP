@@ -21,7 +21,6 @@ class _addNewFeedbackState extends State<addNewFeedback> {
     'comment': null,
     'ME_ID': null,
     'P_ID': null,
-
   };
 
   final _formKey = GlobalKey<FormState>();
@@ -33,7 +32,7 @@ class _addNewFeedbackState extends State<addNewFeedback> {
     Controller.getMemIDs().then((Listo) {
       setState(() {
         for (var vv in Listo) {
-         ME_ID.add(vv[0]);
+          ME_ID.add(vv[0]);
           print(vv[0]);
         }
       });
@@ -71,20 +70,20 @@ class _addNewFeedbackState extends State<addNewFeedback> {
                       height: 20.0,
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Rate",
-                        icon: Icon(Icons.phone),
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (val) {
-                        setState(() => FormData['rate'] = val);
-                      },
+                        decoration: const InputDecoration(
+                          hintText: "Rate",
+                          icon: Icon(Icons.rate_review),
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (val) {
+                          setState(() => FormData['rate'] = val);
+                        },
                         validator: (val) {
-                        if (val!.isEmpty) {
-                        return "Please fill in rate";
-                        }
-                      return null;}
-                    ),
+                          if (val!.isEmpty) {
+                            return "Please fill in rate";
+                          }
+                          return null;
+                        }),
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "Comment",
@@ -121,7 +120,7 @@ class _addNewFeedbackState extends State<addNewFeedback> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -143,7 +142,7 @@ class _addNewFeedbackState extends State<addNewFeedback> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -168,7 +167,7 @@ class _addNewFeedbackState extends State<addNewFeedback> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewFeedback(FormData);
+                                await Controller.addNewFeedback(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

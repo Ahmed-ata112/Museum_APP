@@ -647,11 +647,12 @@ class Controller {
   }
 
   static Future<int> addNewEventAttends(Map<String, dynamic> formData) async {
+    print(formData);
     String classe = formData["class"];
-    int memberId = formData["member_id"];
-    int articleId = formData["article_id"];
+    int memberId = int.parse(formData["memb_ID"]);
+    int eventId = int.parse(formData["EV_ID"]);
 
-    List<dynamic> toSend = [memberId, articleId, classe];
+    List<dynamic> toSend = [memberId, eventId, classe];
 
     dynamic res =
         await DBManager.executeNonQueryProc('insert_into_attends', toSend);
@@ -930,7 +931,24 @@ class Controller {
 
     List<dynamic> toSend2 = [rate, comment, ME_ID, P_ID];
     dynamic res2 =
-        await DBManager.executeNonQueryProc('insert_new_feedback', toSend2);
+        await DBManager.executeNonQueryProc('add_pant_feed', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+
+  static Future<int> BuyNewSouvenir(int mem_id, int sou_id, int q) async {
+    //rate, comment, ME_ID, P_ID
+
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
+    final String registerDate = formatter.format(now);
+    print(registerDate);
+    List<dynamic> toSend2 = [mem_id, sou_id, q, registerDate];
+    dynamic res2 =
+        await DBManager.executeNonQueryProc('buy_new_souvenir', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
@@ -1252,25 +1270,21 @@ class Controller {
   }
 
   static Future<int> addNewSouvenir(Map<String, dynamic> formData) async {
-    //ID int PK
-    // _name varchar(50)
-    // price int
-    // quantity
     int ID = await getSouvenirCount();
     String _name = formData["_name"];
     int price = int.parse(formData["price"]);
-    int quantity = formData["quantity"];
+    int quantity = int.parse(formData["quantity"]);
+    String description = formData["description"];
+    List<dynamic> toSend2 = [ID, _name, price, quantity, description];
 
-    List<dynamic> toSend2 = [ID, _name, price, quantity];
+    print(toSend2);
+
     dynamic res2 =
-        await DBManager.executeNonQueryProc('insert_new_souvenir', toSend2);
+        await DBManager.executeNonQueryProc('inert_new_souvenir', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
     }
-    dynamic res3 =
-        await DBManager.executeNonQueryProc('up_researcher', toSend2);
-
     return 1; // returned successfully
   }
 

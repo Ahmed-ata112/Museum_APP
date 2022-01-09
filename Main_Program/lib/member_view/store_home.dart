@@ -5,7 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import '../controller.dart';
 import 'package:like_button/like_button.dart';
 
-Widget Souvenirs_Card(Souvenir sou, BuildContext context) {
+Widget Souvenirs_Card(Souvenir sou, int idd, BuildContext context) {
   void _shareContent(String _content) {
     Share.share(_content);
   }
@@ -38,7 +38,35 @@ Widget Souvenirs_Card(Souvenir sou, BuildContext context) {
               onPrimary: Colors.red, // <-- Splash color
             )),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: sou.quantity == 0
+                ? null
+                : () {
+                    createAlterDialog(BuildContext context) {
+                      return showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  "Are you sure you want to buy this?"),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () => Navigator.pop(
+                                      context, false), // passing false
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Controller.BuyNewSouvenir(idd, sou.id, 1);
+                                  }, // passing false
+                                  child: const Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          });
+                    }
+
+                    createAlterDialog(context);
+                  },
             child: Icon(Icons.add_box_outlined, color: Colors.white),
             style: ElevatedButton.styleFrom(
               shape: CircleBorder(),
@@ -128,7 +156,7 @@ class _StoreHomeState extends State<StoreHome> {
         itemCount:
             allSouvenirs.length, // should be dynamic -> retrieve articles
         itemBuilder: (context, index) {
-          return Souvenirs_Card(allSouvenirs[index], context);
+          return Souvenirs_Card(allSouvenirs[index], Member_id, context);
         },
       ),
     );

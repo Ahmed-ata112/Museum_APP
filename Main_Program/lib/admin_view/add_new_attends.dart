@@ -48,6 +48,7 @@ class _addNewAttendsState extends State<addNewAttends> {
 
   @override
   Widget build(BuildContext context) {
+    String dropdownValue = 'A';
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -85,7 +86,7 @@ class _addNewAttendsState extends State<addNewAttends> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -107,25 +108,39 @@ class _addNewAttendsState extends State<addNewAttends> {
                         });
                       },
                       validator: (val) =>
-                      (val == null) ? "This is Required" : null,
+                          (val == null) ? "This is Required" : null,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "class",
-                        icon: Icon(Icons.perm_identity_rounded),
-                      ),
-                      onChanged: (val) {
-                        setState(() => FormData['class'] = val);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please fill in class";
-                        }
-                        return null;
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text('Class'),
+                        DropdownButton(
+                          value: dropdownValue,
+                          //icon: const Icon(Icons.arrow_downward),
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.deepPurple),
+                          underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                              FormData['class'] = newValue;
+                            });
+                          },
+                          items: <String>['A', 'B', 'C', 'D']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -150,7 +165,7 @@ class _addNewAttendsState extends State<addNewAttends> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewEventAttends(FormData);
+                                await Controller.addNewEventAttends(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {
