@@ -12,7 +12,7 @@ class new_booking extends StatefulWidget {
 }
 
 class _new_bookingState extends State<new_booking> {
-  Map<String, dynamic> FormData = {'ArrivalTime': null, 'DepartureTime': ''};
+  Map<String, dynamic> FormData = {'ArrivalTime': null, 'DepartureTime': null};
 
   final _formKey = GlobalKey<FormState>();
   String error = "";
@@ -60,9 +60,26 @@ class _new_bookingState extends State<new_booking> {
                         onChanged: (value) {
                           FormData['ArrivalTime'] = value;
                         }),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
+                    DateTimePicker(
+                        cursorColor: Colors.black,
+                        type: DateTimePickerType.dateTime,
+                        dateHintText: 'Departure Time',
+                        icon: Icon(Icons.date_range),
+                        firstDate: DateTime(DateTime.now().year - 100),
+                        lastDate: DateTime(DateTime.now().year + 5),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'this field is required';
+                          }
+
+                          return null;
+                        },
+                        onChanged: (value) {
+                          FormData['DepartureTime'] = value;
+                        }),
 
                     const SizedBox(
                       height: 20.0,
