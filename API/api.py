@@ -13,7 +13,7 @@ app = Flask(__name__)
 # app.config["DEBUG"] = True
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '<Ahmedata>'
+app.config['MYSQL_PASSWORD'] = '123456789'
 app.config['MYSQL_DB'] = 'museum'
 
 mysql = MySQL(app)
