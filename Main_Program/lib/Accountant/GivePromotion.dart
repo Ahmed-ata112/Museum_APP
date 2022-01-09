@@ -1,125 +1,148 @@
 import 'package:flutter/material.dart';
-import 'package:main_program/CustomWidgets/customTextfield.dart';
-import 'package:main_program/Accountant/InsertNewEmployee.dart';
-class GivePromotion extends StatelessWidget {
-  final GlobalKey<FormState>_globalKey=GlobalKey<FormState>();
-  static String id = 'GivePromotion';
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:main_program/controller.dart';
+
+class GivePromo extends StatefulWidget {
+  const GivePromo({Key? key}) : super(key: key);
+
+  @override
+  GivePromoState createState() => GivePromoState();
+}
+
+class GivePromoState extends State<GivePromo> {
+  Map<String, dynamic> FormData = {
+    'ID': null,
+    'Promotion': null,
+  };
+  List<int> IDs = [1];
+
+  final _formKey = GlobalKey<FormState>();
+  String error = "";
+  Widget buildIDField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: DropdownButtonFormField(
+        decoration: const InputDecoration(
+          hintText: "Employee's ID",
+          icon: Icon(Icons.perm_identity_rounded),
+        ),
+        items: IDs.map((gg) {
+          return DropdownMenuItem(
+            value: gg,
+            child: Text(gg.toString()),
+          );
+        }).toList(),
+        onChanged: (val) {
+          setState(() {
+            FormData["ID"] = val;
+          });
+        },
+        validator: (val) => (val == null)
+            ? "Please Choose ID"
+            : null,
+      ),
+    );
+  }
+  Widget buildPromotionField()
+  {
+    return Padding(padding: const EdgeInsets.all(20),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          hintText: "Promotion",
+          icon: Icon(Icons.money),
+        ),
+        keyboardType: TextInputType.number,
+        onChanged: (val) {
+          setState(() => FormData['Promotion'] = val);
+        },
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan,
+        title: const Text('Give Promotion',
+          style: TextStyle(
+              color: Colors.black
+          ),),
+      ),
+      body: Form(
+        key: _formKey,
+        child:
+        ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            buildIDField(),
+            buildPromotionField(),
+            const SizedBox(height: 50),
+            Padding(padding: const EdgeInsets.only(left: 130, right: 130),
+              child: ElevatedButton(
+                  child: const Text(
+              "Give Promotion!",
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
             ),
-            ListTile(
-              title: const Text('Insert a new employee'),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>InsertNewEmployee())
+          onPressed: () async {
+            print(FormData);
+            if (_formKey.currentState!.validate()) {
+              //if the form from the client side is valid
+              print("All Valid at the client side:)");
+              //go and check if this credentials is valid from the server (DB) side
+              //i.e check if this account exists and if the email and password matches (are correct)
 
-                );
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Give Promotion'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>GivePromotion()));
-                // Update the state of the app.
-                // ...
-              },
-            ),
+              //Server Validation Side
+              dynamic retV =
+              await Controller.UpdateSalary(FormData);
+              //print(userType);
+              if (retV == -1) {
+                setState(() {
+                  error = 'failed to update salary';
+                });
+              } else {
+                setState(() => error = "");
+                // navigate to member home
+                // pushes and never go back
+                Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/accountant_home',
+                        (Route<dynamic> route) => false);
+              }
+            }
+          }), ),
+              Text(
+        error,
+        style: TextStyle(
+            color: Colors.red,
+            fontSize: error.isEmpty ? 0.0 : 14.0),
+      ),
+      SizedBox(
+        height: 20.0,
+      ),
           ],
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: Form(
-        key: _globalKey,
-        child: ListView(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(top:40),
-                child:   Container(
-                  height: MediaQuery.of(context).size.height*.2,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image(
-                        image:AssetImage('images/icons/pro.png'),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: Text(
-                          'Give Promotion',style: TextStyle(
-                          fontSize: 25,
-
-                        ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.01
-            ),
-            customTextfield(
-              /*onClick: (value)
-              {
-              int id = value;
-              },*/
-            hint:'Enter ID',icon:Icons.vpn_key,
-            //onClick: (value)
-                //{
-                  //int id=value;
-                //}
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.02
-            ),
-            customTextfield(hint:'Enter promotion',icon:Icons.money),
-            SizedBox(
-                height: MediaQuery.of(context).size.height*.05
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 120
-                )
-                ,
-                child: FlatButton(
-                    color: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: ()
-                    {
-                      if(_globalKey.currentState != null)
-                        if(_globalKey.currentState!.validate())
-                        {
-                          //insert into database
-                        }
-                    },
-                    child: Text(
-                      'change salary',
-                      style: TextStyle(
-                        color:Colors.white,
-                        fontSize: 16,
-                      ),
-                    ))
-            ),
-          ],
-        ),//listenview because when keyboard appears it will make problem with textfield if it was a container
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

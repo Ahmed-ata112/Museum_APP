@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:main_program/Researcher/researcher_home.dart';
 import 'package:main_program/member_view/member_home.dart';
-import 'package:main_program/Accountant/AccountantHome.dart';
+//import 'package:main_program/Accountant/AccountantHome.dart';
 import 'package:main_program/data_holders.dart';
 
 import '../controller.dart';
