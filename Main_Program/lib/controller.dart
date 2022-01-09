@@ -1,3 +1,7 @@
+import 'dart:ffi';
+
+import 'package:main_program/Models/event_location.dart';
+
 import 'package:main_program/admin_view/add_new_painting_artifacts.dart';
 import 'package:main_program/admin_view/add_new_visitor.dart';
 
@@ -7,6 +11,38 @@ import 'data_holders.dart';
 
 class Controller {
   Controller() {}
+
+  //------------------- my part ---------------------- just for quick access
+
+
+  static Future<int> addNewSouvenir(int id, String name, double price, int quantity) async {
+    String query = "INSERT INTO souvenir (ID, name, price, quantity ) VALUES ('$id', '$name', '$price', '$quantity');";
+        // "INSERT INTO souvenir (ID, name, price, quantity ) " +
+        // "Values ('" + id.toString() + "','" + name + "','" + price.toString() + "','" + quantity.toString() + "');";
+    return DBManager.executeNonQuery(query);
+  }
+
+
+  static Future<dynamic> select_data() async
+  {
+    String result = 'SELECT a.SO_ID, SUM(a.quantity) FROM ((SELECT SO_ID, quantity FROM buy_member_souvenir) UNION (SELECT S_ID , quantity FROM buys_visitor_souvenir))a GROUP BY a.SO_ID;';
+    //String result = "select * from user_";
+    return DBManager.executeReader(result);
+  }
+
+  static Future<dynamic> show_coming_events() async
+  {
+    String result = "select * from events";
+    return DBManager.executeReader(result);
+  }
+
+  static Future<dynamic> show_coming_tours() async
+  {
+    String result = "select * from tour";
+    return DBManager.executeReader(result);
+  }
+
+  //------------------- my part ---------------------- just for quick access
 
   static Future<int> getUserType(Map<String, dynamic> formData) async {
     String username = formData["username"];
@@ -1362,4 +1398,18 @@ class Controller {
     }
     return 1;
   }
+
+
+
+  static Future<List<event_loc>> geteventlocation(String eve_title) async {
+
+
+    List<event_loc> ret = await DBManager.geteventloc(eve_title);
+    if (ret == null) {
+      throw Exception("Cant get Events from database");
+    }
+    return ret;
+  }
+
+
 }

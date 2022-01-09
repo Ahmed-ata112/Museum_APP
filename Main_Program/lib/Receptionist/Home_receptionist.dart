@@ -10,81 +10,76 @@ class Home_Receptionist extends StatelessWidget{
   @override
   Widget build (BuildContext context) {
     return Scaffold(
-      drawer:Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Stack(
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: AssetImage('Images/receptionist.png'),
-                    radius: 50,
+      body:ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Stack(
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundImage: AssetImage('Images/receptionist.png'),
+                  radius: 50,
+                ),
+                //SizedBox(height: 300),
+                //Text('Functionalities'),
+                Align(
+                  alignment: Alignment.topRight + Alignment(0, .8),
+                  child: Text(
+                    'Receptionist',  //TODO : add the name of the user
+
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                  //SizedBox(height: 300),
-                  //Text('Functionalities'),
-                  Align(
-                    alignment: Alignment.topRight + Alignment(0, .8),
-                    child: Text(
-                      'Receptionist',  //TODO : add the name of the user
+                ),
+              ],
 
-                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
-                  ),
-                ],
+            ), //,
+          ),
 
-              ), //,
-            ),
+          ListTile(
+            title: const Text('Reception a Visitor'),
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Records_Visitors())
 
-            ListTile(
-              title: const Text('Reception a Visitor'),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Records_Visitors())
-
-                );
-                // Update the state of the app.
-                // ...
-              },
-              leading: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
-                child: Image.asset('Images/visitor.png'),//add image location here
-              ),
+              );
+              // Update the state of the app.
+              // ...
+            },
+            leading: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
+              child: Image.asset('Images/visitor.png'),//add image location here
             ),
-            SizedBox(height: 20,),
-            ListTile(
-              title: const Text('Events and Tours'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Events_Tours()));
-                // Update the state of the app.
-                // ...
-              },
-              leading: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
-                child: Image.asset('Images/event_tour.png'),//add image location here
-              ),
+          ),
+          SizedBox(height: 20,),
+          ListTile(
+            title: const Text('Events and Tours'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Events_Tours()));
+              // Update the state of the app.
+              // ...
+            },
+            leading: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
+              child: Image.asset('Images/event_tour.png'),//add image location here
             ),
-            SizedBox(height: 20,),
-            ListTile(
-              title: const Text('Museum Current State'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>track_state()));
-                // Update the state of the app.
-                // ...
-              },
-              leading: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
-                child: Image.asset('Images/museum.png'),//add image location here
-              ),
+          ),
+          SizedBox(height: 20,),
+          ListTile(
+            title: const Text('Museum Current State'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>track_state()));
+              // Update the state of the app.
+              // ...
+            },
+            leading: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(1.0)),//add border radius here
+              child: Image.asset('Images/museum.png'),//add image location here
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
