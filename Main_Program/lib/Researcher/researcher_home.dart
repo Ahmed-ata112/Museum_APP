@@ -48,110 +48,60 @@ class _ResearcherHomeState extends State<ResearcherHome> {
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
-              const DrawerHeader(
+               DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.amber,
                 ),
-                child: Text('Researcher Info'),
+                child: Stack(
+                  children: <Widget>[
+
+                    Align(
+                      alignment: Alignment.topLeft + Alignment(0, 0),
+                      child: Text('Name: ' +
+                        res.fName + ' ' + res.lName,
+                        style: TextStyle(fontStyle: FontStyle.italic,
+                            color: Colors.black, fontSize: 16.0),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft + Alignment(0, 0),
+                      child: Text('Birthdate: ' +
+                          res.birthday,
+                        style: TextStyle(fontStyle: FontStyle.italic,
+                            color: Colors.black, fontSize: 16.0),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft + Alignment(0, 0),
+                      child: Text('Years of experience: ' +
+                          (res.yearsExpert).toString() + ' years',
+                        style: TextStyle(fontStyle: FontStyle.italic,
+                            color: Colors.black, fontSize: 16.0),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              ListTile(
-                focusColor: Colors.amber,
-                title: const Text('sessions'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SessionsHome(rId: res.id)));
-                },
-              ),
-              ListTile(
-                title: const Text('articles'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ArticlesHome(rId: res.id)));
-                },
-              ),
+
             ],
           ),
         ),
         body: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(children: const <Widget>[
-                Text('Continue Work...',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18)),
-                Icon(Icons.drive_file_rename_outline),
-              ]),
+            ListTile(
+              focusColor: Colors.amber,
+              title: const Text('sessions'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SessionsHome(rId: res.id)));
+              },
             ),
-            SizedBox(
-              height: 200,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return TextButton(
-                        onPressed: () {
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditArticle()));*/
-                        },
-                        child: articleCardGenerator(index));
-                  }),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(children: const <Widget>[
-                Text('To review...',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18)),
-                Icon(Icons.rate_review_outlined),
-              ]),
-            ),
-            SizedBox(
-              height: 200,
-              width: 150,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return TextButton(
-                        onPressed: () {
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ReviewArticle()));*/
-                        },
-                        child: articleCardGenerator(index));
-                  }),
-            ),
-            SizedBox(
-              height: 200,
-              width: 150,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return articleCardGenerator(index);
-                  }),
-            ),
-            SizedBox(
-              height: 200,
-              width: 150,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return articleCardGenerator(index);
-                  }),
+            ListTile(
+              title: const Text('articles'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ArticlesHome(rId: res.id)));
+              },
             ),
           ],
         ));

@@ -10,6 +10,7 @@ Widget ArticleCardGenerator(int rId, resArticle article, context, String help) {
   TextButton button;
   if (help == 'selfNF' || help == 'GenNF') {
     button = TextButton(
+      style: ElevatedButton.styleFrom(primary: Colors.white, elevation: 5),
       onPressed: () {
         Navigator.push(
             context,
@@ -18,16 +19,29 @@ Widget ArticleCardGenerator(int rId, resArticle article, context, String help) {
                     EditArticle(rId: rId, currArticle: article)));
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${article.header}'),
+          Row(children: [
+            Text('Header: ',
+            style: TextStyle(color: Colors.black54, fontSize: 20)),
+              Text('${article.header}'
+                ,style: TextStyle(color: Colors.black
+                ,fontStyle: FontStyle.italic, fontSize: 20),),
+          ],)
+          ,
           SizedBox(height: 8,),
-          Text('${article.content}',
-          maxLines: 2,)
+          Text('Content: ', style: TextStyle(color: Colors.black54, fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(5, 0, 80, 0)
+ , child: Text('${article.content}...',
+      style: TextStyle(color: Colors.black, fontSize: 16),
+      maxLines: 2,))
+
         ],
       )
     );
   } else if (help == 'To_cont_review' || help == 'To_review') {
     button = TextButton(
+        style: ElevatedButton.styleFrom(primary: Colors.white, elevation: 5),
       onPressed: () async {
       if(help == 'To_cont_review')
         {
@@ -54,16 +68,29 @@ Widget ArticleCardGenerator(int rId, resArticle article, context, String help) {
 
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${article.header}'),
+          Row(children: [
+            Text('Header: ',
+                style: TextStyle(color: Colors.black54, fontSize: 20)),
+            Text('${article.header}'
+              ,style: TextStyle(color: Colors.black
+                  ,fontStyle: FontStyle.italic, fontSize: 20),),
+          ],)
+          ,
           SizedBox(height: 8,),
-          Text('${article.content}',
-            maxLines: 2,)
+          Text('Content: ', style: TextStyle(color: Colors.black54, fontSize: 20)),
+          Padding(padding: EdgeInsets.fromLTRB(5, 0, 80, 0)
+              , child: Text('${article.content}...',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+                maxLines: 2,))
+
         ],
       ));
   }
   else {
     button = TextButton(
+        style: ElevatedButton.styleFrom(primary: Colors.white, elevation: 5),
       onPressed: () async {
         Navigator.push(
             context,
@@ -72,22 +99,60 @@ Widget ArticleCardGenerator(int rId, resArticle article, context, String help) {
                     OpenArticle(article: article)));
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${article.header}'),
+          Row(children: [
+            Text('Header: ',
+                style: TextStyle(color: Colors.black54, fontSize: 20)),
+            Text('${article.header}'
+              ,style: TextStyle(color: Colors.black
+                  ,fontStyle: FontStyle.italic, fontSize: 20),),
+          ],)
+          ,
           SizedBox(height: 8,),
-          Text('${article.content}',
-            maxLines: 2,),
+          Text('Content: ', style: TextStyle(color: Colors.black54, fontSize: 20)),
+          Padding(padding: EdgeInsets.fromLTRB(5, 0, 80, 0)
+              , child: Text('${article.content}...',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+                maxLines: 2,)),
           SizedBox(height: 8,),
-          Text('views: ${article.views}',
-            maxLines: 2,),
+  Padding(padding: EdgeInsets.only(left: 10)
+  , child:
+  Row(children: [
+
+            Icon(Icons.remove_red_eye, color: Colors.black54)
+            ,Padding(padding: EdgeInsets.only(left: 10, right: 40)
+  , child:
+  Text('${article.views}'
+              ,style: TextStyle(color: Colors.black
+                  ,fontSize: 20),),),
+    Icon(Icons.recommend, color: Colors.black54)
+    ,Padding(padding: EdgeInsets.only(left: 10)
+      , child:
+      Text('${article.likes}'
+        ,style: TextStyle(color: Colors.black
+            ,fontSize: 20),),)
+          ],)),
           SizedBox(height: 8,),
-          Text('likes: ${article.likes}',
-            maxLines: 2,)
+          Padding(padding: EdgeInsets.only(left: 10)
+              , child:
+              Row(children: [
+
+                Icon(Icons.rate_review_outlined
+              ,color: Colors.black54)
+                ,Padding(padding: EdgeInsets.only(left: 10, right: 40)
+                  , child:
+                  Text('${article.reviews}'
+                    ,style: TextStyle(color: Colors.black
+                        ,fontSize: 20),),),
+              ],))
         ],
       )
+
     );
   }
-  return button;
+  return
+    button;
 }
 
 
@@ -241,14 +306,17 @@ class _ArticlesHomeState extends State<ArticlesHome> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(children: const <Widget>[
+            child: Row(children: <Widget>[
               Text("Previously contributed...",
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-            ]),
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)
+              )
+           ,Expanded(
+    child: Container(
+    margin: EdgeInsets.only(left: 10.0, right: 20.0),
+    child: Divider())),
+    ]),
           ),
-          SizedBox(
-            height: 400,
-            child: GridView.builder(
+          GridView.builder(
                 shrinkWrap: true,
                 itemCount: (allArticles['selfNF'] != null)
                     ? allArticles['selfNF']!.length
@@ -263,24 +331,25 @@ class _ArticlesHomeState extends State<ArticlesHome> {
                   return ArticleCardGenerator(widget.rId,
                       allArticles['selfNF']![index], context, 'selfNF');
                 }),
-          ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(children: const <Widget>[
+            child: Row(children: <Widget>[
               Text("Suggested to contribute...",
                   style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-            ]),
+    Expanded(
+    child: Container(
+    margin: EdgeInsets.only(left: 10.0, right: 20.0),
+    child: Divider())),]),
           ),
-          SizedBox(
-            height: 400,
-            child: GridView.builder(
+          GridView.builder(
                 shrinkWrap: true,
                 itemCount: (allArticles['GenNF'] != null)
                     ? allArticles['GenNF']!.length
                     : 0,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
+                  childAspectRatio: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -288,11 +357,12 @@ class _ArticlesHomeState extends State<ArticlesHome> {
                   return ArticleCardGenerator(widget.rId,
                       allArticles['GenNF']![index], context, 'GenNF');
                 }),
-          ),
+
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(children: const <Widget>[
-              Text('To continue review...',
+              Text('Review...',
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
@@ -300,17 +370,26 @@ class _ArticlesHomeState extends State<ArticlesHome> {
               Icon(Icons.rate_review_outlined),
             ]),
           ),
-          SizedBox(
-            height: 200,
-            width: 150,
-            child: GridView.builder(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(children: <Widget>[
+              Text("To Continue...",
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)
+              )
+              ,Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: Divider())),
+            ]),
+          ),
+          GridView.builder(
                 shrinkWrap: true,
                 itemCount: (allArticles['To_cont_review'] != null)
                     ? allArticles['To_cont_review']!.length
                     : 0,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
+                  childAspectRatio: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -322,11 +401,11 @@ class _ArticlesHomeState extends State<ArticlesHome> {
                       context,
                       'To_cont_review');
                 }),
-          ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(children: const <Widget>[
-              Text('To review...',
+              Text('To Start...',
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
@@ -334,17 +413,14 @@ class _ArticlesHomeState extends State<ArticlesHome> {
               Icon(Icons.article_outlined),
             ]),
           ),
-          SizedBox(
-            height: 200,
-            width: 150,
-            child: GridView.builder(
+          GridView.builder(
                 shrinkWrap: true,
                 itemCount: (allArticles['To_review'] != null)
                     ? allArticles['To_review']!.length
                     : 0,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
+                  childAspectRatio:  2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -352,11 +428,10 @@ class _ArticlesHomeState extends State<ArticlesHome> {
                   return ArticleCardGenerator(widget.rId,
                       allArticles['To_review']![index], context, 'To_review');
                 }),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(children: const <Widget>[
-              Text('Published 1-self...',
+              Text('Published',
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
@@ -364,16 +439,26 @@ class _ArticlesHomeState extends State<ArticlesHome> {
               Icon(Icons.article_outlined),
             ]),
           ),
-          SizedBox(
-            height: 200,
-            width: 150,
-            child: GridView.builder(
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(children: <Widget>[
+              Text("Your...",
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)
+              )
+              ,Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: Divider())),
+            ]),
+          ),
+            GridView.builder(
                 shrinkWrap: true,
                 itemCount:
                     (allArticles['P'] != null) ? allArticles['P']!.length : 0,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
+                  childAspectRatio: 1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -381,36 +466,34 @@ class _ArticlesHomeState extends State<ArticlesHome> {
                   return ArticleCardGenerator(
                       widget.rId, allArticles['P']![index], context, 'P');
                 }),
-          ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(children: const <Widget>[
-              Text('Others...',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18)),
-              Icon(Icons.article_outlined),
+            child: Row(children: <Widget>[
+              Text("Others...",
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)
+              )
+              ,Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 10.0, right: 20.0),
+                      child: Divider())),
             ]),
           ),
-          SizedBox(
-              height: 200,
-              width: 150,
-              child: GridView.builder(
+            GridView.builder(
                   shrinkWrap: true,
                   itemCount: (allArticles['Gen'] != null)
                       ? allArticles['Gen']!.length
                       : 0,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 3 / 2,
+                    childAspectRatio: 1 ,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
                     return ArticleCardGenerator(
                         widget.rId, allArticles['Gen']![index], context, 'Gen');
-                  })),
+                  })
         ],
       ),
       floatingActionButton: FloatingActionButton(

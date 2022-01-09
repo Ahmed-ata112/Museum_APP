@@ -94,14 +94,7 @@ class NewArticleState extends State<NewArticle> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.add_photo_alternate_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  //code to execute when this button is pressed
-                }),
+
             IconButton(
                 icon: const Icon(
                   Icons.save,
@@ -242,14 +235,7 @@ class EditArticleState extends State<EditArticle> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.add_photo_alternate_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  //code to execute when this button is pressed
-                }),
+
             IconButton(
                 icon: const Icon(
                   Icons.save,
