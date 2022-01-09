@@ -791,6 +791,17 @@ return 1; // returned successfully
     }
     return count;
   }
+  static Future<int> getSouvenirCount() async {
+    String query = "SELECT count(ID) FROM museum.souvenir;";
+
+    dynamic count = await DBManager.executeScaler(query);
+
+    if (count == null) {
+      //don't exist
+      return -1;
+    }
+    return count;
+  }
   static Future<int> addNewTour(Map<String, dynamic> formData) async {
     //ID, place, description, topic, Date_Start, Date_End, organizer_id, title
     int ID = await getTourCount();
@@ -805,6 +816,25 @@ return 1; // returned successfully
     List<dynamic> toSend2 = [ID, place, description, topic, Date_Start, Date_End, organizer_id, title];
     dynamic res2 =
     await DBManager.executeNonQueryProc('insert_new_tour', toSend2);
+    if (res2 == 0) {
+      //don't exist
+      return -1;
+    }
+    return 1; // returned successfully
+  }
+  static Future<int> addNewSouvenir(Map<String, dynamic> formData) async {
+    //ID int PK
+    // _name varchar(50)
+    // price int
+    // quantity
+    int ID = await getSouvenirCount();
+    String _name = formData["_name"];
+    int price = int.parse(formData["price"]);
+    int quantity = formData["quantity"];
+
+    List<dynamic> toSend2 = [ID, _name, price, quantity];
+    dynamic res2 =
+    await DBManager.executeNonQueryProc('insert_new_souvenir', toSend2);
     if (res2 == 0) {
       //don't exist
       return -1;
