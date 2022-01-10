@@ -9,14 +9,14 @@ import 'data_holders.dart';
 class Controller {
   Controller() {}
 
-  static Future<dynamic> getArtReviews(int id) async {
+  static Future<List<dynamic>> getArtReviews(int id) async {
     String query =
         "select Fname, Lname , progress, result from reviews, researcher where R_ID=ID and A_ID=$id"
     " order by progress desc;";
 
     dynamic
     ret = await DBManager.executeReader(query);
-
+    print(ret);
     return ret;
   }
 

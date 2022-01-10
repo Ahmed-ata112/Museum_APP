@@ -12,7 +12,9 @@ class showReviews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reviews'),
+        backgroundColor: Colors.amber,
+        title: Text('Reviews',
+        style: TextStyle(color: Colors.black),),
       ),
           body: ListView.builder(
               shrinkWrap: true,
@@ -22,18 +24,35 @@ class showReviews extends StatelessWidget {
                 reviews[index][1];
                 String result = reviews[index][3];
                 int progress = reviews[index][2];
-                return Card(
+                return Padding(padding: EdgeInsets.fromLTRB(8, 10, 8, 5),
+                    child:
+                    Card(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
+                        iconColor: Colors.amber,
                         leading: Icon(Icons.reviews),
-                        title: Text(name),
-                        subtitle: Text(result),
-                      ),
+                        title: Text('Researcher name:', style: TextStyle(fontStyle: FontStyle.italic),),
+                            subtitle: Text('$name',),),
+
+                      Padding(padding: EdgeInsets.only(left: 10)
+                        ,
+                      child: Text('Progress:   $progress%', style: TextStyle(fontSize: 16),))
+                      ,
+                      Padding(padding: EdgeInsets.only(left: 10)
+                        ,
+                        child: Text('Result:', style: TextStyle(fontSize: 16),),),
+
+                      Padding(padding: EdgeInsets.only(left: 10)
+                        ,
+                        child: Text('   $result', style: TextStyle(fontSize: 16),),)
+
+
                     ],
                   ),
-                );
+                ));
               }),
 
     );
@@ -54,7 +73,9 @@ class _OpenArticleState extends State<OpenArticle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View'),
+        backgroundColor: Colors.amber,
+        title: Text('View',
+        style: TextStyle(color: Colors.black),),
       ),
       body: ListView(
         children: <Widget>[
@@ -78,21 +99,30 @@ class _OpenArticleState extends State<OpenArticle> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal[300],
+        backgroundColor: Colors.amber,
         elevation: 5.0,
-        child: Text('show reviews'),
+        child: Text('show reviews'
+          ,textAlign: TextAlign.center,
+            ),
         onPressed: () async {
           if (widget.article.reviews != 0) {
             Controller.getArtReviews(widget.article.id).then((value) {
-              List<List<dynamic>> review = [];
-              review = List<List<dynamic>>.from(value);
+             List<List<dynamic>> reviews = [];
+             List<dynamic> review = [];
+              //review = List<List<dynamic>>.from(value);
               for(dynamic item in value)
                 {
-                  review.add([value['Fname'], value['Lname'],
-                    value['progress'], value['result']]);
-                }
+                  if(item != null) {
+                    review.add(item['Fname']);
+                    review.add(item['Lname']);
+                    review.add(item['progress']);
+                    review.add(item['result']);
+                    reviews.add(review);
+                    print(review);
+                  }}
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => showReviews(reviews: review)));
+                  MaterialPageRoute(builder: (context) =>
+                      showReviews(reviews: reviews)));
             });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
