@@ -3,7 +3,7 @@ import 'package:main_program/controller.dart';
 
 class publish_article extends StatefulWidget {
   final int S;
-  const publish_article({Key? key,required this.S}) : super(key: key);
+  const publish_article({Key? key, required this.S}) : super(key: key);
 
   @override
   publish_articleState createState() => publish_articleState(S);
@@ -46,20 +46,17 @@ class publish_articleState extends State<publish_article> {
                               style: TextStyle(
                                   color: Colors.white, fontSize: 15.0),
                             ),
-
                             onPressed: () async {
-                                    setState(() => FormData['ID'] = S);
-                                    void initState() {
-                                    super.initState();
-                                    Controller.UpdateArticleToP(FormData).then((ReturnedList) {
-                                    setState((){});});
-                                    };
-                            }
-                      ),),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        Expanded(
+                              setState(() => FormData['ID'] = S);
+
+                              Controller.UpdateArticleToP(FormData)
+                                  .then((ReturnedList) {});
+                            }),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Expanded(
                         child: ElevatedButton(
                             child: Text(
                               "Cancel",

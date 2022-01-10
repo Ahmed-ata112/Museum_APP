@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:main_program/Receptionist/home_receptionist.dart';
 import 'package:main_program/Researcher/researcher_home.dart';
 import 'package:main_program/member_view/member_home.dart';
 //import 'package:main_program/Accountant/accountant_home.dart';
@@ -47,7 +48,7 @@ class _loading_after_loginState extends State<loading_after_login> {
           Staff mem = retrieved;
           //print(mem.username);
           Navigator.pushReplacementNamed(context, '/accountant_home',
-              arguments: {'member': mem});
+              arguments: {'member': mem.staff_username});
         } else {
           print('NOT A VALID staff - in users but not members');
         }
@@ -70,8 +71,24 @@ class _loading_after_loginState extends State<loading_after_login> {
         if (retrieved != null) {
           Staff mem = retrieved;
           //print(mem.username);
-          Navigator.pushReplacementNamed(context, '/Receptionist',
-              arguments: {'member': mem});
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Home_Receptionist(
+                        username: mem.staff_username,
+                      )));
+        } else {
+          print('NOT A VALID staff - in users but not members');
+        }
+      } else if (type == 6) {
+        //accountant
+        dynamic retrieved = await Controller.getAccData(username);
+        print(retrieved);
+        if (retrieved != null) {
+          Staff mem = retrieved;
+          //print(mem.username);
+          Navigator.pushReplacementNamed(context, '/PR',
+              arguments: {'member': mem.staff_username});
         } else {
           print('NOT A VALID staff - in users but not members');
         }

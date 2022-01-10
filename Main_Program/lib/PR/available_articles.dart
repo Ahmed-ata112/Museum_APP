@@ -4,9 +4,12 @@ import 'package:main_program/PR/articleRead_pr.dart';
 import 'package:main_program/PR/available_articles.dart';
 import 'package:main_program/PR/add_tour.dart';
 import 'package:main_program/PR/add_event.dart';
+import 'package:main_program/admin_view/add_new_tour.dart';
 import 'articleRead_pr.dart';
 import 'package:main_program/controller.dart';
 import 'package:main_program/data_holders.dart';
+import 'package:main_program/Accountant/change_password.dart';
+import 'package:main_program/general_pages/login_page.dart';
 
 Widget articleCard(index, context, article S) {
   return GFCard(
@@ -48,14 +51,17 @@ class available_articles extends StatefulWidget {
 }
 
 class _ArticlesHomePRState extends State<available_articles> {
+  late String username;
+  _ArticlesHomePRState();
   List<article> S = [];
   void initState() {
     super.initState();
     Controller.getReviewedArticles().then((ReturnedList) {
-      print(ReturnedList[0]);
+      //print(ReturnedList);
       setState(() {
         for (var row in ReturnedList) {
-          article e = article(row[0], row[1], row[3], row[4], row[5], row[6]);
+          print(row);
+          article e = article(row[0], row[1], row[2], row[3], row[4], row[5]);
           print('aaaaaaaaaaaaaa');
           S.add(e);
         }
@@ -65,6 +71,8 @@ class _ArticlesHomePRState extends State<available_articles> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    username = arguments['member'];
     return Scaffold(
       appBar: AppBar(
         title: Text("Available articles"),
@@ -81,7 +89,7 @@ class _ArticlesHomePRState extends State<available_articles> {
                   Align(
                     alignment: Alignment.topRight + Alignment(0, .4),
                     child: Text(
-                      'USER NAME',
+                      username,
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                   ),
@@ -114,17 +122,6 @@ class _ArticlesHomePRState extends State<available_articles> {
               ),
             ),
             ListTile(
-              title: const Text('Articles'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => available_articles()));
-              },
-            ),
-            ListTile(
               title: const Text('Add Events'),
               onTap: () {
                 // Update the state of the app.
@@ -139,7 +136,28 @@ class _ArticlesHomePRState extends State<available_articles> {
                 // Update the state of the app.
                 // ...
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => NewTour()));
+                    MaterialPageRoute(builder: (context) => addNewTour()));
+              },
+            ),
+            ListTile(
+              title: const Text('Change Password'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            changePasswordAcc(username: 'username')));
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => login_page()));
               },
             ),
           ],

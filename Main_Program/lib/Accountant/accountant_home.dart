@@ -7,15 +7,81 @@ import 'package:main_program/Accountant/Souvenir.dart';
 import 'package:main_program/Accountant/souventir_sale.dart';
 import 'package:main_program/Accountant/insert_new_employee.dart';
 import 'package:main_program/Accountant/give_promotion.dart';
+import 'package:main_program/general_pages/login_page.dart';
+import 'package:main_program/Accountant/change_password.dart';
+
+Widget signout(BuildContext context) {
+  return AlertDialog(
+    content: Container(
+      //padding: EdgeInsets.all(3.0),
+      child: SingleChildScrollView(
+        child: Form(
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  "Are you sure you want to sign out?",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20.0,
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          child: const Text(
+                            "Confirm",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                          onPressed: () async {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/login_page', (route) => false);
+                          }),
+                    ),
+                    const SizedBox(
+                      width: 5.0,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          child: const Text(
+                            "Cancel",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 class accHome extends StatefulWidget {
   const accHome({Key? key}) : super(key: key);
 
   @override
-  accHomeState createState() => accHomeState();
+  _accHomeState createState() => _accHomeState();
 }
 
-class accHomeState extends State<accHome> {
+class _accHomeState extends State<accHome> {
+  late String username;
+
+  _accHomeState();
   @override
   List<Souvenir> S = [];
   List<Souvenir> SV = [];
@@ -43,6 +109,8 @@ class accHomeState extends State<accHome> {
   }
 
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    username = arguments['member'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
@@ -51,14 +119,14 @@ class accHomeState extends State<accHome> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Text("Welcome"),
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.cyan,
               ),
               child: Stack(
@@ -66,7 +134,7 @@ class accHomeState extends State<accHome> {
                   Align(
                     alignment: Alignment.topRight + Alignment(0, .4),
                     child: Text(
-                      'USER NAME',
+                      username,
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                   ),
@@ -137,6 +205,35 @@ class accHomeState extends State<accHome> {
                 // ...
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GivePromo()));
+              },
+            ),
+            ListTile(
+              title: const Text('change password'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            changePasswordAcc(username: username)));
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Sign out',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                createAlterDialog(BuildContext context) {
+                  return showDialog(
+                      context: context,
+                      builder: (context) {
+                        return signout(context);
+                      });
+                }
+
+                createAlterDialog(context);
               },
             ),
           ],

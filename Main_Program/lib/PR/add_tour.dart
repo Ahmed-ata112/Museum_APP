@@ -193,7 +193,7 @@ class NewTourState extends State<NewTour> {
         ),
         items: IDs.map((gg) {
           return DropdownMenuItem(
-            value: gg,
+            value: gg.toString(),
             child: Text(gg.toString()),
           );
         }).toList(),

@@ -150,7 +150,7 @@ class NewEventState extends State<NewEvent> {
         ),
         items: sec_number.map((gg) {
           return DropdownMenuItem(
-            value: gg,
+            value: gg.toString(),
             child: Text(gg.toString()),
           );
         }).toList(),
@@ -175,7 +175,7 @@ class NewEventState extends State<NewEvent> {
         ),
         items: staff_id.map((gg) {
           return DropdownMenuItem(
-            value: gg,
+            value: gg.toString(),
             child: Text(gg.toString()),
           );
         }).toList(),
@@ -204,7 +204,7 @@ class NewEventState extends State<NewEvent> {
       setState(() {
         for (var row in ReturnedList) {
           print(row);
-          staff_id.add(row['ID']);
+          staff_id.add(row[0]);
         }
         setState(() {});
       });
@@ -246,22 +246,25 @@ class NewEventState extends State<NewEvent> {
                     if (_formKey.currentState!.validate()) {
                       //if the form from the client side is valid
                       print("All Valid at the client side:)");
-                      //go and check if this credentials is valid from the server (DB) side
-                      //i.e check if this account exists and if the email and password matches (are correct)
-
                       //Server Validation Side
                       dynamic retV = await Controller.addNewEvent(FormData);
                       //print(userType);
                       if (retV == -1) {
                         setState(() {
                           error = 'Event Already Exists';
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Error occured"),
+                            backgroundColor: Colors.red,
+                          ));
                         });
                       } else {
                         setState(() => error = "");
-                        // navigate to member home
-                        // pushes and never go back
-                        Navigator.pushNamedAndRemoveUntil(context, '/pr_home',
-                            (Route<dynamic> route) => false);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Inserted Successfully"),
+                          backgroundColor: Colors.green,
+                        ));
                       }
                     }
                   }),

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +12,28 @@ class changePasswordAcc extends StatefulWidget {
   @override
   _changePasswordAccState createState() => _changePasswordAccState(username);
 }
-class _changePasswordAccState extends State<changePasswordAcc> {
 
+class _changePasswordAccState extends State<changePasswordAcc> {
   Map<String, dynamic> FormData = {
-    'username':null,
+    'username': null,
     'password': null,
   };
   final _formKey = GlobalKey<FormState>();
   String error = "";
   late String username;
+  late String oldPassword = '';
   _changePasswordAccState(this.username);
+  @override
+  void initState() {
+    super.initState();
+    Controller.getPassword(username).then((val) {
+      setState(() {
+        print(val);
+        oldPassword = val;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +56,25 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                     const SizedBox(
                       height: 20.0,
                     ),
-
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "old password",
+                        icon: Icon(Icons.lock),
+                      ),
+                      onChanged: (val) {},
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return "Please fill in new password";
+                        }
+                        if (val.length < 6) {
+                          return "Password must be longer than 6 characters";
+                        }
+                        if (val != oldPassword) {
+                          return "Password is incorrect";
+                        }
+                        return null;
+                      },
+                    ),
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: "new password",
@@ -59,7 +87,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                         if (val!.isEmpty) {
                           return "Please fill in new password";
                         }
-                        if (val.length<6) {
+                        if (val.length < 6) {
                           return "Password must be longer than 6 characters";
                         }
                         return null;
@@ -77,14 +105,15 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                         if (val!.isEmpty) {
                           return "Please fill in password";
                         }
-                        if (val.length<6) {
+                        if (val.length < 6) {
                           return "Password must be longer than 6 characters";
                         }
-                        if (val!=FormData['password']) {
+                        if (val != FormData['password']) {
                           return "it must match the new password";
                         }
                         return null;
-                      },),
+                      },
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -110,7 +139,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.ChangePassowrd(FormData);
+                                await Controller.ChangePassowrd(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

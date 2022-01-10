@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Accountant/accountant_home.dart';
+import 'PR/available_articles.dart';
 import 'Receptionist/Home_receptionist.dart';
 import 'Researcher/researcher_home.dart';
 import 'Shop_Manager/Dashboard.dart';
@@ -69,10 +70,10 @@ class MyApp extends StatelessWidget {
         '/loading_after_login': (context) => const loading_after_login(),
         '/member_home': (context) => const member_home(),
         '/admin_home': (context) => const admin_home(),
-        '/accountant_home': (context) => accHome(),
+        '/accountant_home': (context) => const accHome(),
         '/ResearcherHome': (context) => const ResearcherHome(),
         '/shopManager': (context) => const Dashboard(),
-        '/Receptionist': (context) => Home_Receptionist(),
+        '/PR': (context) => const available_articles(),
       },
     );
   }

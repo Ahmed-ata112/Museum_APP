@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main_program/Accountant/change_password.dart';
 import 'package:main_program/member_view/store_home.dart';
 import 'package:main_program/member_view/tours_home.dart';
 import 'articles_home.dart';
@@ -186,8 +187,8 @@ class _member_homeState extends State<member_home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StoreHome(
-                              Member_id: mem.id,
+                        builder: (context) => changePasswordAcc(
+                              username: mem.username,
                             )));
               },
             ),

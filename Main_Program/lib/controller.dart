@@ -543,6 +543,7 @@ class Controller {
 
 //ID, Date_Start, Date_End, description, theme, title, sec_number, staff_id
   static Future<int> addNewEvent(Map<String, dynamic> formData) async {
+    print(formData);
     String DateStart = formData["Date_Start"];
     String DateEnd = formData['Date_End'];
     String description = formData['description'];
@@ -585,6 +586,7 @@ class Controller {
 
 //ID, place, description, topic, Date_Start, Date_End, organizer_id, title
   static Future<int> addNewTour(Map<String, dynamic> formData) async {
+    print(formData);
     String DateStart = formData["Date_Start"];
     String DateEnd = formData['Date_End'];
     String description = formData['description'];
@@ -937,6 +939,15 @@ class Controller {
       return -1;
     }
     return 1; // returned successfully
+  }
+
+  static Future<dynamic> getPassword(String username) async {
+    String query = "select password_ from user_ where username_='$username';";
+    String us = await DBManager.executeScaler(query);
+    if (us.isEmpty) {
+      return null;
+    }
+    return us;
   }
 
   static Future<int> BuyNewSouvenir(int mem_id, int sou_id, int q) async {
@@ -1344,7 +1355,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale() async {
     String query =
-        "select So_ID,count(quantity) from museum.buy_member_souvenir group by So_ID ;";
+        "select So_ID,SUM(quantity) from museum.buy_member_souvenir group by So_ID ;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;
@@ -1354,7 +1365,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale_visitor() async {
     String query =
-        "select S_ID,count(quantity) from museum.buys_visitor_souvenir group by S_ID;";
+        "select S_ID,SUM(quantity) from museum.buys_visitor_souvenir group by S_ID;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;
@@ -1409,12 +1420,13 @@ class Controller {
     }
     return ret;
   }
+
   static Future<int> ChangePassowrd(Map<String, dynamic> formData) async {
     String password = formData["password"];
     String username = formData["username"];
-    List<dynamic> toSend = [username,password];
+    List<dynamic> toSend = [username, password];
     dynamic res =
-    await DBManager.executeNonQueryProc('update_password', toSend);
+        await DBManager.executeNonQueryProc('update_password', toSend);
     print(res);
     if (res == 0) {
       return -1;
