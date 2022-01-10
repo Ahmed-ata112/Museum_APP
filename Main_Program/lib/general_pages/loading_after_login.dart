@@ -65,7 +65,7 @@ class _loading_after_loginState extends State<loading_after_login> {
           print('NOT A VALID staff - in users but not members');
         }
       } else if (type == 5) {
-        //accountant
+        //Receptionist
         dynamic retrieved = await Controller.getAccData(username);
         print(retrieved);
         if (retrieved != null) {

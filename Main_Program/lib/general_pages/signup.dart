@@ -285,11 +285,14 @@ class _UserSignUpState extends State<UserSignUp> {
                               setState(() => error = "");
                               // navigate to member home
                               // pushes and never go back
+                              dynamic retrieved =
+                                  await Controller.getMembersData(
+                                      FormData['username']);
                               Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   '/member_home',
                                   (Route<dynamic> route) => false,
-                                  arguments: {"member": retV});
+                                  arguments: {"member": retrieved});
                             }
                           }
                         }),

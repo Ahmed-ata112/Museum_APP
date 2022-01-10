@@ -115,16 +115,19 @@ class GivePromoState extends State<GivePromo> {
                       //print(userType);
                       if (retV == -1) {
                         setState(() {
-                          error = 'failed to update salary';
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Error occured"),
+                            backgroundColor: Colors.red,
+                          ));
                         });
                       } else {
                         setState(() => error = "");
-                        // navigate to member home
-                        // pushes and never go back
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/accountant_home',
-                            (Route<dynamic> route) => false);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Inserted Successfully"),
+                          backgroundColor: Colors.green,
+                        ));
                       }
                     }
                   }),

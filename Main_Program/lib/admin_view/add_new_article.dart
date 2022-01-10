@@ -151,7 +151,7 @@ class _addNewArticleState extends State<addNewArticle> {
                             print("All Valid at the client side:)");
                             //Server Validation Side
                             dynamic retV =
-                            await Controller.addNewArticle(FormData);
+                                await Controller.addNewArticle(FormData);
                             //print(userType);
                             if (retV == -1) {
                               setState(() {

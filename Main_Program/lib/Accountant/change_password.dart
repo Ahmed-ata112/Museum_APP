@@ -57,6 +57,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                       height: 20.0,
                     ),
                     TextFormField(
+                      obscureText: true,
                       decoration: const InputDecoration(
                         hintText: "old password",
                         icon: Icon(Icons.lock),
@@ -76,6 +77,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                       },
                     ),
                     TextFormField(
+                      obscureText: true,
                       decoration: const InputDecoration(
                         hintText: "new password",
                         icon: Icon(Icons.lock),
@@ -101,6 +103,7 @@ class _changePasswordAccState extends State<changePasswordAcc> {
                         hintText: "confirm new password",
                         icon: Icon(Icons.lock),
                       ),
+                      obscureText: true,
                       validator: (val) {
                         if (val!.isEmpty) {
                           return "Please fill in password";

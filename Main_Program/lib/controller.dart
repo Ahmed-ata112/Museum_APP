@@ -862,6 +862,19 @@ class Controller {
     return ret;
   }
 
+  static Future<int> UpdateSouvenir(Map<String, dynamic> formData) async {
+    int ID = int.parse(formData["ID"]);
+    int quantity = int.parse(formData["quantity"]);
+    List<int> toSend = [ID, quantity];
+    dynamic res =
+        await DBManager.executeNonQueryProc('update_souvenir', toSend);
+    print(res);
+    if (res == 0) {
+      return -1;
+    }
+    return 1;
+  }
+
   //getMemIDs
   static Future<List<dynamic>> getMemIDs() async {
     String query = "SELECT ID FROM museum.member;";
@@ -1355,7 +1368,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale() async {
     String query =
-        "select So_ID,SUM(quantity) from museum.buy_member_souvenir group by So_ID ;";
+        "select So_ID,Count(quantity) from museum.buy_member_souvenir group by So_ID ;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;
@@ -1365,7 +1378,7 @@ class Controller {
 
   static Future<dynamic> getSouvenirSale_visitor() async {
     String query =
-        "select S_ID,SUM(quantity) from museum.buys_visitor_souvenir group by S_ID;";
+        "select S_ID,COUNT(quantity) from museum.buys_visitor_souvenir group by S_ID;";
     var us = await DBManager.executeReader(query);
     if (us == null) {
       return null;

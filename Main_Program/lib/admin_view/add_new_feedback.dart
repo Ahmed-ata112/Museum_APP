@@ -1,6 +1,7 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../controller.dart';
 import 'dart:convert';
@@ -75,6 +76,9 @@ class _addNewFeedbackState extends State<addNewFeedback> {
                           icon: Icon(Icons.rate_review),
                         ),
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ], // Only numbers can be entered
                         onChanged: (val) {
                           setState(() => FormData['rate'] = val);
                         },
